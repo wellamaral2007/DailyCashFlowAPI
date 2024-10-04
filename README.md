@@ -1,4 +1,4 @@
-# API for controlling throws of Daily Cash Flow Balance.
+# API for controling throws of Daily Cash Flow Balance.
 
 ## Solution
 A HTTP API Rest that receive throw values of credit or debit with high-performance, reily, security and availiabality by PUT method
@@ -7,11 +7,10 @@ and obtain balance value of day that can be called of digital App for control Ca
 For this API, we use GCP Cloud Servless services of *APIGateway APIGee, FAAS Cloud Function Staless with .Net Core, Pub/Sub Messaging, CloudSQL SQLServer,
 and Memorystore Redis* for agile to delivery, auto-scaling no need of maintain servers and operations, for easy to make DevOps.
 
-For development we use design patterns to facility reuse, simplicity, raise of quality of software solution.
+In development we use design patterns to facility reuse, simplicity, raise of quality of software solution.
 
 
 ## Design Patterns
-/*******************************
 
 **CLEAN Architecture Software**
 Simplicity of Concerns 
@@ -42,12 +41,12 @@ Microservice logic with SAGA Choreography
 with EDA events that are processed for high performance and
 rely of solution exposed by API Gateway with security to internet.
 
-1 - Access by API Gateway with a security OAuth 2 Token and encrypted channel 
-with HTTP request with method PUT witch throw of credit or debit value or GET method for read current *Balance Value*
-2 - Microservice create throw event with current datetime and value of throw to Pub/Sub
-3 - Microservice return a 200 status code for client
-4 - Microservice listen Pub/Sub Events and processing case **throw** event save it in relation database and put in Pub/Sub event **registred** 
-5 - Microservice listen Pub/Sub Events and processing case **registred** event update value of *Balance Value* in memorystore redis key-value with sum of values 
+1 - Access by API Gateway with a security OAuth 2 Token and encrypted channel  
+with HTTP request with method PUT witch throw of credit or debit value or GET method for read current *Balance Value*  
+2 - Microservice create throw event with current datetime and value of throw to Pub/Sub  
+3 - Microservice return a 200 status code for client  
+4 - Microservice listen Pub/Sub Events and processing case **throw** event save it in relation database and put in Pub/Sub **registred** event  
+5 - Microservice listen Pub/Sub Events and processing case **registred** event update value of *Balance Value* in memorystore redis key-value with sum of values    
 
 Steps 4 and 5 are made wtih transaction control.
 
