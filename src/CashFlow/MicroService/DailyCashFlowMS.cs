@@ -4,7 +4,7 @@ using CashFlow.Event;
 namespace CashFlow.MicroService;
 
 /*******************************
-Microservice logic with SAGA Chroregraphy
+Microservice logic with SAGA Choreography
 with EDA for high performance and
 rely of solution
 *******************************/
@@ -37,7 +37,7 @@ public class DailyCashFlowMS : AbstractMicroService, IDailyCashFlowMS
     registred for update Key-Value of
     BalanceValue State in Redis
     *******************************/
-    public void ProcessingDailyCashEvent(DailyCashFlowEvent dailyCashFlowEvent)
+    public void ProcessingDailyCashEvent(DailyCashFlowEvent DailyCashFlowEvent)
     {
 
     }

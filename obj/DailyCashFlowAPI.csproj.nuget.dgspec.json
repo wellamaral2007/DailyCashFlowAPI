@@ -46,6 +46,10 @@
             "Google.Cloud.Functions.Hosting": {
               "target": "Package",
               "version": "[2.2.1, )"
+            },
+            "Google.Cloud.PubSub.V1": {
+              "target": "Package",
+              "version": "[3.18.0, )"
             }
           },
           "imports": [
