@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0" version="24.7.17" pages="3">
   <diagram id="QYxWO5J9MIl5ghAo2O5r" name="Solution Diagram">
-    <mxGraphModel dx="1687" dy="233" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1699" dy="479" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -25,9 +25,6 @@
             <mxPoint x="640" y="996.73" as="targetPoint" />
             <Array as="points" />
           </mxGeometry>
-        </mxCell>
-        <mxCell id="kno1BsHmwXIF4Hh6hAI4-1" value="Backend API Ativação&#xa;Java" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#DAE8FC;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://miro.medium.com/max/256/1*xZEWINiDyQ7ioUtoBenQTA.png;fontStyle=1" parent="1" vertex="1">
-          <mxGeometry x="1229.9999999999998" y="1160" width="51.41" height="50" as="geometry" />
         </mxCell>
         <mxCell id="RU3mDuyASb-kOL7CJOYa-4" value="" style="shape=mxgraph.gcp2.google_cloud_platform;fillColor=#F6F6F6;strokeColor=none;shadow=0;gradientColor=none;" parent="1" vertex="1">
           <mxGeometry x="630" y="515" width="23" height="20" as="geometry">
