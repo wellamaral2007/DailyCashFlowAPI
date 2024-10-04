@@ -34,6 +34,13 @@ to run
 **SAGA Choreography** 
 Events of microservice reily and high performance
 
+**Template Method**
+To apply a default pattern for services class and DAL class
+
+**AOP**
+Abstract Class for Cross-Cutting AOP for instance DALS of Microservice,
+and Template Method for Handle Error, Logging, Transaction for simplify code 
+
 
 ## Logical of Microservice
 
