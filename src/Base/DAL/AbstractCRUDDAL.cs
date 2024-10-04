@@ -1,16 +1,24 @@
 using System.ComponentModel;
 using System.Data.Entity;
+using System.Linq.Expressions;
 
-namespace Base.DAL;
-
-public abstract class AbstractCRUDDAL: Component
+namespace Base.DAL 
 {
+
+public abstract class AbstractCRUDDAL : Component, IDAL<IEntity>
+{
+    private DbContextTransaction t;
+
+
     protected DbContext session
     {
         get
         {
             if (session == null)
-                throw new InvalidOperationException("A session IUnitOfWork do repositório não está instanciada.");
+            {
+
+            }   
+            //    throw new InvalidOperationException("A session IUnitOfWork do repositório não está instanciada.");
             return (session);
         }
     }
@@ -26,17 +34,37 @@ public abstract class AbstractCRUDDAL: Component
     public AbstractCRUDDAL()
         : base()
     {
+        
     }
-
-
-
-    public bool Add<TEntity>(TEntity entity) where TEntity : class 
+        
+    public bool Add(IEntity entity)  
     {
         if (!IsValid(entity))
             return false;
         try
         {
-            session.Set(typeof(TEntity)).Add(entity);
+            t = session.Database.BeginTransaction();
+            session.Set(typeof(IEntity)).Add(entity);
+            t.Commit();
+            return session.Entry(entity).GetValidationResult().IsValid;
+
+        }
+        catch (Exception ex)
+        {
+            if (ex.InnerException != null)
+                throw new Exception(ex.InnerException.Message, ex);
+            throw new Exception(ex.Message, ex);
+        }
+    }
+
+    public bool Delete(IEntity entity)
+    {
+        try
+        {
+            t = session.Database.BeginTransaction();
+            session.Set(typeof(IEntity)).Remove(entity);
+            //.Set(typeof(IEntity)).Add(entity);
+            t.Commit();
             return session.Entry(entity).GetValidationResult().IsValid;
         }
         catch (Exception ex)
@@ -47,45 +75,46 @@ public abstract class AbstractCRUDDAL: Component
         }
     }
 
-    public bool Delete<TEntity>(TEntity entity) where TEntity : class
+    public bool Update(IEntity entity)
+    {
+        if (!IsValid(entity))
+            return false;
+        try
+        {
+            t = session.Database.BeginTransaction();
+            //session.Set(typeof(TEntity)).Add(entity);
+            session.SaveChanges();
+            t.Commit();
+            return session.Entry(entity).GetValidationResult().IsValid;
+        }
+        catch (Exception ex)
+        {
+            if (ex.InnerException != null)
+                throw new Exception(ex.InnerException.Message, ex);
+            throw new Exception(ex.Message, ex);
+        }
+    }
+
+
+
+    public IList<IEntity> GetAll()
+    {
+        throw new NotImplementedException();
+    }
+
+    public IList<IEntity> GetAll(string[] include)
     {
         throw new NotImplementedException();
     }
 
     public void Dispose()
     {
-        throw new NotImplementedException();
-    }
-
-    public IList<TEntity> GetAll<TEntity>() where TEntity : class
-    {
-        return session.Set<TEntity>().ToList();
-    }
-
-    public IList<TEntity> GetAll<TEntity>(string[] include) where TEntity : class
-    {
-        throw new NotImplementedException();
-    }
-
-  
-    public IList<TEntity> GetAll<TEntity>(System.Linq.Expressions.Expression<Func<TEntity, bool>> predicate) where TEntity : class
-    {
-        throw new NotImplementedException();
-    }
-
-    public bool IsValid<TEntity>(TEntity entity) where TEntity : class
-    {
-        throw new NotImplementedException();
-    }
-
-    public bool Update<TEntity>(TEntity entity) where TEntity : class
-    {
-        if (!IsValid(entity))
-            return false;
         try
         {
-            session.Set(typeof(TEntity)).Add(entity);
-            return session.Entry(entity).GetValidationResult().IsValid;
+            t = session.Database.BeginTransaction();
+            //session.Set(typeof(IEntity)).Add(entity);
+            session.Dispose();
+            t.Commit();
         }
         catch (Exception ex)
         {
@@ -95,7 +124,31 @@ public abstract class AbstractCRUDDAL: Component
         }
     }
 
+    public IList<IEntity> GetAll<IEntity>() 
+    {
+        //return session.Set<IEntity>().ToList();
+        //return session.Set<(typeof(IEntity))>.ToList();
+        return (IList<IEntity>)(session.Set(typeof(IEntity))).Find();
+        //throw new NotImplementedException();
+    }
 
-    
+    public IList<IEntity> GetAll<IEntity>(string[] include)
+    {
+        throw new NotImplementedException();
+    }
+
+  
+    public IList<IEntity> GetAll<IEntity>(System.Linq.Expressions.Expression<Func<IEntity, bool>> predicate) 
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool IsValid(IEntity entity)
+    {
+        return true;
+    }
+
 }
 
+
+}

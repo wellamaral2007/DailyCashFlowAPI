@@ -1,4 +1,5 @@
 using Base.MicroService;
+using CashFlow.DAL;
 using CashFlow.Event;
 
 namespace CashFlow.MicroService;
@@ -11,6 +12,8 @@ rely of solution
 public class DailyCashFlowMS : AbstractMicroService, IDailyCashFlowMS
 {    
 
+    IDailyCashFlowDAL DailyCashFlowDAL;
+
     /*******************************
     Called When Event of Topic is 
     throwCreditDebit for register 
@@ -18,7 +21,7 @@ public class DailyCashFlowMS : AbstractMicroService, IDailyCashFlowMS
     *******************************/
     private void RegisterCreditDebit(DailyCashFlowEvent DailyCashFlowEvent)
     {
-
+        DailyCashFlowDAL.insertCreditDebit(DailyCashFlowEvent);
     }
 
    /*******************************
@@ -27,9 +30,9 @@ public class DailyCashFlowMS : AbstractMicroService, IDailyCashFlowMS
     BalanceValue after write the throw
     of Credit or Debit
     *******************************/
-    private void UpdateBalance(Double CreditDebitValue)
+    private void UpdateBalance(DailyCashFlowEvent DailyCashFlowEvent)
     {
-
+        DailyCashFlowDAL.updateBalanceValue(DailyCashFlowEvent);
     }
 
    /*******************************
@@ -39,7 +42,13 @@ public class DailyCashFlowMS : AbstractMicroService, IDailyCashFlowMS
     *******************************/
     public void ProcessingDailyCashEvent(DailyCashFlowEvent DailyCashFlowEvent)
     {
-
+        if (DailyCashFlowEvent.EventType.CompareTo("throw") == 0) 
+        {
+            RegisterCreditDebit(DailyCashFlowEvent);
+        } else if (DailyCashFlowEvent.EventType.CompareTo("registred") == 0) 
+        {
+            UpdateBalance(DailyCashFlowEvent);
+        }
     }
 
    /*******************************
@@ -47,10 +56,9 @@ public class DailyCashFlowMS : AbstractMicroService, IDailyCashFlowMS
     BalanceValue State in Redis
     for report return
     *******************************/
-    public double ObtainDailyBalance()
+    public Double ObtainDailyBalance()
     {
-        return 0;
-
+        return DailyCashFlowDAL.readBalanceValue();
     }
 
     

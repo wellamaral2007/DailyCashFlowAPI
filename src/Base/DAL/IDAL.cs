@@ -6,7 +6,7 @@ public interface IDAL<TEntity> : IDisposable where TEntity : class
 {
     IList<TEntity> GetAll();
     IList<TEntity> GetAll(string[] include);
-    IList<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate);
+    //IList<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate);
 
     bool Add(TEntity entity);
     bool Delete(TEntity entity);

@@ -12,6 +12,7 @@ using System;
 using System.Threading.Tasks;
 using CashFlow.MicroService;
 using CashFlow.Event;
+using Microsoft.Extensions.Primitives;
 
 
 namespace CashFlow.Controller;
@@ -39,7 +40,10 @@ public class DailyCashFlowController : IHttpFunction, ICloudEventFunction<DailyC
             case "PUT": //Throw Credit or Debit to MS
                 response.StatusCode = (int) HttpStatusCode.OK;
                 //context.Request.QueryString
-                ThowCreditDebit(36.45);
+                var queryString = context.Request.Query;
+                StringValues value;
+                queryString.TryGetValue("CreditDebitValue", out value);
+                ThowCreditDebit(double.Parse(value));
                 break;
             case "GET":
                 double BalanceValue = DailyCashFlowMS.ObtainDailyBalance();
@@ -60,10 +64,57 @@ public class DailyCashFlowController : IHttpFunction, ICloudEventFunction<DailyC
     public Task HandleAsync(CloudEvent cloudEvent, DailyCashFlowEvent data, CancellationToken cancellationToken)
     {
         //throw new NotImplementedException();
+        DailyCashFlowMS.ProcessingDailyCashEvent(data);
+        if (data.EventType.Equals("throw"))
+            SendRegistredEvent(data);
         return Task.CompletedTask;
     }
 
+
+    public async Task SendRegistredEvent(DailyCashFlowEvent DailyCashFlowEvent)
+    {
+        /************************************************
+         Thow throwEvent of credit or debit with signal increase or decrease 
+         balance value for Pub/Sub Topic for other time processing
+         for attempt high performance
+        *************************************************/
+        //throw new NotImplementedException();
+        
+        //DailyCashFlowEvent event;
+        DailyCashFlowEvent dailyCashFlowEvent = new DailyCashFlowEvent();
+        dailyCashFlowEvent.EventType = "registred";
+        dailyCashFlowEvent.ThowDate = DailyCashFlowEvent.ThowDate;
+        dailyCashFlowEvent.CreditDebitValue = DailyCashFlowEvent.CreditDebitValue;
+
+        var cloudEvent = new CloudEvent
+        {
+            Id = Guid.NewGuid().ToString(),
+            Source = new Uri("//my-source"),
+            Type = "CashFlow.Event.DailyCashFlowEvent",
+            DataContentType = "application/json",
+            Data = dailyCashFlowEvent
+        };
+
+        // Serialize the CloudEvent to JSON
+        var jsonFormatter = new JsonEventFormatter();
+        var cloudEventData = jsonFormatter.EncodeStructuredModeMessage(cloudEvent, out var contentType);
+
+        // Create a Pub/Sub message
+        var pubsubMessage = new PubsubMessage
+        {
+            Data = ByteString.CopyFrom(cloudEventData.ToArray())
+        };
+
+        // Publish the message to a Pub/Sub topic
+        var publisher = await PublisherClient.CreateAsync(
+            TopicName.FromProjectTopic("daily-cash-flow-api-project", "api-daily-cash-flow-event-topic")
+            );
+        await publisher.PublishAsync(pubsubMessage);
+
+        //Console.WriteLine("CloudEvent published to Pub/Sub.");
     
+    }
+
     public async Task ThowCreditDebit(Double BalanceValue)
     {
         /************************************************
@@ -75,7 +126,7 @@ public class DailyCashFlowController : IHttpFunction, ICloudEventFunction<DailyC
         
         //DailyCashFlowEvent event;
         DailyCashFlowEvent dailyCashFlowEvent = new DailyCashFlowEvent();
-        dailyCashFlowEvent.EventType = "Throw";
+        dailyCashFlowEvent.EventType = "throw";
         dailyCashFlowEvent.ThowDate = DateTime.Now;
         dailyCashFlowEvent.CreditDebitValue = BalanceValue;
 
