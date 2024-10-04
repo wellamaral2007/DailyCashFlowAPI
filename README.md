@@ -2,7 +2,7 @@
 
 ## Solution
 A HTTP API Rest that receive throw values of credit or debit with high-performance, reily, security and availiabality by PUT method
-and obtain balance value of day that can be called of digital App for control Cash Flow Balance and generate a report daily balance.
+and obtain balance value of day that can be called of digital App(Angular for example) for control Cash Flow Balance and generate a report daily balance.
 
 For this API, we use GCP Cloud Servless services of *APIGateway APIGee, FAAS Cloud Function Staless with .Net Core, Pub/Sub Messaging, CloudSQL SQLServer,
 and Memorystore Redis* for agile to delivery, auto-scaling no need of maintain servers and operations, for easy to make DevOps.
@@ -85,17 +85,17 @@ This code was developed with C# programming language and .Net Core 8
 
 ## Steps to Run Local
 
-Config APIGateway APIGee GCP Servless
+Config APIGateway APIGee GCP Servless  
 *todo detail*
 
-Config FAAS Cloud Function Staless with .Net Core GCP Servless
+Config FAAS Cloud Function Staless with .Net Core GCP Servless  
 *todo detail*
 
-Config Pub/Sub Messaging and Event Topic GCP Servless
+Config Pub/Sub Messaging and Event Topic GCP Servless  
 *todo detail*
 
-Config Memorystore Redis GCP Servless
+Config Memorystore Redis GCP Servless  
 *todo detail*
 
-Use apiman tool to do a request to API.
+Use apiman tool to do a request to API.  
 *todo detail*
