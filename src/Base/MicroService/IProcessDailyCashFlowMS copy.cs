@@ -2,13 +2,10 @@ using CashFlow.Event;
 
 namespace Base.MicroService;
 
-public interface IDailyCashFlowMS  
+public interface IProcessDailyCashFlowMS  
 {    
 
     public void ProcessingDailyCashEvent(DailyCashFlowEvent DailyCashFlowEvent);
     
-    public double ObtainDailyBalance();
-
-
         
 }
