@@ -50,7 +50,7 @@ Data Access Layer, classes RedisDailyCashFlowDAL and SQLDailyCashFlowDAL, specil
 Domain Driven Design (DDD) oriented to the business problem domain, with the use of the repository pattern to access the data layer which is DailyCashFlow the entity domain, inclusive the api signature of the service layer.
 
 **Template Method**
-To apply a default pattern for services class and DAL class
+To apply a default pattern for services microservices and DAL classes.
 
 **AOP**
 Abstract Class for Cross-Cutting AOP for instance DALS of Microservice,
@@ -82,7 +82,7 @@ with HTTP request with method POST witch throw of credit or debit value or GET m
 
 ## Architecture Software
 
-![DailyCashFlowArchitecture-Software Class](https://github.com/user-attachments/assets/1495cdfa-0390-4177-94c6-3c074e3db800)
+![DailyCashFlowArchitecture-Software Class](https://github.com/wellamaral2007/DailyCashFlowAPI/blob/main/documentation/DailyCashFlowArchitecture-Software%20Class%20Diagram.png)
 
 
 
