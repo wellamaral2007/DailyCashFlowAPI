@@ -77,7 +77,7 @@ with HTTP request with method POST witch throw of credit or debit value or GET m
 
 ## Architecture Solution
 
-![DailyCashFlowArchitecture-Solution Diagram](https://github.com/user-attachments/assets/7e5a6e95-6b3b-420b-9b91-6b610f94bd91)
+![DailyCashFlowArchitecture-Solution Diagram](https://github.com/wellamaral2007/DailyCashFlowAPI/blob/main/documentation/DailyCashFlowArchitecture-Solution%20Diagram.png)
 
 
 ## Architecture Software
