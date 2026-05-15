@@ -29,7 +29,7 @@ Definition of api with Swagger documentation, canning define api independently o
 
 **Microservice**
 Micro and independent executable unit of service running in FAAS that provide a container 
-to run.
+to run, what easing the development and manutenance of the application.
 
 **CQRS**
 Three microservices separate for read and write operations, command with GeneratorDailyCashFlowMS and ProcessDailyCashFlowMS to write, using SAGA pattern, and for read DailyCashFlowBalanceMS for query operations just.
@@ -38,7 +38,7 @@ Three microservices separate for read and write operations, command with Generat
 Events reily and high performance.
 
 **SAGA Choreography** 
-Events of microservice reily and high performance, a microservice GenerateDailyCashFlowMS for throw credit or debit of cash flow to keep rely of solution and time of response. Microservice ProcessDailyCashFlowMS for update balance value of day in redis key-value with sum of values of throw credit or debit with transaction control keeping persistence of information in sql database, with flow value, and redis key-value.
+Events in microservice reily and high performance, a microservice GenerateDailyCashFlowMS for throw credit or debit of cash flow to keep rely of solution and time of response. Microservice ProcessDailyCashFlowMS for update balance value of day in redis key-value with sum of values of throw credit or debit with transaction control keeping persistence of information in sql database, with flow value, and redis key-value.
 
 **Singleton**
 Redis key-value for balance value of day, being a centralized storage of the state of the application, with the use of the Singleton pattern. Created one time by day.
@@ -53,14 +53,14 @@ Domain Driven Design (DDD) oriented to the business problem domain, with the use
 To apply a default pattern for services microservices and DAL classes.
 
 **AOP**
-Abstract Class for Cross-Cutting AOP for instance DALS of Microservice,
+Abstract Class for Cross-Cutting AOP for instance DAL's of Microservices,
 and Template Method for Handle Error, Logging, Transaction for simplify code 
 
 
 ## Logical of Solution
 
 DailyCashFlow REST api exposed in APIGee, like facade, with operations POST and GET to post flow cash and get today balance
-having three microservice separated by read and write with CQRS pattern DailyFlowBalanceMS, GenerateDailyCashFlowMS and ProcessDailyCashFlowMS. In write part using with SAGA Choreography with EDA events that are processed by independent components for high performance.
+having three microservices separated by read and write with CQRS pattern DailyFlowBalanceMS, GenerateDailyCashFlowMS and ProcessDailyCashFlowMS. In write part using with SAGA Choreography with EDA events that are processed by independent components for high performance.
 
 1 - Access by DailyCashFlow REST api with a security OAuth 2 Token and encrypted channel  
 with HTTP request with method POST witch throw of credit or debit value or GET method for read current *Balance Value* of today;  
