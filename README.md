@@ -72,7 +72,7 @@ with HTTP request with method POST witch throw of credit or debit value or GET m
 3 - Api return a 200 status code for client;  
 4 - ProcessDailyCashFlowMS microservice listen Pub/Sub Events and processing **throw** event saving throw in relation database and update value of *Balance Value* in memorystore redis key-value, like singleton for application about system state, with sum of values, having transaction control for avoiding inconsistencies;
 
-5 - For get balance, DailyFlowBalanceMS Microservice read key-value of balance value of day, return value to client.
+5 - For get balance, DailyFlowBalanceMS Microservice read key-value of balance value of day, but case occurs exception, the microservice will take balance value from SQLDailyCashFlowDAL keeping high avaliability of service that are using circuit breaker pattern, and return value to client.
 
 
 # HTTP Request-Reponse
