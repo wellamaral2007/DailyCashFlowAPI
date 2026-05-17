@@ -96,7 +96,9 @@ real-time using SQL Server data, ensuring the system never goes down.
 
 ## Development Environment
 
-Language: C# (.NET 8)Infrastructure: GCP (Google Cloud Platform)
+# Language: C# (.NET 8)
+
+# Infrastructure: GCP (Google Cloud Platform)
 
 ## Local Setup (Future Work) to Run 
 
