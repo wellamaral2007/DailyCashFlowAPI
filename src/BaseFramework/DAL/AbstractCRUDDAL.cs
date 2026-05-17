@@ -22,7 +22,6 @@ public abstract class AbstractCRUDDAL : Component, IDAL<IEntity>
     public AbstractCRUDDAL()
         : base()
     {
-        
         var sqlConnectionString = "Server=GCP_CLOUD_SQL\\SQLEXPRESS;Database=FinanceDb;Trusted_Connection=True;TrustServerCertificate=True;";
         session = new(sqlConnectionString);
     }
