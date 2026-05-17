@@ -1,5 +1,3 @@
-/home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/bin/Release/net8.0/appsettings.Development.json
-/home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/bin/Release/net8.0/appsettings.json
 /home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/bin/Release/net8.0/BaseFramework.staticwebassets.endpoints.json
 /home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/bin/Release/net8.0/BaseFramework
 /home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/bin/Release/net8.0/BaseFramework.deps.json

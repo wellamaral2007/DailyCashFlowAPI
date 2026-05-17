@@ -1,0 +1,24 @@
+{
+  "Version": 1,
+  "Hash": "I+9+RUKPxOqhPzgzaPbUKbumKc8sy0xDKdKx3nIsCH8=",
+  "Source": "DailyCashFlowBalanceMS",
+  "BasePath": "_content/DailyCashFlowBalanceMS",
+  "Mode": "Default",
+  "ManifestType": "Publish",
+  "ReferencedProjectsConfiguration": [
+    {
+      "Identity": "/home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/BaseFramework.csproj",
+      "Version": 2,
+      "Source": "BaseFramework",
+      "GetPublishAssetsTargets": "ComputeReferencedStaticWebAssetsPublishManifest;GetCurrentProjectPublishStaticWebAssetItems",
+      "AdditionalPublishProperties": "",
+      "AdditionalPublishPropertiesToRemove": "WebPublishProfileFile;TargetFramework",
+      "GetBuildAssetsTargets": "GetCurrentProjectBuildStaticWebAssetItems",
+      "AdditionalBuildProperties": "",
+      "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile;TargetFramework"
+    }
+  ],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

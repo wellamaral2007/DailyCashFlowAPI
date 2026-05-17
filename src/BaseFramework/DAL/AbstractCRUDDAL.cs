@@ -2,26 +2,14 @@ using System.ComponentModel;
 using System.Data.Entity;
 using System.Linq.Expressions;
 
-namespace BaseFramework.DAL
-{
+namespace BaseFramework.DAL;
 
 public abstract class AbstractCRUDDAL : Component, IDAL<IEntity>
 {
     private DbContextTransaction t;
 
 
-    protected DbContext session
-    {
-        get
-        {
-            if (session == null)
-            {
-
-            }   
-            //    throw new InvalidOperationException("A session IUnitOfWork do repositório não está instanciada.");
-            return (session);
-        }
-    }
+    protected DbContext session;
 
     public virtual DbContext Context
     {
@@ -34,7 +22,8 @@ public abstract class AbstractCRUDDAL : Component, IDAL<IEntity>
     public AbstractCRUDDAL()
         : base()
     {
-        
+        var sqlConnectionString = "Server=GCP_CLOUD_SQL\\SQLEXPRESS;Database=FinanceDb;Trusted_Connection=True;TrustServerCertificate=True;";
+        session = new(sqlConnectionString);
     }
         
     public bool Add(IEntity entity)  
@@ -151,4 +140,3 @@ public abstract class AbstractCRUDDAL : Component, IDAL<IEntity>
 }
 
 
-}

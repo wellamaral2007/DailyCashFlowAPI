@@ -15,8 +15,8 @@ using DailyCashFlowBalanceMS.CashFlow.MicroService;
 using Microsoft.AspNetCore.Mvc;
 
 
-namespace DailyCashFlowBalanceMS.CashFlow.Controller;
-
+namespace DailyCashFlowBalanceMS.CashFlow.Controller 
+{
 
 /*******************************
 Controller Microservice with CLEAN
@@ -45,4 +45,6 @@ public class DailyCashFlowBalanceController : ControllerBase
         return Ok(BalanceValue);
     }
     
+}
+
 }

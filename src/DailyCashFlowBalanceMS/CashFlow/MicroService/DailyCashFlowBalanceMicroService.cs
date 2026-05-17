@@ -8,7 +8,8 @@ using BaseFramework.MicroService.DailyCashFlow;
 using BaseFramework.DAL.DailyCashFlow;
 using Polly.CircuitBreaker;
 
-namespace DailyCashFlowBalanceMS.CashFlow.MicroService;
+namespace DailyCashFlowBalanceMS.CashFlow.MicroService
+{
 
 /*******************************
 Microservice logic with CQRS 
@@ -17,14 +18,17 @@ read operations just -
 public class DailyCashFlowBalanceMicroService : AbstractMicroService, IDailyCashFlowBalanceMS
 {    
 
-    private readonly string redisConnectionString = "GCP_CLOUD_REDIS:6379,abortConnect=false";
-    private readonly string sqlConnectionString = "Server=GCP_CLOUD_SQL\\SQLEXPRESS;Database=FinanceDb;Trusted_Connection=True;TrustServerCertificate=True;";
+    private readonly string redisConnectionString; 
+    private readonly string sqlConnectionString;
     private readonly IRedisDailyCashFlowDAL RedisDailyCashFlowDAL;
     private readonly ISQLDailyCashFlowDAL SQLDailyCashFlowDAL;
     private readonly AsyncCircuitBreakerPolicy _circuitBreaker;
 
     public DailyCashFlowBalanceMicroService()
     {
+        redisConnectionString = "GCP_CLOUD_REDIS:6379,abortConnect=false";
+        sqlConnectionString = "Server=GCP_CLOUD_SQL\\SQLEXPRESS;Database=FinanceDb;Trusted_Connection=True;TrustServerCertificate=True;";
+
         RedisDailyCashFlowDAL = new RedisDailyCashFlowDAL(redisConnectionString);
         SQLDailyCashFlowDAL = new SQLDailyCashFlowDAL(sqlConnectionString);
         
@@ -70,4 +74,6 @@ public class DailyCashFlowBalanceMicroService : AbstractMicroService, IDailyCash
         });
     }
  
+}
+
 }

@@ -10,6 +10,7 @@ public class SQLDailyCashFlowDAL : AbstractCRUDDAL, ISQLDailyCashFlowDAL
 {
     private readonly string connectionString;
 
+
     public SQLDailyCashFlowDAL(string connectionString)
     {
         this.connectionString = connectionString;
