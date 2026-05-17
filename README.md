@@ -1,7 +1,7 @@
-# API for controling throws of Daily Cash Flow Balance.
+# API for controling entrys of Daily Cash Flow Balance.
 
 ## Solution
-A HTTP API Rest that receive throw values of credit or debit with high-performance, reily, security and availiabality by POST method
+A HTTP API Rest that receive entry values of credit or debit with high-performance, reliable, security and availiabality by POST method
 and obtain balance value of day that can be called of digital App(Angular for example) for control Cash Flow Balance and generate a report daily balance.
 
 For this API, we use GCP Cloud Servless services of *APIGateway APIGee, FAAS Cloud Function Staless with .Net Core, Pub/Sub Messaging, CloudSQL SQLServer,
@@ -35,10 +35,10 @@ to run, what easing the development and manutenance of the application.
 Three microservices separate for read and write operations, command with GeneratorDailyCashFlowMS and ProcessDailyCashFlowMS to write, using SAGA pattern, and for read DailyCashFlowBalanceMS for query operations just.
 
 **EDA**
-Events reily and high performance.
+Events reliable and high performance.
 
 **SAGA Choreography** 
-Events in microservice reily and high performance, a microservice GenerateDailyCashFlowMS for throw credit or debit of cash flow to keep rely of solution and time of response. Microservice ProcessDailyCashFlowMS for update balance value of day in redis key-value with sum of values of throw credit or debit with transaction control keeping persistence of information in sql database, with flow value, and redis key-value.
+Events in microservice reliable and high performance, a microservice GenerateDailyCashFlowMS for entry credit or debit of cash flow to keep reliable of solution and time of response. Microservice ProcessDailyCashFlowMS for update balance value of day in redis key-value with sum of values of entry credit or debit with transaction control keeping persistence of information in sql database, with flow value, and redis key-value.
 
 **Singleton**
 Redis key-value for balance value of day, being a centralized storage of the state of the application, with the use of the Singleton pattern. Created one time by day.
@@ -47,7 +47,7 @@ Redis key-value for balance value of day, being a centralized storage of the sta
 Data Access Layer, classes RedisDailyCashFlowDAL and SQLDailyCashFlowDAL, specilized for Redis and SQL respectively for manipulate data repository, with the use of the AbstractCRUDDAL class, which is a base class for the DAL classes.
 
 **Circuit Breaker**
-In microservices, circuit breaker pattern is used to detect failures and prevent cascading failures. In this case, DailyCashFlowBalanceMS have circuit breaker to grow availability of service, case RedisDailyCashFlowDAL throw exception by any errors like connection failure, circuit breaker will be open, the service passing to get value of balance of day, by sum of all throws of day by SQLDailyCashFlowDAL, until circuit breaker close and returning value by RedisDailyCashFlowDAL.
+In microservices, circuit breaker pattern is used to detect failures and prevent cascading failures. In this case, DailyCashFlowBalanceMS have circuit breaker to grow availability of service, case RedisDailyCashFlowDAL entry exception by any errors like connection failure, circuit breaker will be open, the service passing to get value of balance of day, by sum of all entrys of day by SQLDailyCashFlowDAL, until circuit breaker close and returning value by RedisDailyCashFlowDAL.
 
 **DDD**
 Domain Driven Design (DDD) oriented to the business problem domain, with the use of the repository pattern to access the data layer which is DailyCashFlow the entity domain, inclusive the api signature of the service layer.
@@ -61,24 +61,22 @@ For this solution, APIGateway, FAAS, Pub/Sub, Memorystore, and Redis are used as
 **Servless**
 The solution is auto-scaling, auto-managed and auto-healing in production, with the use of the serverless platform, GCP Cloud Servless, like FAAS, APIGateway, Pub/Sub, Memorystore, and Redis servless services turning easily keep solution up with high availability and high performance.
 
-## Logical of Solution
+## Core Logic & Workflow
 
-DailyCashFlow REST api exposed in APIGee, like facade, with operations POST and GET to post flow cash and get today balance
-having three microservices separated by read and write with CQRS pattern DailyFlowBalanceMS, GenerateDailyCashFlowMS and ProcessDailyCashFlowMS. In write part using with SAGA Choreography with EDA events that are processed by independent components for high performance.
+The API acts as a Facade (via Apigee) exposing POST (entries) and GET (balance) endpoints.
 
-1 - Access by DailyCashFlow REST api with a security OAuth 2 Token and encrypted channel  
-with HTTP request with method POST witch throw of credit or debit value or GET method for read current *Balance Value* of today;  
-2 - GenerateDailyCashFlowMS microservice create throw event with current datetime and value of throw putting in Pub/Sub;  
-3 - Api return a 200 status code for client;  
-4 - ProcessDailyCashFlowMS microservice listen Pub/Sub Events and processing **throw** event saving throw in relation database and update value of *Balance Value* in memorystore redis key-value, like singleton for application about system state, with sum of values, having transaction control for avoiding inconsistencies;
+## 1. Write Flow (Credit/Debit) Request: Client sends a POST request with an OAuth2 Token.Ingestion: 
 
-5 - For get balance, DailyFlowBalanceMS Microservice read key-value of balance value of day, but case occurs exception, the microservice will take balance value from SQLDailyCashFlowDAL keeping high avaliability of service that are using circuit breaker pattern, and return value to client.
+The GenerateDailyCashFlowMS validates the entry and publishes an event to GCP Pub/Sub.Response: 
+The API immediately returns 202 Accepted (or 200 OK) to the client.Processing: 
+The ProcessDailyCashFlowMS triggers on the Pub/Sub event, persists the transaction in SQL Server, 
+and updates the current balance in Redis (atomic update).
 
+## 2. Read Flow (Daily Balance) Request: Client sends a GET request.Retrieval: 
 
-# HTTP Request-Reponse
-**POST** Method for throw Credit or Debit
-
-**GET** Method for get Balance Value
+DailyFlowBalanceMS attempts to read the balance from Redis (Cache-aside/Singleton state).Resilience: 
+If Redis is unavailable, the Circuit Breaker opens, and the service calculates the balance in 
+real-time using SQL Server data, ensuring the system never goes down.
 
 ## Architecture Solution
 
@@ -89,25 +87,18 @@ with HTTP request with method POST witch throw of credit or debit value or GET m
 
 ![DailyCashFlowArchitecture-Software Class](https://github.com/wellamaral2007/DailyCashFlowAPI/blob/main/documentation/DailyCashFlowArchitecture-Software%20Class%20Diagram.png)
 
+## Development Environment
 
+Language: C# (.NET 8)Infrastructure: GCP (Google Cloud Platform)
 
-## Code
-This code was developed with C# programming language and .Net Core 8
+## Local Setup (Future Work) to Run 
 
+Detailed GCP API Gateway configuration.
 
-## Steps to Run Local
+Cloud Functions deployment scripts.
 
-Config APIGateway APIGee GCP Servless  
-*todo detail*
+Pub/Sub Topic and Subscription setup.
 
-Config FAAS Cloud Function Staless with .Net Core GCP Servless  
-*todo detail*
-
-Config Pub/Sub Messaging and Event Topic GCP Servless  
-*todo detail*
-
-Config Memorystore Redis GCP Servless  
-*todo detail*
+Redis Memorystore connectivity guide.
 
 Use apiman tool to do a request to API.  
-*todo detail*
