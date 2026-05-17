@@ -96,18 +96,18 @@ real-time using SQL Server data, ensuring the system never goes down.
 
 ## Development Environment
 
-# Language: C# (.NET 8)
+* Language: C# (.NET 8)
 
-# Infrastructure: GCP (Google Cloud Platform)
+* Infrastructure: GCP (Google Cloud Platform)
 
 ## Local Setup (Future Work) to Run 
 
-Detailed GCP API Gateway configuration.
+* Detailed GCP API Gateway configuration.
 
-Cloud Functions deployment scripts.
+* Cloud Functions deployment scripts.
 
-Pub/Sub Topic and Subscription setup.
+* Pub/Sub Topic and Subscription setup.
 
-Redis Memorystore connectivity guide.
+* Redis Memorystore connectivity guide.
 
-Use apiman tool to do a request to API.  
+* Use apiman tool to do a request to API.  
