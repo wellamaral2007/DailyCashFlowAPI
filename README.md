@@ -46,16 +46,20 @@ Redis key-value for balance value of day, being a centralized storage of the sta
 **DAL**
 Data Access Layer, classes RedisDailyCashFlowDAL and SQLDailyCashFlowDAL, specilized for Redis and SQL respectively for manipulate data repository, with the use of the AbstractCRUDDAL class, which is a base class for the DAL classes.
 
+**Circuit Breaker**
+In microservices, circuit breaker pattern is used to detect failures and prevent cascading failures. In this case, DailyCashFlowBalanceMS have circuit breaker to grow availability of service, case RedisDailyCashFlowDAL throw exception by any errors like connection failure, circuit breaker will be open, the service passing to get value of balance of day, by sum of all throws of day by SQLDailyCashFlowDAL, until circuit breaker close and returning value by RedisDailyCashFlowDAL.
+
 **DDD**
 Domain Driven Design (DDD) oriented to the business problem domain, with the use of the repository pattern to access the data layer which is DailyCashFlow the entity domain, inclusive the api signature of the service layer.
 
 **Template Method**
 To apply a default pattern for services microservices and DAL classes.
 
-**AOP**
-Abstract Class for Cross-Cutting AOP for instance DAL's of Microservices,
-and Template Method for Handle Error, Logging, Transaction for simplify code 
+**PAAS**
+For this solution, APIGateway, FAAS, Pub/Sub, Memorystore, and Redis are used as PaaS, considering the short time to delivery, and no need to install all infraestructure for this solution.
 
+**Servless**
+The solution is auto-scaling, auto-managed and auto-healing in production, with the use of the serverless platform, GCP Cloud Servless, like FAAS, APIGateway, Pub/Sub, Memorystore, and Redis servless services turning easily keep solution up with high availability and high performance.
 
 ## Logical of Solution
 
