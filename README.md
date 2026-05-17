@@ -65,16 +65,23 @@ The solution is auto-scaling, auto-managed and auto-healing in production, with 
 
 The API acts as a Facade (via Apigee) exposing POST (entries) and GET (balance) endpoints.
 
-## 1. Write Flow (Credit/Debit) Request: Client sends a POST request with an OAuth2 Token.Ingestion: 
+## 1. Write Flow (Credit/Debit) Request: 
+
+Client sends a POST request with an OAuth2 Token.Ingestion: 
 
 The GenerateDailyCashFlowMS validates the entry and publishes an event to GCP Pub/Sub.Response: 
+
 The API immediately returns 202 Accepted (or 200 OK) to the client.Processing: 
+
 The ProcessDailyCashFlowMS triggers on the Pub/Sub event, persists the transaction in SQL Server, 
 and updates the current balance in Redis (atomic update).
 
-## 2. Read Flow (Daily Balance) Request: Client sends a GET request.Retrieval: 
+## 2. Read Flow (Daily Balance) Request: 
+
+Client sends a GET request.Retrieval: 
 
 DailyFlowBalanceMS attempts to read the balance from Redis (Cache-aside/Singleton state).Resilience: 
+
 If Redis is unavailable, the Circuit Breaker opens, and the service calculates the balance in 
 real-time using SQL Server data, ensuring the system never goes down.
 
