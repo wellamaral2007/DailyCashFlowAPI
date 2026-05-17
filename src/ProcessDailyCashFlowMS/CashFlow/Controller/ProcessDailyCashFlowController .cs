@@ -1,17 +1,7 @@
-using CloudNative.CloudEvents;
-using CloudNative.CloudEvents.SystemTextJson;
-using Google.Cloud.Functions.Framework;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using System.Net;
-using CloudNative.CloudEvents.Core;
-using Google.Cloud.PubSub.V1;
-using Google.Protobuf;
-using System;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Primitives;
+using System.Threading; 
 using BaseFramework.Event.DailyCashFlow;
+using CloudNative.CloudEvents;
+using Google.Cloud.Functions.Framework;
 using ProcessDailyCashFlowMS.CashFlow.MicroService;
 
 
@@ -21,8 +11,9 @@ namespace CashFlow.Controller;
  Pub/Sub listen to process event of throw 
 credit or debit for balance value
 ****************************************/
-public class ProcessDailyCashFlowController: ICloudEventFunction<DailyCashFlowEvent>
+public class ProcessDailyCashFlowController: ICloudEventFunction<DailyCashFlowEvent> /* Google Cloud Function CloudEvent listen Pub/Sub for processing event of entry credit or debit for balance value */
 {
+
 
     //Staless service, transient 
     ProcessDailyCashFlowMicroService ProcessDailyCashFlowMS;
