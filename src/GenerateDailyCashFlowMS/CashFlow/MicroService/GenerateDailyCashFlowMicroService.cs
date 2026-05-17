@@ -19,12 +19,11 @@ rely of solution
 public class GenerateDailyCashFlowMicroService : AbstractMicroService, IGenerateDailyCashFlowMS
 {    
 
-    private readonly string sqlConnectionString = "Server=GCP_CLOUD_SQL\\SQLEXPRESS;Database=FinanceDb;Trusted_Connection=True;TrustServerCertificate=True;";
     private readonly ISQLDailyCashFlowDAL SQLDailyCashFlowDAL;
 
     public GenerateDailyCashFlowMicroService()
     {
-        SQLDailyCashFlowDAL = new SQLDailyCashFlowDAL(sqlConnectionString);
+        SQLDailyCashFlowDAL = new SQLDailyCashFlowDAL();
     }
 
     public async Task GenerateDailyCashEvent(decimal BalanceValue) 
@@ -34,7 +33,6 @@ public class GenerateDailyCashFlowMicroService : AbstractMicroService, IGenerate
          balance value for Pub/Sub Topic for other time processing
          for attempt high performance
         *************************************************/
-        //throw new NotImplementedException();
         
         //DailyCashFlowEvent event;
         DailyCashFlowEvent dailyCashFlowEvent = new DailyCashFlowEvent();
@@ -65,7 +63,7 @@ public class GenerateDailyCashFlowMicroService : AbstractMicroService, IGenerate
         var publisher = await PublisherClient.CreateAsync(
             TopicName.FromProjectTopic("daily-cash-flow-api-project", "api-daily-cash-flow-event-topic")
             );
-        await publisher.PublishAsync(pubsubMessage);
+        await publisher.PublishAsync(pubsubMessage); 
 
         //Console.WriteLine("CloudEvent published to Pub/Sub.");
     

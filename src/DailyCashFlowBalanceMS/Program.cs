@@ -1,9 +1,9 @@
 var builder = WebApplication.CreateBuilder(args);
 
-// Configuração para expor na porta 5001 HTTP
+// Configuração para expor na porta 5002 HTTP
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
-    serverOptions.ListenLocalhost(5001);
+    serverOptions.ListenLocalhost(5002);
 });
 
 builder.Services.AddControllers();

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "sV2r6qoCZoY=",
+  "dgSpecHash": "yE8GrQAAs54=",
   "success": true,
   "projectFilePath": "/home/wellington/testeCarrefour/DailyCashFlowSolution/src/ProcessDailyCashFlowMS/ProcessDailyCashFlowMS.csproj",
   "expectedPackageFiles": [
@@ -68,9 +68,9 @@
     "/home/wellington/.nuget/packages/system.text.encodings.web/6.0.0/system.text.encodings.web.6.0.0.nupkg.sha512",
     "/home/wellington/.nuget/packages/system.text.json/8.0.5/system.text.json.8.0.5.nupkg.sha512",
     "/home/wellington/.nuget/packages/system.windows.extensions/6.0.0/system.windows.extensions.6.0.0.nupkg.sha512",
+    "/home/wellington/.nuget/packages/microsoft.netcore.app.ref/8.0.12/microsoft.netcore.app.ref.8.0.12.nupkg.sha512",
     "/home/wellington/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.12/microsoft.aspnetcore.app.ref.8.0.12.nupkg.sha512",
-    "/home/wellington/.nuget/packages/microsoft.netcore.app.host.linux-x64/8.0.12/microsoft.netcore.app.host.linux-x64.8.0.12.nupkg.sha512",
-    "/home/wellington/.nuget/packages/microsoft.netcore.app.ref/8.0.12/microsoft.netcore.app.ref.8.0.12.nupkg.sha512"
+    "/home/wellington/.nuget/packages/microsoft.netcore.app.host.linux-x64/8.0.12/microsoft.netcore.app.host.linux-x64.8.0.12.nupkg.sha512"
   ],
   "logs": []
 }

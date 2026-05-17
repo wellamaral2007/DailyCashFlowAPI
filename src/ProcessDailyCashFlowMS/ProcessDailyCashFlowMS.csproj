@@ -8,10 +8,9 @@
 
   <ItemGroup>
     <PackageReference Include="EntityFramework" Version="6.5.1" />
-    <PackageReference Include="Google.Cloud.Functions.Hosting" Version="2.2.1" />
-    <PackageReference Include="Google.Cloud.PubSub.V1" Version="3.18.0" />
     <PackageReference Include="StackExchange.Redis" Version="2.8.16" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.7" />
+    <PackageReference Include="Google.Cloud.PubSub.V1" Version="3.18.0" />
     <ProjectReference Include="..\BaseFramework\BaseFramework.csproj" />
   </ItemGroup>
 </Project>

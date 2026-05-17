@@ -11,9 +11,11 @@ public class SQLDailyCashFlowDAL : AbstractCRUDDAL, ISQLDailyCashFlowDAL
     private readonly string connectionString;
 
 
-    public SQLDailyCashFlowDAL(string connectionString)
+    public SQLDailyCashFlowDAL()
     {
-        this.connectionString = connectionString;
+        string sqlConnectionString = "Server=GCP_CLOUD_SQL\\SQLEXPRESS;Database=FinanceDb;Trusted_Connection=True;TrustServerCertificate=True;";
+    
+        this.connectionString = sqlConnectionString;
     }
 
     public void insertCreditDebit(DailyCashFlowEvent DailyCashFlowEvent)

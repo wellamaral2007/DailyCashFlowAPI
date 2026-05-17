@@ -231,8 +231,7 @@
           "Microsoft.AspNetCore.App"
         ],
         "build": {
-          "build/net6.0/Google.Cloud.Functions.Hosting.props": {},
-          "build/net6.0/Google.Cloud.Functions.Hosting.targets": {}
+          "build/net6.0/_._": {}
         }
       },
       "Google.Cloud.Iam.V1/3.3.0": {
@@ -3045,8 +3044,6 @@
     "net8.0": [
       "BaseFramework >= 1.0.0",
       "EntityFramework >= 6.5.1",
-      "Google.Cloud.Functions.Hosting >= 2.2.1",
-      "Google.Cloud.PubSub.V1 >= 3.18.0",
       "Polly >= 8.6.6",
       "StackExchange.Redis >= 2.8.16",
       "Swashbuckle.AspNetCore >= 10.1.7"
@@ -3102,14 +3099,6 @@
           "EntityFramework": {
             "target": "Package",
             "version": "[6.5.1, )"
-          },
-          "Google.Cloud.Functions.Hosting": {
-            "target": "Package",
-            "version": "[2.2.1, )"
-          },
-          "Google.Cloud.PubSub.V1": {
-            "target": "Package",
-            "version": "[3.18.0, )"
           },
           "Polly": {
             "target": "Package",

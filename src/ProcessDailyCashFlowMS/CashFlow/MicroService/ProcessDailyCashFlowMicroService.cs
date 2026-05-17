@@ -15,14 +15,12 @@ rely of solution
 *******************************/
 public class ProcessDailyCashFlowMicroService : AbstractMicroService, IProcessDailyCashFlowMS
 {    
-    private readonly string redisConnectionString = "GCP_CLOUD_REDIS:6379,abortConnect=false";
-    private readonly string sqlConnectionString = "Server=GCP_CLOUD_SQL\\SQLEXPRESS;Database=FinanceDb;Trusted_Connection=True;TrustServerCertificate=True;";
     private readonly IRedisDailyCashFlowDAL RedisDailyCashFlowDAL;
     private readonly ISQLDailyCashFlowDAL SQLDailyCashFlowDAL;
     public ProcessDailyCashFlowMicroService()
     {
-        RedisDailyCashFlowDAL = new RedisDailyCashFlowDAL(redisConnectionString);
-        SQLDailyCashFlowDAL = new SQLDailyCashFlowDAL(sqlConnectionString);
+        RedisDailyCashFlowDAL = new RedisDailyCashFlowDAL();
+        SQLDailyCashFlowDAL = new SQLDailyCashFlowDAL();
     }
 
 

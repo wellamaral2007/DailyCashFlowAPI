@@ -1,12 +1,10 @@
 
-
-using System;
-using System.Threading.Tasks;
-using Polly;
+using BaseFramework.DAL.DailyCashFlow;
 using BaseFramework.MicroService;
 using BaseFramework.MicroService.DailyCashFlow;
-using BaseFramework.DAL.DailyCashFlow;
+using Polly;
 using Polly.CircuitBreaker;
+
 
 namespace DailyCashFlowBalanceMS.CashFlow.MicroService
 {
@@ -18,19 +16,14 @@ read operations just -
 public class DailyCashFlowBalanceMicroService : AbstractMicroService, IDailyCashFlowBalanceMS
 {    
 
-    private readonly string redisConnectionString; 
-    private readonly string sqlConnectionString;
     private readonly IRedisDailyCashFlowDAL RedisDailyCashFlowDAL;
     private readonly ISQLDailyCashFlowDAL SQLDailyCashFlowDAL;
     private readonly AsyncCircuitBreakerPolicy _circuitBreaker;
 
     public DailyCashFlowBalanceMicroService()
     {
-        redisConnectionString = "GCP_CLOUD_REDIS:6379,abortConnect=false";
-        sqlConnectionString = "Server=GCP_CLOUD_SQL\\SQLEXPRESS;Database=FinanceDb;Trusted_Connection=True;TrustServerCertificate=True;";
-
-        RedisDailyCashFlowDAL = new RedisDailyCashFlowDAL(redisConnectionString);
-        SQLDailyCashFlowDAL = new SQLDailyCashFlowDAL(sqlConnectionString);
+        RedisDailyCashFlowDAL = new RedisDailyCashFlowDAL();
+        SQLDailyCashFlowDAL = new SQLDailyCashFlowDAL();
         
         // Configure Circuit Breaker: Open circuit after 3 consecutive failures, wait 30 seconds
         _circuitBreaker = Policy
@@ -40,7 +33,7 @@ public class DailyCashFlowBalanceMicroService : AbstractMicroService, IDailyCash
                 durationOfBreak: TimeSpan.FromSeconds(30),
                 onBreak: (ex, timespan) => { Console.WriteLine($"[DailyCashFlowBalanceMS CIRCUIT BREAKER] Opened! Reason: {ex.Message}"); },
                 onReset: () => { Console.WriteLine("[DailyCashFlowBalanceMS CIRCUIT BREAKER] Closed! Redis is back online."); }
-            );
+            ); 
     }
 
 
@@ -71,7 +64,7 @@ public class DailyCashFlowBalanceMicroService : AbstractMicroService, IDailyCash
 
             // Fallback if Redis is empty / returns null (not a server failure)
             return await SQLDailyCashFlowDAL.readBalanceValue(date);
-        });
+        }); 
     }
  
 }

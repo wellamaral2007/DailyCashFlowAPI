@@ -1,18 +1,8 @@
-using CloudNative.CloudEvents;
-using CloudNative.CloudEvents.SystemTextJson;
-using Google.Cloud.Functions.Framework;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using System.Net;
-using CloudNative.CloudEvents.Core;
-using Google.Cloud.PubSub.V1;
-using Google.Protobuf;
 using System;
-using System.Threading.Tasks;
+using System.Net;
 using GenerateDailyCashFlowMS.CashFlow.MicroService;
+using Google.Cloud.Functions.Framework;
 using Microsoft.Extensions.Primitives;
-using Microsoft.AspNetCore.Mvc;
 
 
 namespace GenerateDailyCashFlowMS.CashFlow.Controller;
@@ -22,9 +12,8 @@ Controller Microservice with CLEAN
 architecture pattern and SOLID
 for classes and objects.
 *******************************/
-[ApiController] // Enables automatic model validation and other API-specific behaviors
-[Route("[controller]")] // Sets the route to /GenerateDailyCashFlow
-public class GenerateDailyCashFlowController : ControllerBase
+
+public class GenerateDailyCashFlowController : IHttpFunction  /* Google Cloud Function HTTP trigger for handling incoming HTTP requests */
 {
 
     private readonly GenerateDailyCashFlowMicroService GenerateDailyCashFlowMS;
@@ -39,11 +28,24 @@ public class GenerateDailyCashFlowController : ControllerBase
     microservice
     ****************************************/
     
-    [HttpPost]
-    public async Task<ActionResult> PostAsync([FromBody] string thowValue)
+        public async Task HandleAsync(HttpContext context)
     {
-        await ThowCreditDebit(decimal.Parse(thowValue));
-        return Ok();
+        HttpResponse response = context.Response;
+        switch (context.Request.Method)
+        {
+            case "POST": //Throw Credit or Debit to MS
+                response.StatusCode = (int) HttpStatusCode.OK;
+                //context.Request.QueryString
+                var queryString = context.Request.Query;
+                StringValues value;
+                queryString.TryGetValue("CreditDebitValue", out value);
+                await ThowCreditDebit(decimal.Parse(value));
+                break;
+            default:
+                response.StatusCode = (int) HttpStatusCode.MethodNotAllowed;
+                await response.WriteAsync("No Response!", context.RequestAborted);
+                break;
+        }
     }
 
     public async Task ThowCreditDebit(decimal BalanceValue)

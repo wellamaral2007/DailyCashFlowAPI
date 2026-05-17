@@ -8,9 +8,11 @@ public class RedisDailyCashFlowDAL : IRedisDailyCashFlowDAL
 {
     private ConnectionMultiplexer redis;
 
-    public RedisDailyCashFlowDAL(string connectionString)
+    public RedisDailyCashFlowDAL()
     {
-        redis = ConnectionMultiplexer.Connect(connectionString);
+        string redisConnectionString = "GCP_CLOUD_REDIS:6379,abortConnect=false";
+        
+        redis = ConnectionMultiplexer.Connect(redisConnectionString);
     }
 
 
