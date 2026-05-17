@@ -1,0 +1,8 @@
+/home/wellington/testeCarrefour/DailyCashFlowSolution/src/GenerateDailyCashFlowMS/obj/Debug/net8.0/GenerateDailyCashFlowMS.csproj.AssemblyReference.cache
+/home/wellington/testeCarrefour/DailyCashFlowSolution/src/GenerateDailyCashFlowMS/obj/Debug/net8.0/GenerateDailyCashFlowMS.GeneratedMSBuildEditorConfig.editorconfig
+/home/wellington/testeCarrefour/DailyCashFlowSolution/src/GenerateDailyCashFlowMS/obj/Debug/net8.0/GenerateDailyCashFlowMS.AssemblyInfoInputs.cache
+/home/wellington/testeCarrefour/DailyCashFlowSolution/src/GenerateDailyCashFlowMS/obj/Debug/net8.0/GenerateDailyCashFlowMS.AssemblyInfo.cs
+/home/wellington/testeCarrefour/DailyCashFlowSolution/src/GenerateDailyCashFlowMS/obj/Debug/net8.0/GenerateDailyCashFlowMS.csproj.CoreCompileInputs.cache
+/home/wellington/testeCarrefour/DailyCashFlowSolution/src/GenerateDailyCashFlowMS/obj/Debug/net8.0/GenerateDailyCashFlowMS.MvcApplicationPartsAssemblyInfo.cs
+/home/wellington/testeCarrefour/DailyCashFlowSolution/src/GenerateDailyCashFlowMS/obj/Debug/net8.0/GenerateDailyCashFlowMS.MvcApplicationPartsAssemblyInfo.cache
+/home/wellington/testeCarrefour/DailyCashFlowSolution/src/GenerateDailyCashFlowMS/obj/Debug/net8.0/GenerateDailyCashFlowMS.sourcelink.json

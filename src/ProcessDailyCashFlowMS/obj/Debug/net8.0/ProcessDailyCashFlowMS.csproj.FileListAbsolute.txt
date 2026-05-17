@@ -3,6 +3,6 @@
 /home/wellington/testeCarrefour/DailyCashFlowSolution/src/ProcessDailyCashFlowMS/obj/Debug/net8.0/ProcessDailyCashFlowMS.AssemblyInfoInputs.cache
 /home/wellington/testeCarrefour/DailyCashFlowSolution/src/ProcessDailyCashFlowMS/obj/Debug/net8.0/ProcessDailyCashFlowMS.AssemblyInfo.cs
 /home/wellington/testeCarrefour/DailyCashFlowSolution/src/ProcessDailyCashFlowMS/obj/Debug/net8.0/ProcessDailyCashFlowMS.csproj.CoreCompileInputs.cache
+/home/wellington/testeCarrefour/DailyCashFlowSolution/src/ProcessDailyCashFlowMS/obj/Debug/net8.0/ProcessDailyCashFlowMS.MvcApplicationPartsAssemblyInfo.cs
 /home/wellington/testeCarrefour/DailyCashFlowSolution/src/ProcessDailyCashFlowMS/obj/Debug/net8.0/ProcessDailyCashFlowMS.MvcApplicationPartsAssemblyInfo.cache
 /home/wellington/testeCarrefour/DailyCashFlowSolution/src/ProcessDailyCashFlowMS/obj/Debug/net8.0/ProcessDailyCashFlowMS.sourcelink.json
-/home/wellington/testeCarrefour/DailyCashFlowSolution/src/ProcessDailyCashFlowMS/obj/Debug/net8.0/ProcessDailyCashFlowMS.MvcApplicationPartsAssemblyInfo.cs
