@@ -1,3 +1,21 @@
+# Definition
+
+This is it a test of Carrefour Bank, for Solution Architect, which we have a challenge to control entrys of daily cash flow balance, and generate a report daily balance conform defined by document desafio-arquiteto-software-ago2024.pdf. 
+I am Wellington Amaral, Solution Architect, that being participating in this challenge, to model a solution 
+with the best software architecture and solution architecture patterns and practices that can be used in a real-world scenario to achieve the goal of the challenge. In terms of software architecture and solution architecture the main requirement is about the scalability and availability, supporting until 50 entries per second caming, canning have unvailibility of the service of 5% of time, reliability, keeping information of daily balance of cash flow without lose entrys, high performance, and security.
+For this challenge, I defined a REST API solution with microservices, that is showed below. 
+Where I did focus, in design of the solution in terms of software architecture and solution architecture, having for next steps to do:
+ 1 - Create a Google Cloud Platform (GCP) service account for hosting the solution;
+ 2 - Configure the servless APIGee, Cloud Functions, Pub/Sub, CloudSQL and Redis;
+ 3 - Deploy the solution;
+ 4 - Debug and more test of the solution;
+ 5 - Adjusts in the code.
+
+Therefore little adjusts in the code, still need to do, to make run complete solution proposed, and to deploy in GCP. 
+This code focus more about the microservices, and design patterns applied, to achieve the goal of the challenge. 
+This document is designed to showcase how the target challenge was approached, detailing the chosen patterns and the reasoning behind them, supported by modeling with software architecture and solution architecture diagrams, maded 
+in drawio tool. 
+
 # API for controling entrys of Daily Cash Flow Balance.
 
 ## Solution
