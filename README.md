@@ -28,7 +28,7 @@ in drawio tool.
 A HTTP API Rest that receive entry values of credit or debit with high-performance, reliable, security and availiabality by POST method
 and obtain balance value of day that can be called of digital App(Angular for example) for control Cash Flow Balance and generate a report daily balance.
 
-For this API, we use GCP Cloud Servless services of *APIGateway APIGee, FAAS Cloud Function Staless with .Net Core, Pub/Sub Messaging, CloudSQL SQLServer,
+For this API, we propose to use GCP Cloud Servless services of *APIGateway APIGee, FAAS Cloud Function Staless with .Net Core, Pub/Sub Messaging, CloudSQL SQLServer,
 and Memorystore Redis* for agile to delivery, auto-scaling no need of maintain servers and operations, for easy to make DevOps.
 
 In development we use design patterns to facility reuse, simplicity, raise of quality of software solution.
@@ -124,7 +124,13 @@ real-time using SQL Server data, ensuring the system never goes down.
 
 * Infrastructure: GCP (Google Cloud Platform)
 
-## Local Setup (Future Work) to Run 
+## Tests
+
+* Automated 
+
+* Performance 
+
+## Next Steps - Setup to Run 
 
 * Detailed GCP API Gateway configuration.
 
