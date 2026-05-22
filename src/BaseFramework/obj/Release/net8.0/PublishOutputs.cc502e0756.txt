@@ -17,7 +17,9 @@
 /home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/bin/Release/net8.0/publish/Google.Cloud.Functions.Framework.dll
 /home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/bin/Release/net8.0/publish/Google.Cloud.Functions.Hosting.dll
 /home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/bin/Release/net8.0/publish/Google.Cloud.Iam.V1.dll
+/home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/bin/Release/net8.0/publish/Google.Cloud.Location.dll
 /home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/bin/Release/net8.0/publish/Google.Cloud.PubSub.V1.dll
+/home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/bin/Release/net8.0/publish/Google.Cloud.SecretManager.V1.dll
 /home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/bin/Release/net8.0/publish/Google.Protobuf.dll
 /home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/bin/Release/net8.0/publish/Grpc.Auth.dll
 /home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/bin/Release/net8.0/publish/Grpc.Core.Api.dll

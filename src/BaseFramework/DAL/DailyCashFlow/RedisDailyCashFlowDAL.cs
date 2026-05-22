@@ -6,12 +6,13 @@ using StackExchange.Redis;
 namespace BaseFramework.DAL.DailyCashFlow;
 public class RedisDailyCashFlowDAL : IRedisDailyCashFlowDAL
 {
+    private const string GCP_CLOUD_REDIS = "gcp-cloud-redis";
     private ConnectionMultiplexer redis;
 
     public RedisDailyCashFlowDAL()
     {
-        string redisConnectionString = "GCP_CLOUD_REDIS:6379,abortConnect=false";
-        
+        string _projectId = "DailyCashFlowBalance";
+        string redisConnectionString = VaultCredentialUtility.GetSecretAsync(_projectId, GCP_CLOUD_REDIS).GetAwaiter().GetResult(); 
         redis = ConnectionMultiplexer.Connect(redisConnectionString);
     }
 

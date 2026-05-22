@@ -1,0 +1,57 @@
+openapi: 3.0.3
+info:
+  title: DailyCashFlow API
+  version: 1.0.0
+paths:
+  /balance:
+    get:
+      summary: Retorna o saldo do dia informado
+      parameters:
+        - name: date
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  date:
+                    type: string
+                  balance:
+                    type: number
+      security:
+        - OAuth2Security: []
+  /entry:
+    post:
+      summary: Cria um novo lançamento financeiro
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                value:
+                  type: number
+                date:
+                  type: string
+                  format: date
+      responses:
+        '202':
+          description: Lançamento aceito para processamento
+      security:
+        - OAuth2Security: []
+components:
+  securitySchemes:
+    OAuth2Security:
+      type: oauth2
+      flows:
+        password:
+          tokenUrl: https://customdomain.local
+          scopes: {}

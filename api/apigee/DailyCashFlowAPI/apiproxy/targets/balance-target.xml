@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<TargetEndpoint name="balance-target">
+    <HTTPTargetConnection>
+        <!-- URL gerada automaticamente no deploy da Cloud Function daily-cashflow-balance -->
+        <URL>https://run.app</URL>
+    </HTTPTargetConnection>
+</TargetEndpoint>

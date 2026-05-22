@@ -86,3 +86,5 @@
 /home/wellington/testeCarrefour/DailyCashFlowSolution/src/DailyCashFlowBalanceMS/obj/Release/net8.0/DailyCas.F14B2437.Up2Date
 /home/wellington/testeCarrefour/DailyCashFlowSolution/src/DailyCashFlowBalanceMS/bin/Release/net8.0/Polly.dll
 /home/wellington/testeCarrefour/DailyCashFlowSolution/src/DailyCashFlowBalanceMS/bin/Release/net8.0/Polly.Core.dll
+/home/wellington/testeCarrefour/DailyCashFlowSolution/src/DailyCashFlowBalanceMS/bin/Release/net8.0/Google.Cloud.Location.dll
+/home/wellington/testeCarrefour/DailyCashFlowSolution/src/DailyCashFlowBalanceMS/bin/Release/net8.0/Google.Cloud.SecretManager.V1.dll

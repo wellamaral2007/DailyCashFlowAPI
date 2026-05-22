@@ -71,3 +71,5 @@
 /home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/obj/Release/net8.0/BaseFramework.pdb
 /home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/obj/Release/net8.0/BaseFramework.genruntimeconfig.cache
 /home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/obj/Release/net8.0/ref/BaseFramework.dll
+/home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/bin/Release/net8.0/Google.Cloud.Location.dll
+/home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/bin/Release/net8.0/Google.Cloud.SecretManager.V1.dll

@@ -56,6 +56,10 @@
               "target": "Package",
               "version": "[3.18.0, )"
             },
+            "Google.Cloud.SecretManager.V1": {
+              "target": "Package",
+              "version": "[2.7.0, )"
+            },
             "StackExchange.Redis": {
               "target": "Package",
               "version": "[2.8.16, )"
@@ -145,6 +149,10 @@
             "EntityFramework": {
               "target": "Package",
               "version": "[6.5.1, )"
+            },
+            "Google.Cloud.SecretManager.V1": {
+              "target": "Package",
+              "version": "[2.7.0, )"
             },
             "Polly": {
               "target": "Package",

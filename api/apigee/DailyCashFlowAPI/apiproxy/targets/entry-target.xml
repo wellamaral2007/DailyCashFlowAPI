@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<TargetEndpoint name="entry-target">
+    <HTTPTargetConnection>
+        <!-- URL gerada automaticamente no deploy da Cloud Function generate-daily-cashflow -->
+        <URL>https://run.app</URL>
+    </HTTPTargetConnection>
+</TargetEndpoint>

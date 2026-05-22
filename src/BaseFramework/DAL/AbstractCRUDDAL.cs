@@ -22,7 +22,13 @@ public abstract class AbstractCRUDDAL : Component, IDAL<IEntity>
     public AbstractCRUDDAL()
         : base()
     {
-        var sqlConnectionString = "Server=GCP_CLOUD_SQL\\SQLEXPRESS;Database=FinanceDb;Trusted_Connection=True;TrustServerCertificate=True;";
+        string _projectId = "DailyCashFlowBalance";
+
+        string _database = VaultCredentialUtility.GetSecretAsync(_projectId, "DATABASE").GetAwaiter().GetResult(); 
+        string _userDB = VaultCredentialUtility.GetSecretAsync(_projectId, "USER_DATABASE").GetAwaiter().GetResult(); 
+        string _passwordDB = VaultCredentialUtility.GetSecretAsync(_projectId, "PASSWORD_DATABASE").GetAwaiter().GetResult();
+
+        string sqlConnectionString = $"Server=GCP_CLOUD_SQL\\SQLEXPRESS;Database={_database};User Id={_userDB};Password={_passwordDB};Trusted_Connection=True;TrustServerCertificate=True;";
         session = new(sqlConnectionString);
     }
         

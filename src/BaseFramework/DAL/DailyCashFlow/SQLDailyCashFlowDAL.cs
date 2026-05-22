@@ -13,13 +13,34 @@ public class SQLDailyCashFlowDAL : AbstractCRUDDAL, ISQLDailyCashFlowDAL
 
     public SQLDailyCashFlowDAL()
     {
-        string sqlConnectionString = "Server=GCP_CLOUD_SQL\\SQLEXPRESS;Database=FinanceDb;Trusted_Connection=True;TrustServerCertificate=True;";
+        string _projectId = "DailyCashFlowBalance";
+        string _database = VaultCredentialUtility.GetSecretAsync(_projectId, "DATABASE").GetAwaiter().GetResult(); 
+        string _userDB = VaultCredentialUtility.GetSecretAsync(_projectId, "USER_DATABASE").GetAwaiter().GetResult(); 
+        string _passwordDB = VaultCredentialUtility.GetSecretAsync(_projectId, "PASSWORD_DATABASE").GetAwaiter().GetResult();
+
+        string sqlConnectionString = $"Server=GCP_CLOUD_SQL\\SQLEXPRESS;Database={_database};User Id={_userDB};Password={_passwordDB};Trusted_Connection=True;TrustServerCertificate=True;";
     
         this.connectionString = sqlConnectionString;
     }
 
-    public void insertCreditDebit(DailyCashFlowEvent DailyCashFlowEvent)
+    public async Task insertCreditDebit(DailyCashFlowEvent DailyCashFlowEvent)
     {
+        var connection = new SqlConnection(connectionString);
+        // Garante de forma segura e idempotente que a tabela e os campos existam no SQL Server
+        string checkTableQuery = @"
+            IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='DailyCashFlow' AND xtype='U')
+            BEGIN
+                CREATE TABLE DailyCashFlow (
+                    Id INT IDENTITY(1,1) PRIMARY KEY,
+                    Value DECIMAL(18,2) NOT NULL,
+                    Date DATE NOT NULL
+                );
+            END";
+        await connection.OpenAsync();
+        using (var cmdCheck = new SqlCommand(checkTableQuery, connection))
+        {
+            await cmdCheck.ExecuteNonQueryAsync();
+        }
         DailyCashFlowEntity entity = new DailyCashFlowEntity();
         bool v = Add(entity);
     }

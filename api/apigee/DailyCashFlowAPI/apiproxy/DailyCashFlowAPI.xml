@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<APIProxy revision="1" name="DailyCashFlowAPI">
+    <Basepaths>/v1/cashflow</Basepaths>
+    <ConfigurationVersion majorVersion="4" minorVersion="0"/>
+    <DisplayName>DailyCashFlowAPI</DisplayName>
+    <Policies>
+        <Policy>Verify-OAuth2-Token</Policy>
+    </Policies>
+    <ProxyEndpoints>
+        <ProxyEndpoint>default</ProxyEndpoint>
+    </ProxyEndpoints>
+    <TargetEndpoints>
+        <TargetEndpoint>balance-target</TargetEndpoint>
+        <TargetEndpoint>entry-target</TargetEndpoint>
+    </TargetEndpoints>
+</APIProxy>

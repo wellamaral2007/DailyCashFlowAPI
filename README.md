@@ -5,22 +5,23 @@ I am Wellington Amaral, Solution Architect, that being participating in this cha
 with the best software architecture and solution architecture patterns and practices that can be used in a real-world scenario to achieve the goal of the challenge. In terms of software architecture and solution architecture the main requirement is about the scalability and availability, supporting until 50 entries per second caming, canning have unvailibility of the service of 5% of time, reliability, keeping information of daily balance of cash flow without lose entrys, high performance, and security.
 
 For this challenge, I defined a REST API solution with microservices, that is showed below. 
-Where I did focus, in design of the solution in terms of software architecture and solution architecture, having for next steps to do:
+Where I did focus, in **design** of the solution and **explore** in terms of software architecture and solution architecture, having for next steps to do:
 
  1 - Create a Google Cloud Platform (GCP) service account for hosting the solution;
 
- 2 - Configure the servless APIGee, Cloud Functions, Pub/Sub, CloudSQL and Redis;
+ 2 - Run deploy shell script to create and configure the servless Secret Manager, APIGee, Cloud Functions, 
+ Pub/Sub, CloudSQL and Redis;
 
- 3 - Deploy the solution;
-
- 4 - Debug and more test of the solution;
-
- 5 - Adjusts in the code.
+ 3 - Adjusts in the code and deploy shell files.
 
 Therefore little adjusts in the code, still need to do, to make run complete solution proposed, and to deploy in GCP. 
 This code focus more about the microservices, and design patterns applied, to achieve the goal of the challenge. 
 This document is designed to showcase how the target challenge was approached, detailing the chosen patterns and the reasoning behind them, supported by modeling with software architecture and solution architecture diagrams, maded 
 in drawio tool. 
+
+## Finance Security API 
+
+It is a REST API to generate a OAuth2 token for authentication and validate for the DailyCashFlow API access.
 
 # API for controling entrys of Daily Cash Flow Balance.
 
@@ -49,7 +50,8 @@ Hight Security with OAUTH2 and HTTPS to access API and governace and documentati
 A defined interface by APIGee apigateway that hide the complexity of the underlying implementation
 
 * **Design First**
-Definition of api with Swagger documentation, canning define api independently of the implementation.
+Definition of api with Swagger documentation, canning define api independently of the implementation. 
+The Open API 3.0 specification of the APIs is defined in the api folder: openapi-financesecurity.yaml and openapi-dailycashflow.yaml.
 
 * **Microservice**
 Micro and independent executable unit of service running in FAAS that provide a container 
@@ -124,20 +126,53 @@ real-time using SQL Server data, ensuring the system never goes down.
 
 * Infrastructure: GCP (Google Cloud Platform)
 
+## Deployment
+
+* Deploy shell script been createad to create and configure each GCP services servless Secret Manager, APIGee, Cloud Functions, Pub/Sub, CloudSQL and Redis, to run the solution in deploy folder.
+
 ## Tests
 
 * Automated 
 
 * Performance 
 
-## Next Steps - Setup to Run 
+## Next Steps - Setup to Run (from deploy folder on linux OS)
 
-* Detailed GCP API Gateway configuration.
+* Install GCP CLI and login to GCP
+  
+  ./setup-gcp.sh
 
-* Cloud Functions deployment scripts.
+## Execution of Deployment Automation Scripts
 
-* Pub/Sub Topic and Subscription setup.
+* Run the other scripts in deploy folder in sequence
 
-* Redis Memorystore connectivity guide.
+ ./deploy-all.sh
 
-* Use apiman tool to do a request to API.  
+* Secrets configuration
+
+  ./deploy-secrets.sh
+
+* Network configuration
+
+  ./deploy-network.sh
+
+* Databases configuration
+
+ ./deploy-databases.sh
+
+* Pub/Sub configuration
+
+ ./deploy-pubsub.sh
+
+* Access Control configuration
+  
+  ./deploy-iam.sh
+
+* Cloud Functions configuration
+
+ ./deploy-cloud-functions.sh
+
+* API Gateway configuration
+
+ ./deploy-apigee.sh
+

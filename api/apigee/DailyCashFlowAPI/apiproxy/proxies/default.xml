@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ProxyEndpoint name="default">
+    <PreFlow name="PreFlow">
+        <Request>
+            <Step>
+                <Name>Verify-OAuth2-Token</Name>
+            </Step>
+        </Request>
+        <Response/>
+    </PreFlow>
+    <Flows>
+        <Flow name="GetBalance">
+            <Condition>(proxy.pathsuffix MatchesPath "/balance") and (request.verb = "GET")</Condition>
+            <Response/>
+        </Flow>
+        <Flow name="PostEntry">
+            <Condition>(proxy.pathsuffix MatchesPath "/entry") and (request.verb = "POST")</Condition>
+            <Response/>
+        </Flow>
+    </Flows>
+    <PostFlow name="PostFlow"/>
+    <HTTPProxyConnection>
+        <BasePath>/v1/cashflow</BasePath>
+    </HTTPProxyConnection>
+    <RouteRule name="balance-route">
+        <Condition>(proxy.pathsuffix MatchesPath "/balance")</Condition>
+        <TargetEndpoint>balance-target</TargetEndpoint>
+    </RouteRule>
+    <RouteRule name="entry-route">
+        <Condition>(proxy.pathsuffix MatchesPath "/entry")</Condition>
+        <TargetEndpoint>entry-target</TargetEndpoint>
+    </RouteRule>
+</ProxyEndpoint>

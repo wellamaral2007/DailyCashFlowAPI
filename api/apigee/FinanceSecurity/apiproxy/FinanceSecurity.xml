@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<APIProxy revision="1" name="FinanceSecurity">
+    <Basepaths>/v1/finance-auth</Basepaths>
+    <ConfigurationVersion majorVersion="4" minorVersion="0"/>
+    <DisplayName>FinanceSecurity</DisplayName>
+    <Profiles/>
+    <Policies>
+        <Policy>Verify-Credentials</Policy>
+        <Policy>Generate-AccessToken</Policy>
+    </Policies>
+    <ProxyEndpoints>
+        <ProxyEndpoint>default</ProxyEndpoint>
+    </ProxyEndpoints>
+</APIProxy>

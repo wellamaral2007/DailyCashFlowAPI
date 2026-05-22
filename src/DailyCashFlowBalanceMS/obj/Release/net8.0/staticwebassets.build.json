@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "XIYWscQVQzo5sUtm5iKlD9Pq1coKcF9YGGKRdbQ6c1w=",
+  "Hash": "aAzhmIhd9p9gUgsbBEhgrdpjX8SplBnX6oOdHGK/bYY=",
   "Source": "DailyCashFlowBalanceMS",
   "BasePath": "_content/DailyCashFlowBalanceMS",
   "Mode": "Default",
@@ -11,10 +11,10 @@
       "Version": 2,
       "Source": "BaseFramework",
       "GetPublishAssetsTargets": "ComputeReferencedStaticWebAssetsPublishManifest;GetCurrentProjectPublishStaticWebAssetItems",
-      "AdditionalPublishProperties": "Configuration=Release;Platform=AnyCPU",
+      "AdditionalPublishProperties": "",
       "AdditionalPublishPropertiesToRemove": "WebPublishProfileFile;TargetFramework",
       "GetBuildAssetsTargets": "GetCurrentProjectBuildStaticWebAssetItems",
-      "AdditionalBuildProperties": "Configuration=Release;Platform=AnyCPU",
+      "AdditionalBuildProperties": "",
       "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile;TargetFramework"
     }
   ],

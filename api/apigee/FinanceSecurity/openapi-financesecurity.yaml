@@ -1,0 +1,33 @@
+openapi: 3.0.3
+info:
+  title: FinanceSecurity API
+  version: 1.0.0
+paths:
+  /token:
+    post:
+      summary: Gera token OAuth2
+      parameters:
+        - name: user
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: password
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Token emitido com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                  token_type:
+                    type: string
+                  expires_in:
+                    type: integer

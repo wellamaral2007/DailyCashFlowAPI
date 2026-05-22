@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "GBgIxrwaY1oJDHh8GVz5XqHtKCGyg21P16A6hN+uius=",
+  "Hash": "u227dHktLRTPHjW+ZVbqTfMF5Hg5nXnUEHr4h88r3Ew=",
   "Source": "GenerateDailyCashFlowMS",
   "BasePath": "_content/GenerateDailyCashFlowMS",
   "Mode": "Default",
@@ -11,10 +11,10 @@
       "Version": 2,
       "Source": "BaseFramework",
       "GetPublishAssetsTargets": "ComputeReferencedStaticWebAssetsPublishManifest;GetCurrentProjectPublishStaticWebAssetItems",
-      "AdditionalPublishProperties": "Configuration=Release;Platform=AnyCPU",
+      "AdditionalPublishProperties": "",
       "AdditionalPublishPropertiesToRemove": "WebPublishProfileFile;TargetFramework",
       "GetBuildAssetsTargets": "GetCurrentProjectBuildStaticWebAssetItems",
-      "AdditionalBuildProperties": "Configuration=Release;Platform=AnyCPU",
+      "AdditionalBuildProperties": "",
       "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile;TargetFramework"
     }
   ],

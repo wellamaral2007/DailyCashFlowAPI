@@ -11,6 +11,7 @@
     <PackageReference Include="Polly" Version="8.6.6" />
     <PackageReference Include="StackExchange.Redis" Version="2.8.16" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.7" />
+    <PackageReference Include="Google.Cloud.SecretManager.V1" Version="2.7.0" />
     <ProjectReference Include="..\BaseFramework\BaseFramework.csproj" />
   </ItemGroup>
 
