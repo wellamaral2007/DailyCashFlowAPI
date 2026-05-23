@@ -132,9 +132,14 @@ real-time using SQL Server data, ensuring the system never goes down.
 
 ## Tests
 
+* Units
+
+  Tests with Moq and Xunit unit tests of components of solution.
+
 * Integration
 
-  Automated with Xunit for checking entrys of daily cash flow, and checking of balance value of day.
+  Automated with Xunit for checking entrys of daily cash flow, and checking of balance value of day of integration way 
+  with all GCP components in business cenario.
 
 * Performance 
 
@@ -176,7 +181,10 @@ real-time using SQL Server data, ensuring the system never goes down.
 
  ./deploy-cloud-functions.sh
 
-* API Gateway configuration
+* Deploy API Gateway project and configuration
 
  ./deploy-apigee.sh
 
+* Make all tests run, unitary, integration and load tests
+
+ ./tests-all.sh
