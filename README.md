@@ -155,7 +155,7 @@ real-time using SQL Server data, ensuring the system never goes down.
 
 * Run the other scripts in deploy folder in sequence
 
- ./deploy-all.sh
+  ./deploy-all.sh
 
 * Secrets configuration
 
