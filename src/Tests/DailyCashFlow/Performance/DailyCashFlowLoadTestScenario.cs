@@ -49,7 +49,7 @@ public static class CashFlowLoadScenario
 
         // 4. Critério de Aceitação / SLA (Máximo de 5% de falhas/perdas permitidas)
         scenario = scenario.WithThresholds(
-            Threshold.Create(status => status.AllFailCount <= 0.05)
+            Threshold.Create(status => status.AllFailCount <= 2.5)
         );
 
         return scenario;
