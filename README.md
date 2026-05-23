@@ -167,11 +167,11 @@ real-time using SQL Server data, ensuring the system never goes down.
 
 * Databases configuration
 
- ./deploy-databases.sh
+  ./deploy-databases.sh
 
 * Pub/Sub configuration
 
- ./deploy-pubsub.sh
+  ./deploy-pubsub.sh
 
 * Access Control configuration
   
@@ -179,12 +179,12 @@ real-time using SQL Server data, ensuring the system never goes down.
 
 * Cloud Functions configuration
 
- ./deploy-cloud-functions.sh
+  ./deploy-cloud-functions.sh
 
 * Deploy API Gateway project and configuration
 
- ./deploy-apigee.sh
+  ./deploy-apigee.sh
 
 * Make all tests run, unitary, integration and load tests
 
- ./tests-all.sh
+  ./tests-all.sh
