@@ -10,6 +10,7 @@ echo "Start deploying Finance in project: $GOOGLE_CLOUD_PROJECT"
 
 chmod +x setup-gcp.sh
 chmod +x deploy-*.sh
+chmod +x tests-all.sh
 
 ./setup-gcp.sh
 
@@ -21,5 +22,6 @@ chmod +x deploy-*.sh
 ./deploy-iam.sh
 ./deploy-cloud-functions.sh
 ./deploy-apigee.sh
+./tests-all.sh
 
 echo "==> GCP Services Deployed with success!"

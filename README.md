@@ -132,9 +132,13 @@ real-time using SQL Server data, ensuring the system never goes down.
 
 ## Tests
 
-* Automated 
+* Integration
+
+  Automated with Xunit for checking entrys of daily cash flow, and checking of balance value of day.
 
 * Performance 
+
+  Automated with NBomber to test performance of solution, with load test, dispatching of requests 50 requests per second, and checking of lost unti 5% of time.
 
 ## Next Steps - Setup to Run (from deploy folder on linux OS)
 
