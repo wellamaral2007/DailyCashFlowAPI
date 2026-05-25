@@ -6,3 +6,4 @@
 /home/wellington/testeCarrefour/DailyCashFlowSolution/src/Tests/obj/Debug/net8.0/Tests.MvcApplicationPartsAssemblyInfo.cs
 /home/wellington/testeCarrefour/DailyCashFlowSolution/src/Tests/obj/Debug/net8.0/Tests.MvcApplicationPartsAssemblyInfo.cache
 /home/wellington/testeCarrefour/DailyCashFlowSolution/src/Tests/obj/Debug/net8.0/Tests.sourcelink.json
+/home/wellington/testeCarrefour/DailyCashFlowSolution/src/Tests/obj/Debug/net8.0/MvcTestingAppManifest.json
