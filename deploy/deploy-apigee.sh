@@ -3,6 +3,18 @@ echo "==> Implantando APIs no Apigee..."
 # Passos conceituais automatizados via Apigee Management API utilitária
 # Como o CLI do gcloud interage nativamente via comandos apigee:
 
+# Extract the deployed URLs from GCP
+URL_TX=$(gcloud functions describe generate-daily-cashflow --region=us-central1 --format="value(url)")
+URL_BAL=$(gcloud functions describe daily-cashflow-balance --region=us-central1--format="value(url)")
+
+# Path to your existing target XML files
+TARGET_TX_FILE="../api/apigee/DailyCashFlowAPI/apiproxy/targets/entry-target.xml"
+TARGET_BAL_FILE="../api/apigee/DailyCashFlowAPI/apiproxy/targets/balance-target.xml"
+
+# Use '#' as a separator in sed because URLs contain forward slashes '/'
+sed -i "s|<URL>.*</URL>|<URL>$URL_TX</URL>|g" "$TARGET_TX_FILE"
+sed -i "s|<URL>.*</URL>|<URL>$URL_BAL</URL>|g" "$TARGET_BAL_FILE"
+
 # 1. Importar Proxies baseados nos arquivos OpenAPI YAML compilados
 gcloud apigee apis create daily-cashflow-proxy --api-spec=../api/openapi-dailycashflow.yaml
 gcloud apigee apis create finance-security-proxy --api-spec=../api/openapi-financesecurity.yaml
