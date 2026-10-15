@@ -1,0 +1,83 @@
+using Microsoft.EntityFrameworkCore;
+
+namespace DailyCashFlowBalanceMS.DailyCashFlow.Technology.Middleware.Outbound.Dal;
+
+/**
+ * ============================================================================
+ * TOGAF DIMENSION: Phase D - Technology Architecture (Outbound Infrastructure)
+ * HEXAGONAL ROLE:  Durable Storage DBContext - Entity Framework Core 14
+ * CONCEPTS:        Object-Relational Mapping (ORM) / Connection Pooling / Schema Fluent API
+ * ============================================================================
+ * This class serves as the official data gateway for persistent state mutations.
+ * It manages relational mapping, change tracking pipelines, and database state commits.
+ */
+public class DailyCashFlowDBContext : DbContext
+{
+    /**
+     * Dependency Injection Constructor passing infrastructure configuration options natively (IoC)
+     */
+    public DailyCashFlowDBContext(DbContextOptions<DailyCashFlowDBContext> options) : base(options)
+    {
+    }
+
+    /**
+     * Represents the persistent transactional ledger dataset mapping against physical database tables.
+     */
+    public DbSet<DailyCashFlowORM> CashFlowEntries { get; set; } = null!;
+
+    /**
+     * Fluent API Configuration boundary to enforce database typing, index tuning, and precision constraints.
+     */
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<DailyCashFlowORM>(entity =>
+        {
+            // Explicit table mapping matching the infrastructure ledger naming conventions
+            entity.ToTable("tb_daily_cash_flow");
+
+            // Primary Key constraint definition
+            entity.HasKey(e => e.Id);
+
+            // Property mapping and constraints
+            entity.Property(e => e.Id)
+                .HasColumnName("id")
+                .HasMaxLength(50)
+                .IsRequired();
+
+            // MANDATORY POLICY: Financial amounts must enforce high-precision decimal sizing to prevent float errors
+            entity.Property(e => e.Amount)
+                .HasColumnName("amount")
+                .HasColumnType("decimal(18,2)")
+                .IsRequired();
+
+            entity.Property(e => e.TransactionDate)
+                .HasColumnName("transaction_date")
+                .HasColumnType("timestamp without time zone")
+                .IsRequired();
+
+            entity.Property(e => e.EventType)
+                .HasColumnName("event_type")
+                .HasMaxLength(30)
+                .IsRequired();
+
+            // Optimistic Locking Auditor concurrency token mapping from Shared Kernel BaseORM abstraction
+            entity.Property(e => e.Version)
+                .IsRowVersion()
+                .HasColumnName("version");
+
+            entity.Property(e => e.CreatedAt)
+                .HasColumnName("created_at")
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+            entity.Property(e => e.UpdatedAt)
+                .HasColumnName("updated_at")
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+            // Performance Tuning: Database indices targeting fast read query paths
+            entity.HasIndex(e => e.TransactionDate)
+                .HasDatabaseName("IX_tb_daily_cash_flow_transaction_date");
+        });
+    }
+}
