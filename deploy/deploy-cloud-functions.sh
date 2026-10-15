@@ -1,79 +1,72 @@
 #!/bin/bash
-
-echo "==> Compilando e Publicando Cloud Functions..."
-
-# Exit immediately if a command exits with a non-zero status
+# ============================================================================
+# TOGAF DIMENSION: Phase D - Technology Architecture (Serverless Deployment)
+# CONCEPTS:        Google Cloud Functions Gen2 / Unified Monorepo Source Build
+# ============================================================================
 set -e
 
-# 1. Define paths relative to the deploy folder
+# Definição de cores para saídas limpas no terminal corporativo
+AMARELO='\e[33m'
+VERDE='\e[32m'
+RESET='\e[0m'
+
+# Garante o contexto do projeto correto herdado das etapas anteriores do pipeline
+export GCLOUD_PROJECT_ID="daily-cashflow-sol-17852"
+gcloud config set project $GCLOUD_PROJECT_ID --quiet
+
+echo -e "${AMARELO}==> Iniciando Publicação das Cloud Functions no Google Cloud Functions Gen2...${RESET}"
+
+# 1. Define caminhos lógicos relativos com base no diretório atual do script
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SOLUTION_ROOT="$SCRIPT_DIR/.."
-PROJECT_FRAMEWORK_DIR="$SOLUTION_ROOT/src/BaseFramework"
-PROJECT_DIR_1="$SOLUTION_ROOT/src/GenerateDailyCashFlowMS"
-PROJECT_DIR_2="$SOLUTION_ROOT/src/ProcessDailyCashFlow"
-PROJECT_DIR_3="$SOLUTION_ROOT/src/DailyCashFlowBalance"
-PUBLISH_FRAMEWORK_DIR_1="$PROJECT_FRAMEWORK_DIR/bin/Release/net8.0/publish" # Update net8.0 to your exact version
-PUBLISH_DIR_1="$PROJECT_DIR_1/bin/Release/net8.0/publish" # Update net8.0 to your exact version
-PUBLISH_DIR_2="$PROJECT_DIR_2/bin/Release/net8.0/publish" # Update net8.0 to your exact version
-PUBLISH_DIR_3="$PROJECT_DIR_3/bin/Release/net8.0/publish" # Update net8.0 to your exact version
+SRC_ROOT="$SOLUTION_ROOT/src" # 📌 Raiz que engloba BaseFramework, DailyCashFlowBalance e ProcessDailyCashFlow
 
+# Identidades e topologias de segurança de rede e IAM da companhia
+SA_EMAIL="sa-dailycashflow@${GCLOUD_PROJECT_ID}.iam.gserviceaccount.com"
+VPC_CONNECTOR="projects/${GCLOUD_PROJECT_ID}/locations/us-central1/connectors/cashflow-vpc-connector"
+TOPIC_NAME="DailyCashFlowEntry"
 
+# ============================================================================
+# 🚀 PASSO DE DEPLOY: SHIPPANDO CODIGO FONTE PARA O GOOGLE CLOUD BUILD
+# ============================================================================
 
-echo "🛠️ Compiling framework project to DLL..."
-cd "$PROJECT_FRAMEWORK_DIR"
-dotnet publish -c Release
+echo -e "${AMARELO}[+] Enviando a malha de fontes do src/ para o Cloud Build...${RESET}"
 
-
-# 3. Deploy to Google Cloud Functions
-echo "🚀 Build and Deploying DLL artifacts to GCP..."
-
-# GenerateDailyCashFlow
-# 3.1 Navigate to project directory and build/publish the DLLs
-echo "🛠️ Compiling framework project to DLL..."
-
-cd "$PROJECT_DIR_1"
-cp "$PUBLISH_FRAMEWORK_DIR_1/BaseFramework.dll" "$PUBLISH_DIR_1/BaseFramework/"
-dotnet publish -c Release
-gcloud functions deploy generate-daily-cashflow \
-    --gen2 \
-    --runtime=dotnet8 \
-    --region=us-central1 \
-    --entry-point="GenerateDailyCashFlowMS.CashFlow.Controller.GenerateDailyCashFlowController" \
-    --vpc-connector=projects/$GOOGLE_CLOUD_PROJECT/locations/us-central1/connectors/cashflow-vpc-connector \
-    --trigger-http \
-    --allow-unauthenticated \
-    --source="$PUBLISH_DIR_1" \
-    --set-env-vars GCP_PROJECT=$GOOGLE_CLOUD_PROJECT
-
-# ProcessDailyCashFlow
-echo "🛠️ Compiling project to DLL..."
-cd "$PROJECT_DIR_2"
-cp "$PUBLISH_FRAMEWORK_DIR_1/BaseFramework.dll" "$PUBLISH_DIR_2/BaseFramework/"
-dotnet publish -c Release
-gcloud functions deploy process-daily-cashflow \
-    --gen2 \
-    --runtime=dotnet8 \
-    --region=us-central1 \
-    --entry-point="ProcessDailyCashFlow.CashFlow.Controller.ProcessDailyCashFlowController" \
-    --vpc-connector=projects/$GOOGLE_CLOUD_PROJECT/locations/us-central1/connectors/cashflow-vpc-connector \
-    --trigger-topic=DailyCashFlowEntry \
-    --source="$PUBLISH_DIR_2" \
-    --set-env-vars GCP_PROJECT=$GOOGLE_CLOUD_PROJECT
-
-# DailyCashFlowBalance
-echo "🛠️ Compiling project to DLL..."
-cd "$PROJECT_DIR_3"
-cp "$PUBLISH_FRAMEWORK_DIR_1/BaseFramework.dll" "$PUBLISH_DIR_3/BaseFramework/"
-dotnet publish -c Release
+# ----------------------------------------------------------------------------
+# 1️⃣ FUNCTION: daily-cashflow-balance (Gatilho HTTP POST/GET)
+# ----------------------------------------------------------------------------
+echo -e "${AMARELO}[+] Publicando FaaS: daily-cashflow-balance (HTTP Ingress/Egress)...${RESET}"
 gcloud functions deploy daily-cashflow-balance \
     --gen2 \
     --runtime=dotnet8 \
     --region=us-central1 \
-    --entry-point="DailyCashFlowBalance.CashFlow.Controller.DailyCashFlowBalanceController" \
-    --vpc-connector=projects/$GOOGLE_CLOUD_PROJECT/locations/us-central1/connectors/cashflow-vpc-connector \
-    --source="$PUBLISH_DIR_3" \
+    --entry-point="DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Inbound.API.Controller.DailyCashFlowBalanceController" \
+    --vpc-connector="$VPC_CONNECTOR" \
+    --egress-settings=all \
     --trigger-http \
     --allow-unauthenticated \
-    --set-env-vars GCP_PROJECT=$GOOGLE_CLOUD_PROJECT
+    --source="$SRC_ROOT" \
+    --service-account="$SA_EMAIL" \
+    --set-env-vars GCP_PROJECT=$GCLOUD_PROJECT_ID \
+    --quiet
 
+# ----------------------------------------------------------------------------
+# 2️⃣ FUNCTION: process-daily-cashflow (Gatilho Reativo de Tópico Pub/Sub - EDA)
+# ----------------------------------------------------------------------------
+echo -e "${AMARELO}[+] Publicando FaaS: process-daily-cashflow (Pub/Sub Consumer)...${RESET}"
+# 📌 --trigger-topic associa nativamente a escuta de eventos via CloudEvents
+# O Cloud Build compilará este projeto a partir do mesmo zip do src/ usando o entry-point abaixo
+gcloud functions deploy process-daily-cashflow \
+    --gen2 \
+    --runtime=dotnet8 \
+    --region=us-central1 \
+    --entry-point="DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Inbound.EDA.Controller.ProcessDailyCashFlowController" \
+    --vpc-connector="$VPC_CONNECTOR" \
+    --egress-settings=all \
+    --trigger-topic="$TOPIC_NAME" \
+    --source="$SRC_ROOT" \
+    --service-account="$SA_EMAIL" \
+    --set-env-vars GCP_PROJECT=$GCLOUD_PROJECT_ID \
+    --quiet
 
+echo -e "${VERDE}==> [SUCESSO] Ambas as Google Cloud Functions publicadas e interligadas com sucesso total!${RESET}"

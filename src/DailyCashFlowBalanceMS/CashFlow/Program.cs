@@ -9,6 +9,7 @@ using DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Outbound.DAL.Query;
 using DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Outbound.DAL.ORM;
 using BaseFramework.Technology.Util;
 using DailyCashFlowBalanceMS.DailyCashFlow.Technology.Middleware.Outbound.Dal;
+using GenerateDailyCashFlowMS.CashFlow.Technology.Middleware.Outbound.Eda;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -46,6 +47,8 @@ builder.Services.AddScoped<IDurableDailyCashFlowQueryPort, SQLDailyCashFlowDALQu
 // Mapping In-Memory QuickAccess Command and Query Ports to Redis separate repositories
 builder.Services.AddScoped<IQuickAccessDailyCashFlowCommandPort, RedisDailyCashFlowDALCommand>();
 builder.Services.AddScoped<IQuickAccessDailyCashFlowQueryPort, RedisDailyCashFlowDALQuery>();
+
+builder.Services.AddScoped<IEventDailyCashFlowPublisherCommandPort, GenerateDailyCashFlowController>();
 
 // ============================================================================
 // Application Core Services Mapping (The Hexagon Core Facade)
