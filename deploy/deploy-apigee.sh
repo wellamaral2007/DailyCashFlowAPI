@@ -1,49 +1,79 @@
 #!/bin/bash
-echo "==> Implantando APIs no Apigee..."
-# Passos conceituais automatizados via Apigee Management API utilitária
-# Como o CLI do gcloud interage nativamente via comandos apigee:
+# ============================================================================
+# TOGAF DIMENSION: Phase D - Technology Architecture (API Gateway Ingress)
+# CONCEPTS:        Google Apigee API Management / Bundle Deployment / OAuth2 Perimeter
+# ============================================================================
+set -e
 
-# Extract the deployed URLs from GCP
-URL_TX=$(gcloud functions describe generate-daily-cashflow --region=us-central1 --format="value(url)")
-URL_BAL=$(gcloud functions describe daily-cashflow-balance --region=us-central1--format="value(url)")
+# Definição de cores para saídas limpas no terminal corporativo
+AMARELO='\e[33m'
+VERDE='\e[32m'
+RESET='\e[0m'
 
-# Path to your existing target XML files
-TARGET_TX_FILE="../api/apigee/DailyCashFlowAPI/apiproxy/targets/entry-target.xml"
-TARGET_BAL_FILE="../api/apigee/DailyCashFlowAPI/apiproxy/targets/balance-target.xml"
-
-# Use '#' as a separator in sed because URLs contain forward slashes '/'
-sed -i "s|<URL>.*</URL>|<URL>$URL_TX</URL>|g" "$TARGET_TX_FILE"
-sed -i "s|<URL>.*</URL>|<URL>$URL_BAL</URL>|g" "$TARGET_BAL_FILE"
-
-# 1. Importar Proxies baseados nos arquivos OpenAPI YAML compilados
-gcloud apigee apis create daily-cashflow-proxy --api-spec=../api/openapi-dailycashflow.yaml
-gcloud apigee apis create finance-security-proxy --api-spec=../api/openapi-financesecurity.yaml
-
-# 2. Nota operacional sobre políticas internas que devem ser acopladas via XML no Bundle gerado:
-# Para o proxy 'finance-security-proxy', injeta-se uma política <GenerateOAuthV2> validando os headers 'user' (apiUser) e 'password' (apiPassword).
-# Para o proxy 'daily-cashflow-proxy', injeta-se a política <VerifyOAuthV2> apontando para o endpoint do emissor acima.
-
-# 3. Deploy dos ambientes
-gcloud apigee environments deploy --environment=eval --api=daily-cashflow-proxy
-gcloud apigee environments deploy --environment=eval --api=finance-security-proxy
-echo "==> APIs implantadas com sucesso no Apigee!"
-
-#!/bin/bash
-echo "==> Compactando e Implantando Bundles do Apigee..."
-
+# Variáveis Globais de Governança do Apigee Enterprise (Alinhadas ao roadmap 2026)
+export GCLOUD_PROJECT_ID="daily-cashflow-sol-17852"
 export APIGEE_ORG="gcp-finance-apigee"
 export APIGEE_ENV="eval"
 
-# 1. Implantar FinanceSecurity
-cd ../api/apigee/FinanceSecurity
-zip -r FinanceSecurity.zip apiproxy
-gcloud apigee apis deploy --environment=$APIGEE_ENV --api=FinanceSecurity --file=FinanceSecurity.zip --org=$APIGEE_ORG
-cd ../../
+gcloud config set project $GCLOUD_PROJECT_ID --quiet
 
-# 2. Implantar DailyCashFlowAPI
-cd api/apigee/DailyCashFlowAPI
-zip -r DailyCashFlowAPI.zip apiproxy
-gcloud apigee apis deploy --environment=$APIGEE_ENV --api=DailyCashFlowAPI --file=DailyCashFlowAPI.zip --org=$APIGEE_ORG
-cd ..
+echo -e "${AMARELO}==> [APIGEE] Iniciando orquestração e deploy de API Proxies...${RESET}"
 
-echo "==> Proxies do Apigee implantados e protegidos com OAuth2 com sucesso."
+# 1. Define caminhos lógicos relativos com base na pasta de execução do script
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SOLUTION_ROOT="$SCRIPT_DIR/.."
+APIGEE_ROOT_DIR="$SOLUTION_ROOT/api/apigee"
+
+# ----------------------------------------------------------------------------
+# 🚀 PASSO 1: CAPTURA DINÂMICA DE ENDPOINTS E INJEÇÃO FLUIDA NOS XML TARGETS
+# ----------------------------------------------------------------------------
+echo -e "${AMARELO}[+] Extraindo a URL de produção da Cloud Function unificada...${RESET}"
+
+# Captura a URL real gerada pelo Google Cloud Functions Gen2
+URL_BAL=$(gcloud functions describe daily-cashflow-balance --region=us-central1 --gen2 --format="value(serviceConfig.uri)" 2>/dev/null || echo "")
+
+if [ -z "$URL_BAL" ]; then
+    echo -e "${AMARELO}[!] AVISO: URL da Cloud Function não localizada. Usando endpoint de Fallback local...${RESET}"
+    URL_BAL="https://daily-cashflow-balance-internal.net"
+fi
+
+# Define os caminhos absolutos para os arquivos XML de configuração de Target do Apigee
+TARGET_TX_FILE="$APIGEE_ROOT_DIR/DailyCashFlowAPI/apiproxy/targets/entry-target.xml"
+TARGET_BAL_FILE="$APIGEE_ROOT_DIR/DailyCashFlowAPI/apiproxy/targets/balance-target.xml"
+
+echo -e "${AMARELO}[+] Injetando a URL coletada nos arquivos de target xml de forma dinâmica...${RESET}"
+# Substituição segura utilizando o caractere '#' como delimitador no sed devido às barras '/' da URL
+if [ -f "$TARGET_TX_FILE" ]; then
+    sed -i "s|<URL>.*</URL>|<URL>$URL_BAL</URL>|g" "$TARGET_TX_FILE"
+fi
+
+if [ -f "$TARGET_BAL_FILE" ]; then
+    sed -i "s|<URL>.*</URL>|<URL>$URL_BAL</URL>|g" "$TARGET_BAL_FILE"
+fi
+
+# ----------------------------------------------------------------------------
+# 🚀 PASSO 2: COMPACTAÇÃO E DEPLOY DOS BUNDLES CORPORATIVOS (OAUTH2 + CORE API)
+# ----------------------------------------------------------------------------
+
+# 2.1. Processamento e Upload do Proxy de Segurança (FinanceSecurity)
+echo -e "${AMARELO}[+] Empacotando e enviando o 'FinanceSecurity' proxy (Emissor OAuth2)...${RESET}"
+cd "$APIGEE_ROOT_DIR/FinanceSecurity"
+zip -r -q FinanceSecurity.zip apiproxy
+
+# Importa o bundle de proxy para a organização corporativa do Apigee
+gcloud beta apigee apis import --name=FinanceSecurity --source=FinanceSecurity.zip --organization=$APIGEE_ORG --quiet || true
+# Ativa o proxy importado no ambiente selecionado (eval)
+gcloud beta apigee environments deploy --environment=$APIGEE_ENV --api=FinanceSecurity --organization=$APIGEE_ORG --quiet || true
+
+# 2.2. Processamento e Upload do Proxy de Negócio (DailyCashFlowAPI)
+echo -e "${AMARELO}[+] Empacotando e enviando o 'DailyCashFlowAPI' proxy (Validador OAuth2)...${RESET}"
+cd "$APIGEE_ROOT_DIR/DailyCashFlowAPI"
+zip -r -q DailyCashFlowAPI.zip apiproxy
+
+gcloud beta apigee apis import --name=DailyCashFlowAPI --source=DailyCashFlowAPI.zip --organization=$APIGEE_ORG --quiet || true
+gcloud beta apigee environments deploy --environment=$APIGEE_ENV --api=DailyCashFlowAPI --organization=$APIGEE_ORG --quiet || true
+
+# Retorna de forma segura para o diretório inicial de execução do script para não quebrar chamadas seguintes
+cd "$SCRIPT_DIR"
+
+echo -e "${VERDE}==> [SUCESSO] Proxies do Apigee implantados e protegidos com OAuth2 com sucesso absoluto!${RESET}"

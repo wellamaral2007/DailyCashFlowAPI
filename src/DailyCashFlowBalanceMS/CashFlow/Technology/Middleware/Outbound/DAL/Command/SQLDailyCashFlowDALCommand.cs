@@ -2,7 +2,6 @@ using BaseFramework.DAL;
 using DailyCashFlowBalanceMS.CashFlow.Application.Contract.Command;
 using DailyCashFlowBalanceMS.CashFlow.Domain.Entity;
 using DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Outbound.DAL.ORM;
-using DailyCashFlowBalanceMS.DailyCashFlow.Technology.Middleware.Outbound.Dal;
 //using DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Outbound.DAL.ORM;
 
 namespace DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Outbound.DAL.Command

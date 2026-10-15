@@ -9,7 +9,7 @@ using CloudNative.CloudEvents; // CNCF CloudEvents standard implementation v1.0
 using CloudNative.CloudEvents.SystemTextJson;
 
 
-namespace GenerateDailyCashFlowMS.CashFlow.Technology.Middleware.Outbound.Eda;
+namespace DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Outbound.EDA.Controller;
 
 /**
  * ============================================================================

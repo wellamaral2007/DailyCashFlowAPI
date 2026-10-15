@@ -68,6 +68,6 @@ gcloud config set project $GCLOUD_PROJECT_ID --quiet
 echo -e "${AMARELO}[+] Ativando APIs de serviços do GCP para a arquitetura DailyCashFlow...${RESET}"
 
 # With billing linked to the unique project ID, the API activation will pass with total success
-gcloud services enable secretmanager.googleapis.com cloudfunctions.googleapis.com pubsub.googleapis.com sqladmin.googleapis.com redis.googleapis.com compute.googleapis.com run.googleapis.com cloudbuild.googleapis.com artifactregistry.googleapis.com --quiet
+gcloud services enable secretmanager.googleapis.com cloudfunctions.googleapis.com pubsub.googleapis.com sqladmin.googleapis.com redis.googleapis.com compute.googleapis.com run.googleapis.com cloudbuild.googleapis.com artifactregistry.googleapis.com eventarc.googleapis.com --quiet
 
 echo -e "${VERDE}[v] O ambiente GCP está criado, faturado de forma segura e autenticado no ID: ${GCLOUD_PROJECT_ID}!${RESET}"

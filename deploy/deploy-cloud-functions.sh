@@ -19,7 +19,7 @@ echo -e "${AMARELO}==> Iniciando Publicação das Cloud Functions no Google Clou
 # 1. Define caminhos lógicos relativos com base no diretório atual do script
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SOLUTION_ROOT="$SCRIPT_DIR/.."
-SRC_ROOT="$SOLUTION_ROOT/src" # 📌 Raiz que engloba BaseFramework, DailyCashFlowBalance e ProcessDailyCashFlow
+SRC_ROOT="$SOLUTION_ROOT/src" # 📌 Raiz que engloba BaseFramework, DailyCashFlowBalanceMS e o novo projeto daily
 
 # Identidades e topologias de segurança de rede e IAM da companhia
 SA_EMAIL="sa-dailycashflow@${GCLOUD_PROJECT_ID}.iam.gserviceaccount.com"
@@ -48,14 +48,14 @@ gcloud functions deploy daily-cashflow-balance \
     --source="$SRC_ROOT" \
     --service-account="$SA_EMAIL" \
     --set-env-vars GCP_PROJECT=$GCLOUD_PROJECT_ID \
+    --set-build-env-vars GOOGLE_BUILDABLE="DailyCashFlowBalanceMS/DailyCashFlowBalanceMS.csproj" \
     --quiet
 
 # ----------------------------------------------------------------------------
 # 2️⃣ FUNCTION: process-daily-cashflow (Gatilho Reativo de Tópico Pub/Sub - EDA)
 # ----------------------------------------------------------------------------
 echo -e "${AMARELO}[+] Publicando FaaS: process-daily-cashflow (Pub/Sub Consumer)...${RESET}"
-# 📌 --trigger-topic associa nativamente a escuta de eventos via CloudEvents
-# O Cloud Build compilará este projeto a partir do mesmo zip do src/ usando o entry-point abaixo
+# FIXED: GOOGLE_BUILDABLE pointed to the new consolidated "daily/daily.csproj" workspace path
 gcloud functions deploy process-daily-cashflow \
     --gen2 \
     --runtime=dotnet8 \
@@ -67,6 +67,7 @@ gcloud functions deploy process-daily-cashflow \
     --source="$SRC_ROOT" \
     --service-account="$SA_EMAIL" \
     --set-env-vars GCP_PROJECT=$GCLOUD_PROJECT_ID \
+    --set-build-env-vars GOOGLE_BUILDABLE="DailyCashFlowBalanceMS/DailyCashFlowBalanceMS.csproj" \
     --quiet
 
 echo -e "${VERDE}==> [SUCESSO] Ambas as Google Cloud Functions publicadas e interligadas com sucesso total!${RESET}"

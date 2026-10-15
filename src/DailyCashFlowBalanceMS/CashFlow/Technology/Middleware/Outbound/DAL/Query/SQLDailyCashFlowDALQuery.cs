@@ -2,7 +2,6 @@
 using System.Data.Entity;
 using BaseFramework.DAL;
 using DailyCashFlowBalanceMS.CashFlow.Application.Contract.Query;
-using DailyCashFlowBalanceMS.DailyCashFlow.Technology.Middleware.Outbound.Dal;
 
 namespace DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Outbound.DAL.Query;
 

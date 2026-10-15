@@ -1,7 +1,7 @@
 using System.Data.Entity;
 using DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Outbound.DAL.ORM;
 
-namespace DailyCashFlowBalanceMS.DailyCashFlow.Technology.Middleware.Outbound.Dal;
+namespace DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Outbound.DAL.Command;
 
 /**
  * ============================================================================
