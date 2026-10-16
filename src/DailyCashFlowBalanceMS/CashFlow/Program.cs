@@ -60,10 +60,28 @@ builder.Services.AddScoped<DailyCashFlowQueryContext>(sp =>
 // ============================================================================
 // Hexagonal Architecture: Wiring Driven Adapters (Middleware) to Outbound Ports
 // ============================================================================
+
+// 4. Register the concrete SQL durable query repository factory passing down the lazy connection string context
+builder.Services.AddScoped<SQLDailyCashFlowDALQuery>(sp => 
+{
+    string readSqlConnectionString = VaultCredentialUtility.GetSecretAsync(projectId, "db-read-connection").GetAwaiter().GetResult();
+    return new SQLDailyCashFlowDALQuery(readSqlConnectionString);
+});
+
+// 5. Mapping Persistent Durable Command and Query Ports to their respective repositories
 builder.Services.AddScoped<IDurableDailyCashFlowCommandPort, SQLDailyCashFlowDALCommand>();
-builder.Services.AddScoped<IDurableDailyCashFlowQueryPort, SQLDailyCashFlowDALQuery>();
+
+// 6. 📌 ENCHAINED WIRING: Resolves the main read port mapping by fetching the Singleton Redis connection 
+// alongside the concrete Scoped SQL query repository instance to enable resilient circuit breaker fallbacks.
+builder.Services.AddScoped<IDailyCashFlowQueryPort, RedisDailyCashFlowDALQuery>(sp => 
+{
+    var redisMultiplexer = sp.GetRequiredService<IConnectionMultiplexer>();
+    var sqlDALQuery = sp.GetRequiredService<SQLDailyCashFlowDALQuery>();
+    return new RedisDailyCashFlowDALQuery(redisMultiplexer, sqlDALQuery);
+});
+
+// 7. Mapping In-Memory QuickAccess Command Ports to Redis separate repositories
 builder.Services.AddScoped<IQuickAccessDailyCashFlowCommandPort, RedisDailyCashFlowDALCommand>();
-builder.Services.AddScoped<IQuickAccessDailyCashFlowQueryPort, RedisDailyCashFlowDALQuery>();
 
 // Mapping the abstract core outbound port to the unified controller class implementing it
 builder.Services.AddScoped<IEventDailyCashFlowPublisherCommandPort, GenerateDailyCashFlowController>();

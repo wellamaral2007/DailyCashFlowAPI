@@ -1,5 +1,5 @@
 namespace DailyCashFlowBalanceMS.CashFlow.Application.Contract.Query;
-public interface IQuickAccessDailyCashFlowQueryPort
+public interface IDailyCashFlowQueryPort
 {
     public Task<decimal> readBalanceValue(DateTime date);
 }

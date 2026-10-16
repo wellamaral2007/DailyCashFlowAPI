@@ -1,8 +1,6 @@
 using DailyCashFlowBalanceMS.CashFlow.Application.Contract.Command;
 using DailyCashFlowBalanceMS.CashFlow.Application.Contract.Query;
 using DailyCashFlowBalanceMS.CashFlow.Domain.Entity; // Ingestion of the Rich Domain Model Entity
-using Polly;
-using Polly.CircuitBreaker;
 
 namespace DailyCashFlowBalanceMS.CashFlow.Application.Service;
 
@@ -18,47 +16,26 @@ namespace DailyCashFlowBalanceMS.CashFlow.Application.Service;
 public class DailyCashFlowBalanceService
 {    
     // Query Ports (Segregated Read Operations - Query in Singular)
-    private readonly IQuickAccessDailyCashFlowQueryPort _quickAccessQueryPort;
-    private readonly IDurableDailyCashFlowQueryPort _durableQueryPort;
+    private readonly IDailyCashFlowQueryPort _queryPort;
     
     // Command Ports (State Modification Operations - Command in Singular) for Facade Symmetry
     private readonly IDurableDailyCashFlowCommandPort _durableCommandPort;
     private readonly IQuickAccessDailyCashFlowCommandPort _quickAccessCommandPort;
     private readonly IEventDailyCashFlowPublisherCommandPort _eventPublisher;
 
-    private readonly AsyncCircuitBreakerPolicy _circuitBreaker;
-
     /**
      * Dependency Injection via Hexagonal Ports Constructor (IoC)
      */
     public DailyCashFlowBalanceService(
-        IQuickAccessDailyCashFlowQueryPort quickAccessQueryPort,
-        IDurableDailyCashFlowQueryPort durableQueryPort,
+        IDailyCashFlowQueryPort queryPort,
         IDurableDailyCashFlowCommandPort durableCommandPort,
         IQuickAccessDailyCashFlowCommandPort quickAccessCommandPort,
         IEventDailyCashFlowPublisherCommandPort eventPublisher)
     {
-        _quickAccessQueryPort = quickAccessQueryPort;
-        _durableQueryPort = durableQueryPort;
+        _queryPort = queryPort;
         _durableCommandPort = durableCommandPort;
         _quickAccessCommandPort = quickAccessCommandPort;
         _eventPublisher = eventPublisher;
-        
-        // Resilience Governance Configuration: Breaks the circuit after 3 consecutive failures, waits 30 seconds
-        _circuitBreaker = Policy
-            .Handle<Exception>()
-            .CircuitBreakerAsync(
-                exceptionsAllowedBeforeBreaking: 3,
-                durationOfBreak: TimeSpan.FromSeconds(30),
-                onBreak: (ex, timespan) => 
-                { 
-                    Console.WriteLine($"[DAILY CASH FLOW CIRCUIT BREAKER] Opened! Reason: {ex.Message}. Routing traffic directly to Durable storage."); 
-                },
-                onReset: () => 
-                { 
-                    Console.WriteLine("[DAILY CASH FLOW CIRCUIT BREAKER] Closed! QuickAccess middleware is back online."); 
-                }
-            ); 
     }
 
     /**
@@ -97,7 +74,8 @@ public class DailyCashFlowBalanceService
      **************************************************************************/
     public async Task ProcessingDailyCashEvent(DailyCashFlowEntity dailyCashFlowEvent)
     {
-        if (dailyCashFlowEvent.EventType.CompareTo("throw") == 0) 
+        var eventType = dailyCashFlowEvent.EventType ?? "";
+        if (eventType.CompareTo("throw") == 0) 
         {
             // Executes both write operations opaquely through the decoupled ports
             await RegisterCreditDebit(dailyCashFlowEvent); 
@@ -127,29 +105,7 @@ public class DailyCashFlowBalanceService
      */
     public async Task<decimal> GetNetBalanceAsync(DateTime date)
     {
-        try
-        {
-            // Executes the data fetch protected by the Circuit Breaker targeting the QuickAccess Port
-            return await _circuitBreaker.ExecuteAsync(async () =>
-            {
-                try
-                {
-                    // 1. Tries to retrieve the value immediately from the QuickAccess Query Port
-                    decimal cachedValue = await _quickAccessQueryPort.readBalanceValue(DateTime.Now);
-                    return cachedValue;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"[QUICK ACCESS ERROR] {ex.Message}. Tripping Circuit Breaker and routing to Durable Query Port.");
-                    throw; // Rethrow to inform Polly about the failure and update the circuit state
-                }
-            });
-        }
-        catch (BrokenCircuitException)
-        {
-            // 2. Critical Fallback: Circuit is broken. Bypasses QuickAccess completely and targets the Durable Query Port directly
-            Console.WriteLine("[FALLBACK CRITICAL] Circuit is broken. Bypassing QuickAccess and querying Durable Query Port directly.");
-            return await _durableQueryPort.readBalanceValue(DateTime.Now);
-        }
+        decimal cachedValue = await _queryPort.readBalanceValue(DateTime.Now);
+        return cachedValue;
     }
 }

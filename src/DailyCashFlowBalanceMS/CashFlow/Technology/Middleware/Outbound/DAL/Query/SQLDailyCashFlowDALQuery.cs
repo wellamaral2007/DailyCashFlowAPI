@@ -14,17 +14,25 @@ namespace DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Outbound.DAL.Que
  * This infrastructure component handles heavy persistent state read aggregations
  * for .NET 8.0, executing ultra-fast calculations against the database query replica.
  */
-public class SQLDailyCashFlowDALQuery : AbstractCRUDDAL, IDurableDailyCashFlowQueryPort
+public class SQLDailyCashFlowDALQuery : AbstractCRUDDAL, IDailyCashFlowQueryPort
 {
     private readonly DailyCashFlowQueryContext _context;
 
     /**
      * Dependency Injection via Segregated Entity Framework 6 Query DbContext Pool (IoC).
-     * Connects transparently to the Read-Only replica database instance infrastructure.
+     * Instantiates the custom query context utilizing the lazy-loaded connection string 
+     * pointing transparently to the Read-Only database replica network infrastructure.
      */
-    public SQLDailyCashFlowDALQuery(DailyCashFlowQueryContext context)
+    public SQLDailyCashFlowDALQuery(string sqlConnectionString)
     {
-        _context = context;
+        if (string.IsNullOrWhiteSpace(sqlConnectionString))
+        {
+            throw new ArgumentNullException(nameof(sqlConnectionString), "Database connection string cannot be null or empty inside the storage layer.");
+        }
+
+        // FIXED: Initializing the dedicated query context instance manually inside the constructor 
+        // to correctly resolve the decoupled interface lifecycle instead of utilizing invalid ': base()' chains.
+        _context = new DailyCashFlowQueryContext(sqlConnectionString);
     }
 
     /**
