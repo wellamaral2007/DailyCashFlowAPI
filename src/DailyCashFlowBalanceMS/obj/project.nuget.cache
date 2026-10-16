@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "+uWuy+yWlT0=",
+  "dgSpecHash": "9aKNXGpQrZU=",
   "success": true,
   "projectFilePath": "/home/wellington/testeCarrefour/DailyCashFlowSolution/src/DailyCashFlowBalanceMS/DailyCashFlowBalanceMS.csproj",
   "expectedPackageFiles": [
@@ -31,7 +31,7 @@
     "/home/wellington/.nuget/packages/microsoft.aspnetcore.webutilities/2.1.1/microsoft.aspnetcore.webutilities.2.1.1.nupkg.sha512",
     "/home/wellington/.nuget/packages/microsoft.bcl.asyncinterfaces/6.0.0/microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",
     "/home/wellington/.nuget/packages/microsoft.csharp/4.7.0/microsoft.csharp.4.7.0.nupkg.sha512",
-    "/home/wellington/.nuget/packages/microsoft.extensions.apidescription.server/8.0.0/microsoft.extensions.apidescription.server.8.0.0.nupkg.sha512",
+    "/home/wellington/.nuget/packages/microsoft.extensions.apidescription.server/9.0.0/microsoft.extensions.apidescription.server.9.0.0.nupkg.sha512",
     "/home/wellington/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/6.0.0/microsoft.extensions.dependencyinjection.abstractions.6.0.0.nupkg.sha512",
     "/home/wellington/.nuget/packages/microsoft.extensions.logging.abstractions/6.0.0/microsoft.extensions.logging.abstractions.6.0.0.nupkg.sha512",
     "/home/wellington/.nuget/packages/microsoft.extensions.objectpool/2.1.1/microsoft.extensions.objectpool.2.1.1.nupkg.sha512",
@@ -71,10 +71,7 @@
     "/home/wellington/.nuget/packages/system.security.principal.windows/4.7.0/system.security.principal.windows.4.7.0.nupkg.sha512",
     "/home/wellington/.nuget/packages/system.text.encodings.web/6.0.0/system.text.encodings.web.6.0.0.nupkg.sha512",
     "/home/wellington/.nuget/packages/system.text.json/8.0.5/system.text.json.8.0.5.nupkg.sha512",
-    "/home/wellington/.nuget/packages/system.windows.extensions/6.0.0/system.windows.extensions.6.0.0.nupkg.sha512",
-    "/home/wellington/.nuget/packages/microsoft.netcore.app.ref/8.0.12/microsoft.netcore.app.ref.8.0.12.nupkg.sha512",
-    "/home/wellington/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.12/microsoft.aspnetcore.app.ref.8.0.12.nupkg.sha512",
-    "/home/wellington/.nuget/packages/microsoft.netcore.app.host.linux-x64/8.0.12/microsoft.netcore.app.host.linux-x64.8.0.12.nupkg.sha512"
+    "/home/wellington/.nuget/packages/system.windows.extensions/6.0.0/system.windows.extensions.6.0.0.nupkg.sha512"
   ],
   "logs": []
 }

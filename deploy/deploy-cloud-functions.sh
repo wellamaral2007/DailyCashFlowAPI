@@ -38,7 +38,7 @@ echo -e "${AMARELO}[+] Enviando a malha de fontes do src/ para o Cloud Build...$
 echo -e "${AMARELO}[+] Publicando FaaS: daily-cashflow-balance (HTTP Ingress/Egress)...${RESET}"
 gcloud functions deploy daily-cashflow-balance \
     --gen2 \
-    --runtime=dotnet8 \
+    --runtime=dotnet9 \
     --region=us-central1 \
     --entry-point="DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Inbound.API.Controller.DailyCashFlowBalanceController" \
     --vpc-connector="$VPC_CONNECTOR" \
@@ -58,7 +58,7 @@ echo -e "${AMARELO}[+] Publicando FaaS: process-daily-cashflow (Pub/Sub Consumer
 # FIXED: GOOGLE_BUILDABLE pointed to the new consolidated "daily/daily.csproj" workspace path
 gcloud functions deploy process-daily-cashflow \
     --gen2 \
-    --runtime=dotnet8 \
+    --runtime=dotnet9 \
     --region=us-central1 \
     --entry-point="DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Inbound.EDA.Controller.ProcessDailyCashFlowController" \
     --vpc-connector="$VPC_CONNECTOR" \

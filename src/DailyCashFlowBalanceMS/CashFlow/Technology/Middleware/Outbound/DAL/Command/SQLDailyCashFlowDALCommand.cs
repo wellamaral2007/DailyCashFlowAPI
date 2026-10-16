@@ -36,7 +36,7 @@ namespace DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Outbound.DAL.Com
             // Maps the incoming Rich Domain Entity properties into the anemic ORM schema representation
             var ormRecord = new DailyCashFlowORM
             {
-                Id = dailyCashFlowEvent.Id, // Unique identifier for the transaction
+                Id = dailyCashFlowEvent.Id ?? Guid.NewGuid().ToString(), // Unique identifier for the transaction
                 Amount = dailyCashFlowEvent.CreditDebitValue, // Financial amount
                 TransactionDate = dailyCashFlowEvent.ThowDate
             };
