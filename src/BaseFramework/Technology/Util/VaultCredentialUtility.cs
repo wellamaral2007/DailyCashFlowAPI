@@ -6,20 +6,26 @@ namespace BaseFramework.Technology.Util
     public class VaultCredentialUtility
     {
 
-
-        public async static Task<string> GetSecretAsync(string _projectId, string secretName, string versionId = "latest")
+        public async static Task<string> GetSecretAsync(string projectId, string secretName, string versionId = "latest")
         {
             // Cria o cliente do Secret Manager
             SecretManagerServiceClient client = await SecretManagerServiceClient.CreateAsync();
 
             // Constrói o nome do recurso do segredo no GCP
-            SecretVersionName secretVersionName = new SecretVersionName(_projectId, secretName, versionId);
-
+            SecretVersionName secretVersionName;
             try
             {
-                // Busca o segredo e converte para string
-                AccessSecretVersionResponse response = await client.AccessSecretVersionAsync(secretVersionName);
-                return response.Payload.Data.ToStringUtf8();
+                string envOverride = Environment.GetEnvironmentVariable($"ConnectionStrings__{secretName}") ?? "";
+                if (!string.IsNullOrEmpty(envOverride))
+                {
+                    return envOverride;
+                }
+
+                // Fluxo normal de produção quando estiver rodando no Google Cloud Functions
+                client = await SecretManagerServiceClient.CreateAsync();
+                secretVersionName = new SecretVersionName(projectId, secretName, "latest");
+                AccessSecretVersionResponse result = await client.AccessSecretVersionAsync(secretVersionName);
+                return result.Payload.Data.ToStringUtf8();
             }
             catch (Exception ex)
             {
