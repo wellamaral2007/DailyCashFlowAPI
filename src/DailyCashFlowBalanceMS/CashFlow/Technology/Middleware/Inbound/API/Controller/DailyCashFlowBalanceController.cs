@@ -1,7 +1,10 @@
-using System.Net;
 using DailyCashFlowBalanceMS.CashFlow.Application.Service;
 using DailyCashFlowBalanceMS.CashFlow.Domain.Entity;
 using Google.Cloud.Functions.Framework;
+using Google.Cloud.Functions.Hosting;
+using Microsoft.AspNetCore.Http;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Inbound.API.Controller;
 
@@ -18,26 +21,18 @@ public class DailyCashFlowBalanceController : IHttpFunction
 {
     private readonly DailyCashFlowBalanceService _dailyCashFlowService;
 
-    /**
+        /**
      * Dependency Injection enabled natively by the Google Cloud Functions Framework (IoC)
      */
     public DailyCashFlowBalanceController(DailyCashFlowBalanceService dailyCashFlowService)
     {
         _dailyCashFlowService = dailyCashFlowService;
     }
-
-    /**
-     * Entry point for handling serverless HTTP web requests safely inside the cluster topology.
-     * Supports POST for throwing credit/debit entries and GET for fetching consolidated balance.
-     */
-    //[SecureGateway] [Observed] // AOP: Injected automatically from Shared Kernel NuGet for security & telemetry
+    
     public async Task HandleAsync(HttpContext context)
     {
         HttpRequest request = context.Request;
         HttpResponse response = context.Response;
-
-        // Ensuring standard enterprise JSON responses across the platform
-        response.ContentType = "application/json";
 
         switch (request.Method)
         {
@@ -84,7 +79,6 @@ public class DailyCashFlowBalanceController : IHttpFunction
                 response.StatusCode = (int)HttpStatusCode.MethodNotAllowed;
                 await response.WriteAsync("{\"error\": \"HTTP Method Not Allowed on this corporate resource.\"}", context.RequestAborted);
                 break;
-        }
+        } 
     }
-
 }

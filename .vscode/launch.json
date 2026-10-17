@@ -8,13 +8,25 @@
             "preLaunchTask": "build",
             "program": "${workspaceFolder}/src/DailyCashFlowBalanceMS/bin/Debug/net9.0/DailyCashFlowBalanceMS.dll",
             "cwd": "${workspaceFolder}/src/DailyCashFlowBalanceMS",
+            "justMyCode": false,
+            "requireExactSource": false,
+            "args": [
+                "--target", "DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Inbound.API.Controller.DailyCashFlowBalanceController"
+            ],
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development",
                 "PORT": "8080",
                 "FUNCTION_TARGET": "DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Inbound.API.Controller.DailyCashFlowBalanceController",
-                "ConnectionStrings__db-write-connection": "Server=127.0.0.1;Port=3306;Database=DailyCashDb;Uid=root;Pwd=StrongPassword123!;SslMode=None;",
-                "ConnectionStrings__db-read-connection": "Server=127.0.0.1;Port=3306;Database=DailyCashDb;Uid=root;Pwd=StrongPassword123!;SslMode=None;",
-                "ConnectionStrings__redis-connection": "127.0.0.1:6379,ssl=false,abortConnect=false"
+                // 🌐 INTEGRADO COM OS TRÊS TÚNEIS DA NUVEM (VIA BASTION)
+    
+                "db-write-connection": "Server=127.0.0.1;Port=3307;Database=DailyCashDb;Uid=root;Pwd=StrongPassword123!;SslMode=None;",
+                "db-read-connection": "Server=127.0.0.1;Port=3308;Database=DailyCashDb;Uid=root;Pwd=StrongPassword123!;SslMode=None;",
+                "redis-connection": "127.0.0.1:6380,ssl=false,abortConnect=false",
+                
+                // Chaves de compatibilidade do framework .NET
+                "ConnectionStrings__db-write-connection": "Server=127.0.0.1;Port=3307;Database=DailyCashDb;Uid=root;Pwd=StrongPassword123!;SslMode=None;",
+                "ConnectionStrings__db-read-connection": "Server=127.0.0.1;Port=3308;Database=DailyCashDb;Uid=root;Pwd=StrongPassword123!;SslMode=None;",
+                "ConnectionStrings__redis-connection": "127.0.0.1:6380,ssl=false,abortConnect=false"
             }
         },
         {
@@ -24,13 +36,24 @@
             "preLaunchTask": "build",
             "program": "${workspaceFolder}/src/DailyCashFlowBalanceMS/bin/Debug/net9.0/DailyCashFlowBalanceMS.dll",
             "cwd": "${workspaceFolder}/src/DailyCashFlowBalanceMS",
+            "justMyCode": false,
+            "requireExactSource": false,
+            "args": [
+                "--target", "DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Inbound.EDA.Controller.ProcessDailyCashFlowController"
+            ],
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development",
-                "PORT": "8081", // 📌 Porta isolada para não conflitar com a HTTP
+                "PORT": "8081",
                 "FUNCTION_TARGET": "DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Inbound.EDA.Controller.ProcessDailyCashFlowController",
-                "ConnectionStrings__db-write-connection": "Server=127.0.0.1;Port=3306;Database=DailyCashDb;Uid=root;Pwd=StrongPassword123!;SslMode=None;",
-                "ConnectionStrings__db-read-connection": "Server=127.0.0.1;Port=3306;Database=DailyCashDb;Uid=root;Pwd=StrongPassword123!;SslMode=None;",
-                "ConnectionStrings__redis-connection": "127.0.0.1:6379,ssl=false,abortConnect=false"
+                
+                "db-write-connection": "Server=127.0.0.1;Port=3307;Database=DailyCashDb;Uid=root;Pwd=StrongPassword123!;SslMode=None;",
+                "db-read-connection": "Server=127.0.0.1;Port=3308;Database=DailyCashDb;Uid=root;Pwd=StrongPassword123!;SslMode=None;",
+                "redis-connection": "127.0.0.1:6380,ssl=false,abortConnect=false",
+                
+                // Chaves de compatibilidade do framework .NET
+                "ConnectionStrings__db-write-connection": "Server=127.0.0.1;Port=3307;Database=DailyCashDb;Uid=root;Pwd=StrongPassword123!;SslMode=None;",
+                "ConnectionStrings__db-read-connection": "Server=127.0.0.1;Port=3308;Database=DailyCashDb;Uid=root;Pwd=StrongPassword123!;SslMode=None;",
+                "ConnectionStrings__redis-connection": "127.0.0.1:6380,ssl=false,abortConnect=false"
             }
         }
     ]

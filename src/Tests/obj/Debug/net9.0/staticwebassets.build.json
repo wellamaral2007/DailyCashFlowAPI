@@ -1,34 +1,11 @@
 {
   "Version": 1,
-  "Hash": "1x1O7m+22VlUCyx+Mygvr6s3azbLgYKHtmNl/L46zv4=",
+  "Hash": "W4T4IhQPqrFhieUtr39xE+2NG3OXg6nISXP5tXZSkho=",
   "Source": "Tests",
   "BasePath": "_content/Tests",
   "Mode": "Default",
   "ManifestType": "Build",
-  "ReferencedProjectsConfiguration": [
-    {
-      "Identity": "/home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/BaseFramework.csproj",
-      "Version": 2,
-      "Source": "BaseFramework",
-      "GetPublishAssetsTargets": "ComputeReferencedStaticWebAssetsPublishManifest;GetCurrentProjectPublishStaticWebAssetItems",
-      "AdditionalPublishProperties": "Configuration=Debug;Platform=AnyCPU",
-      "AdditionalPublishPropertiesToRemove": "WebPublishProfileFile;TargetFramework",
-      "GetBuildAssetsTargets": "GetCurrentProjectBuildStaticWebAssetItems",
-      "AdditionalBuildProperties": "Configuration=Debug;Platform=AnyCPU",
-      "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile;TargetFramework"
-    },
-    {
-      "Identity": "/home/wellington/testeCarrefour/DailyCashFlowSolution/src/DailyCashFlowBalanceMS/DailyCashFlowBalanceMS.csproj",
-      "Version": 2,
-      "Source": "DailyCashFlowBalanceMS",
-      "GetPublishAssetsTargets": "ComputeReferencedStaticWebAssetsPublishManifest;GetCurrentProjectPublishStaticWebAssetItems",
-      "AdditionalPublishProperties": "Configuration=Debug;Platform=AnyCPU",
-      "AdditionalPublishPropertiesToRemove": "WebPublishProfileFile;TargetFramework",
-      "GetBuildAssetsTargets": "GetCurrentProjectBuildStaticWebAssetItems",
-      "AdditionalBuildProperties": "Configuration=Debug;Platform=AnyCPU",
-      "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile;TargetFramework"
-    }
-  ],
+  "ReferencedProjectsConfiguration": [],
   "DiscoveryPatterns": [],
   "Assets": [],
   "Endpoints": []

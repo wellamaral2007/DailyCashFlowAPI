@@ -1,27 +1,43 @@
-using System.Data.Entity;
+// File: apps/daily-cash-flow-service/src/DailyCashFlowBalanceMS/CashFlow/Technology/Middleware/Outbound/DAL/Query/DailyCashFlowQueryContext.cs
+using System;
+using Microsoft.EntityFrameworkCore;
 using DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Outbound.DAL.ORM;
 
 namespace DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Outbound.DAL.Query;
 
-/**
- * HEXAGONAL ROLE: Durable Storage Query DBContext - READ-ONLY REPLICA (EF6)
- */
 public class DailyCashFlowQueryContext : DbContext
 {
-    public DailyCashFlowQueryContext(string connectionString) : base(connectionString)
-    {
-        Database.SetInitializer<DailyCashFlowQueryContext>(null);
-        
-        // MAXIMUM PERFORMANCE TUNING: Disables proxy creation and change tracking natively in EF6
-        this.Configuration.ProxyCreationEnabled = false;
-        this.Configuration.AutoDetectChangesEnabled = false;
-    }
+    private readonly string _connectionString;
 
+    // 🌐 TABELA MAPEADA: Resolve o erro CS1061 do repositório de leitura (linha 46)
     public DbSet<DailyCashFlowORM> CashFlowEntries { get; set; } = null!;
 
-    protected override void OnModelCreating(DbModelBuilder modelBuilder)
+    public DailyCashFlowQueryContext(string connectionString)
+    {
+        _connectionString = connectionString;
+    }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder.UseMySql(_connectionString, ServerVersion.AutoDetect(_connectionString));
+        }
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        modelBuilder.Entity<DailyCashFlowORM>().Property(e => e.Amount).HasPrecision(18, 2);
+
+        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        {
+            foreach (var property in entityType.GetProperties())
+            {
+                if (string.Equals(property.Name, "rowversion", StringComparison.OrdinalIgnoreCase))
+                {
+                    property.SetColumnType("timestamp");
+                }
+            }
+        }
     }
 }

@@ -1,16 +1,23 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <!-- 📌 GOVERNANÇA: Alinhado na versão estável do .NET 9.0 -->
+    <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <!-- Garante que o compilador monte o binário como biblioteca reutilizável -->
+    <OutputType>Library</OutputType>
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- Drivers e pacotes corporativos de integração Outbound -->
     <PackageReference Include="EntityFramework" Version="6.5.1" />
-    <PackageReference Include="StackExchange.Redis" Version="2.8.16" />
-    <PackageReference Include="Google.Cloud.Functions.Hosting" Version="2.2.1" />
-    <PackageReference Include="Google.Cloud.PubSub.V1" Version="3.18.0" />
+    <PackageReference Include="MySql.Data" Version="9.0.0" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
+    <PackageReference Include="StackExchange.Redis" Version="2.8.24" />
+    <!-- 📌 FIXED: Versão estável 3.0.0 homologada nativamente para o .NET 9 -->
+    <PackageReference Include="Google.Cloud.Functions.Hosting" Version="3.0.0" />
     <PackageReference Include="Google.Cloud.SecretManager.V1" Version="2.7.0" />
   </ItemGroup>
+
 </Project>

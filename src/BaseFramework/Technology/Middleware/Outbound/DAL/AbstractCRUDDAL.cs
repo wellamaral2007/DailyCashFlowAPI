@@ -24,14 +24,14 @@ public abstract class AbstractCRUDDAL : Component, IDAL<IORMEntity>
     public AbstractCRUDDAL()
         : base()
     {
-        string _projectId = "DailyCashFlowBalance";
+        //string _projectId = "DailyCashFlowBalance";
 
-        string _database = VaultCredentialUtility.GetSecretAsync(_projectId, "DATABASE").GetAwaiter().GetResult(); 
-        string _userDB = VaultCredentialUtility.GetSecretAsync(_projectId, "USER_DATABASE").GetAwaiter().GetResult(); 
-        string _passwordDB = VaultCredentialUtility.GetSecretAsync(_projectId, "PASSWORD_DATABASE").GetAwaiter().GetResult();
+        //string _database = VaultCredentialUtility.GetSecretAsync(_projectId, "DATABASE").GetAwaiter().GetResult(); 
+        //string _userDB = VaultCredentialUtility.GetSecretAsync(_projectId, "USER_DATABASE").GetAwaiter().GetResult(); 
+        //string _passwordDB = VaultCredentialUtility.GetSecretAsync(_projectId, "PASSWORD_DATABASE").GetAwaiter().GetResult();
 
-        string sqlConnectionString = $"Server=GCP_CLOUD_SQL\\SQLEXPRESS;Database={_database};User Id={_userDB};Password={_passwordDB};Trusted_Connection=True;TrustServerCertificate=True;";
-        session = new(sqlConnectionString);
+        //string sqlConnectionString = $"Server=GCP_CLOUD_SQL\\SQLEXPRESS;Database={_database};User Id={_userDB};Password={_passwordDB};Trusted_Connection=True;TrustServerCertificate=True;";
+        //session = new(sqlConnectionString);
     }
         
     public bool Add(IORMEntity entity)  

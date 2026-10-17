@@ -1,10 +1,5 @@
 /home/wellington/testeCarrefour/DailyCashFlowSolution/src/Tests/bin/Debug/net9.0/DailyCashFlowBalanceMS.deps.json
 /home/wellington/testeCarrefour/DailyCashFlowSolution/src/Tests/bin/Debug/net9.0/DailyCashFlowBalanceMS.runtimeconfig.json
-/home/wellington/testeCarrefour/DailyCashFlowSolution/src/Tests/bin/Debug/net9.0/BaseFramework.deps.json
-/home/wellington/testeCarrefour/DailyCashFlowSolution/src/Tests/bin/Debug/net9.0/BaseFramework.runtimeconfig.json
-/home/wellington/testeCarrefour/DailyCashFlowSolution/src/Tests/bin/Debug/net9.0/BaseFramework.staticwebassets.endpoints.json
-/home/wellington/testeCarrefour/DailyCashFlowSolution/src/Tests/bin/Debug/net9.0/BaseFramework
-/home/wellington/testeCarrefour/DailyCashFlowSolution/src/Tests/bin/Debug/net9.0/DailyCashFlowBalanceMS.staticwebassets.endpoints.json
 /home/wellington/testeCarrefour/DailyCashFlowSolution/src/Tests/bin/Debug/net9.0/DailyCashFlowBalanceMS
 /home/wellington/testeCarrefour/DailyCashFlowSolution/src/Tests/bin/Debug/net9.0/appsettings.json
 /home/wellington/testeCarrefour/DailyCashFlowSolution/src/Tests/bin/Debug/net9.0/MvcTestingAppManifest.json
