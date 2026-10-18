@@ -1,17 +1,12 @@
-// File: apps/daily-cash-flow-service/src/DailyCashFlowService.API/3_Technology/Middleware/Inbound/Eda/ProcessDailyCashFlowController.cs
-using System;
-using System.Text; // 📌 ADICIONADO: Necessário para usar o Encoding.UTF8
+using System.Text; 
 using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
 using DailyCashFlowBalanceMS.CashFlow.Domain.Entity;
-using BaseFramework.Event.DailyCashFlow;
 using CloudNative.CloudEvents;
 using Google.Cloud.Functions.Framework;
-using Google.Cloud.Functions.Hosting;
 using System.Runtime.CompilerServices;
 using DailyCashFlowBalanceMS.CashFlow.Application.Service;
 using DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Outbound.DAL.Command;
+using DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.DTO.Event.DailyCashFlow;
 
 namespace DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Inbound.EDA.Controller;
 

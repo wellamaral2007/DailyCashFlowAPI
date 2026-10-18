@@ -1,11 +1,10 @@
 using DailyCashFlowBalanceMS.CashFlow.Application.Contract.Command; // Ingestion of the core abstract port contract
 using DailyCashFlowBalanceMS.CashFlow.Domain.Entity; // Ingestion of the rich Domain Model Entity
+using DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.DTO.Event.DailyCashFlow;
 using CloudNative.CloudEvents; // CNCF CloudEvents standard implementation v1.0
 using CloudNative.CloudEvents.SystemTextJson;
 using Google.Cloud.PubSub.V1;
 using Google.Protobuf;
-using BaseFramework.Event.DailyCashFlow;
-
 
 namespace DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Outbound.EDA.Controller;
 
