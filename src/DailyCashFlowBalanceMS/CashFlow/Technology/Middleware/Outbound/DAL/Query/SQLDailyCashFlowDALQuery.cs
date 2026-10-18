@@ -1,53 +1,36 @@
-// File: apps/daily-cash-flow-service/src/DailyCashFlowService.API/3_Technology/Middleware/Outbound/DAL/Query/DurableDailyCashFlowDALQuery.cs
-using System.Data.Entity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using BaseFramework.DAL;
 using DailyCashFlowBalanceMS.CashFlow.Application.Contract.Query;
+using DailyCashFlowBalanceMS.CashFlow.Domain.Entity;
+using DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Outbound.DAL.ORM;
+using Microsoft.EntityFrameworkCore;
 
 namespace DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Outbound.DAL.Query;
 
-/**
- * ============================================================================
- * TOGAF DIMENSION: Phase D - Technology Architecture (Outbound Middleware)
- * HEXAGONAL ROLE:  Outbound Driven Adapter - Persistent/Durable Query
- * CONCEPTS:        High Performance Scaler Projections / EF6 NoTracking Read Engine
- * ============================================================================
- * This infrastructure component handles heavy persistent state read aggregations
- * for .NET 8.0, executing ultra-fast calculations against the database query replica.
- */
 public class SQLDailyCashFlowDALQuery : AbstractCRUDDAL, IDailyCashFlowQueryPort
 {
-    private readonly DailyCashFlowQueryContext _context;
+    // Receives the pure connection string from IoC and forwards it to the base infrastructure context
+    public SQLDailyCashFlowDALQuery(string connectionString) : base(connectionString) { }
 
-    /**
-     * Dependency Injection via Segregated Entity Framework 6 Query DbContext Pool (IoC).
-     * Instantiates the custom query context utilizing the lazy-loaded connection string 
-     * pointing transparently to the Read-Only database replica network infrastructure.
-     */
-    public SQLDailyCashFlowDALQuery(string sqlConnectionString)
-    {
-        if (string.IsNullOrWhiteSpace(sqlConnectionString))
-        {
-            throw new ArgumentNullException(nameof(sqlConnectionString), "Database connection string cannot be null or empty inside the storage layer.");
-        }
+    // Automatic mapping of the physical table in the cloud MySQL via EF Core
+    public DbSet<DailyCashFlowORM> CashFlowEntries { get; set; } = null!;
 
-        // FIXED: Initializing the dedicated query context instance manually inside the constructor 
-        // to correctly resolve the decoupled interface lifecycle instead of utilizing invalid ': base()' chains.
-        _context = new DailyCashFlowQueryContext(sqlConnectionString);
-    }
-
-    /**
-     * Computes the aggregated sum value of all transactions matching a specific date target.
-     * Bypasses memory tracing tracking mechanisms natively to optimize container resources.
-     */
     public async Task<decimal> readBalanceValue(DateTime date)
     {
-        // Executes the SQL SUM aggregation directly into the relational database engine.
-        // Due to the QueryContext configurations, this statement runs with zero allocation tracing overhead.
-        var aggregatedSum = await _context.CashFlowEntries
-            .Where(x => DbFunctions.TruncateTime(x.TransactionDate) == date.Date)
-            .SumAsync(x => (decimal?)x.Amount);
+        // 🗓️ TIME WINDOW RESOLUTION: Defines the exact start and end of the same day
+        DateTime startOfDay = date.Date; 
+        DateTime endOfDay = startOfDay.AddDays(1).AddTicks(-1); 
 
-        // Handles DBNull or empty datasets gracefully returning absolute decimal zero values
-        return aggregatedSum ?? 0.0m;
+        // 🚀 MAXIMUM PERFORMANCE: The Where clause and SumAsync run directly on the MySQL server (Cloud SQL) [1.1].
+        // AsNoTracking() bypasses the context memory tracking to deliver an ultra-fast lookup [1.1].
+        decimal totalBalance = await this.CashFlowEntries
+            .AsNoTracking()
+            .Where(x => x.TransactionDate >= startOfDay && x.TransactionDate <= endOfDay)
+            .SumAsync(orm => orm.Amount);
+
+        return totalBalance;
     }
 }

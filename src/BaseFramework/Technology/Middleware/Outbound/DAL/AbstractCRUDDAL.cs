@@ -1,150 +1,135 @@
-using System.ComponentModel;
-using System.Data.Entity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using BaseFramework.Technology.Middleware.Outbound.DAL;
-using BaseFramework.Technology.Util;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace BaseFramework.DAL;
 
-public abstract class AbstractCRUDDAL : Component, IDAL<IORMEntity>
+public abstract class AbstractCRUDDAL : DbContext, IDAL<IORMEntity>
 {
-    private DbContextTransaction t;
+    private readonly string _connectionString;
 
-
-    protected DbContext session;
-
-    public virtual DbContext Context
+    protected AbstractCRUDDAL(string connectionString) : base()
     {
-        get
+        _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
+    }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        if (!optionsBuilder.IsConfigured)
         {
-            return session;
+            optionsBuilder.UseMySql(_connectionString, ServerVersion.AutoDetect(_connectionString));
         }
     }
 
-    public AbstractCRUDDAL()
-        : base()
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        //string _projectId = "DailyCashFlowBalance";
+        base.OnModelCreating(modelBuilder);
 
-        //string _database = VaultCredentialUtility.GetSecretAsync(_projectId, "DATABASE").GetAwaiter().GetResult(); 
-        //string _userDB = VaultCredentialUtility.GetSecretAsync(_projectId, "USER_DATABASE").GetAwaiter().GetResult(); 
-        //string _passwordDB = VaultCredentialUtility.GetSecretAsync(_projectId, "PASSWORD_DATABASE").GetAwaiter().GetResult();
-
-        //string sqlConnectionString = $"Server=GCP_CLOUD_SQL\\SQLEXPRESS;Database={_database};User Id={_userDB};Password={_passwordDB};Trusted_Connection=True;TrustServerCertificate=True;";
-        //session = new(sqlConnectionString);
+        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        {
+            foreach (var property in entityType.GetProperties())
+            {
+                if (string.Equals(property.Name, "rowversion", StringComparison.OrdinalIgnoreCase))
+                {
+                    property.SetColumnType("timestamp");
+                }
+            }
+        }
     }
-        
-    public bool Add(IORMEntity entity)  
+
+        // ============================================================================
+    // IMPLEMENTAÇÃO ASSÍNCRONA CORRIGIDA (RUNTIME TYPE RESOLUTION)
+    // ============================================================================
+
+    public async Task<bool> AddAsync(IORMEntity entity)  
     {
-        if (!IsValid(entity))
-            return false;
+        if (!await IsValidAsync(entity)) return false;
         try
         {
-            t = session.Database.BeginTransaction();
-            session.Set(typeof(IORMEntity)).Add(entity);
-            t.Commit();
-            return session.Entry(entity).GetValidationResult().IsValid;
-
+            using var transaction = await this.Database.BeginTransactionAsync();
+            
+            // 🚀 CORREÇÃO: No EF Core, chamar o método AddAsync direto na raiz do DbContext
+            // faz com que ele descubra e mapeie o tipo real (DailyCashFlowORM) automaticamente [1.1]!
+            await base.AddAsync(entity); 
+            
+            await this.SaveChangesAsync(); 
+            await transaction.CommitAsync();
+            return true;
         }
-        catch (Exception ex)
-        {
-            if (ex.InnerException != null)
-                throw new Exception(ex.InnerException.Message, ex);
-            throw new Exception(ex.Message, ex);
-        }
+        catch (Exception ex) { throw NormalizeException(ex); }
     }
 
-    public bool Delete(IORMEntity entity)
-    {
-        try
-        {
-            t = session.Database.BeginTransaction();
-            session.Set(typeof(IORMEntity)).Remove(entity);
-            //.Set(typeof(IORMEntity)).Add(entity);
-            t.Commit();
-            return session.Entry(entity).GetValidationResult().IsValid;
-        }
-        catch (Exception ex)
-        {
-            if (ex.InnerException != null)
-                throw new Exception(ex.InnerException.Message, ex);
-            throw new Exception(ex.Message, ex);
-        }
-    }
-
-    public bool Update(IORMEntity entity)
-    {
-        if (!IsValid(entity))
-            return false;
-        try
-        {
-            t = session.Database.BeginTransaction();
-            //session.Set(typeof(TEntity)).Add(entity);
-            session.SaveChanges();
-            t.Commit();
-            return session.Entry(entity).GetValidationResult().IsValid;
-        }
-        catch (Exception ex)
-        {
-            if (ex.InnerException != null)
-                throw new Exception(ex.InnerException.Message, ex);
-            throw new Exception(ex.Message, ex);
-        }
-    }
-
-
-
-    public IList<IORMEntity> GetAll()
-    {
-        throw new NotImplementedException();
-    }
-
-    public IList<IORMEntity> GetAll(string[] include)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Dispose()
+    public async Task<bool> DeleteAsync(IORMEntity entity)
     {
         try
         {
-            t = session.Database.BeginTransaction();
-            //session.Set(typeof(IORMEntity)).Add(entity);
-            session.Dispose();
-            t.Commit();
+            using var transaction = await this.Database.BeginTransactionAsync();
+            
+            // Remove o registro usando o método de rastreamento do DbContext base [1.1]
+            base.Remove(entity);
+            
+            await this.SaveChangesAsync();
+            await transaction.CommitAsync();
+            return true;
         }
-        catch (Exception ex)
+        catch (Exception ex) { throw NormalizeException(ex); }
+    }
+
+    public async Task<bool> UpdateAsync(IORMEntity entity)
+    {
+        if (!await IsValidAsync(entity)) return false;
+        try
         {
-            if (ex.InnerException != null)
-                throw new Exception(ex.InnerException.Message, ex);
-            throw new Exception(ex.Message, ex);
+            using var transaction = await this.Database.BeginTransactionAsync();
+            
+            // Atualiza o registro usando o método de rastreamento do DbContext base [1.1]
+            base.Update(entity);
+            
+            await this.SaveChangesAsync();
+            await transaction.CommitAsync();
+            return true;
         }
+        catch (Exception ex) { throw NormalizeException(ex); }
     }
 
-    public IList<IORMEntity> GetAll<IORMEntity>() 
+
+    public Task<bool> IsValidAsync(IORMEntity entity)
     {
-        //return session.Set<IORMEntity>().ToList();
-        //return session.Set<(typeof(IORMEntity))>.ToList();
-        return (IList<IORMEntity>)(session.Set(typeof(IORMEntity))).Find();
-        //throw new NotImplementedException();
+        return Task.FromResult(entity != null);
     }
 
-    public IList<IORMEntity> GetAll<IORMEntity>(string[] include)
+    // Como as leituras da interface IDAL exigem um retorno genérico de IORMEntity,
+    // nós delegamos a busca mapeando dinamicamente através do tipo genérico passado pelo repositório filha.
+    public async Task<IList<IORMEntity>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        throw new NotImplementedException("Utilize o método protegido 'GetByQueryAsync<TEntity>' nas classes DAL filhas para leitura strongly-typed.");
     }
 
-  
-    public IList<IORMEntity> GetAll<IORMEntity>(System.Linq.Expressions.Expression<Func<IORMEntity, bool>> predicate) 
+    public async Task<IList<IORMEntity>> GetAllAsync(string[] include)
     {
-        throw new NotImplementedException();
+        throw new NotImplementedException("Utilize o método protegido 'GetByQueryAsync<TEntity>' nas classes DAL filhas para leitura strongly-typed.");
     }
 
-    public bool IsValid(IORMEntity entity)
+    public IList<IORMEntity> GetAll() => GetAllAsync().GetAwaiter().GetResult();
+    public IList<IORMEntity> GetAll(string[] include) => GetAllAsync(include).GetAwaiter().GetResult();
+
+    // ============================================================================
+    // FACILITADORES PROTEGIDOS FORTEMENTE TIPADOS PARA AS DALs FILHAS
+    // ============================================================================
+    
+    protected async Task<IList<TEntity>> GetByQueryAsync<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity : class
     {
-        return true;
+        return await this.Set<TEntity>().Where(predicate).AsNoTracking().ToListAsync();
     }
 
+    private Exception NormalizeException(Exception ex)
+    {
+        if (ex.InnerException != null) return new Exception(ex.InnerException.Message, ex);
+        return new Exception(ex.Message, ex);
+    }
 }
-
-

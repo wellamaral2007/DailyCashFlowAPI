@@ -4,12 +4,12 @@ using System.Linq.Expressions;
 namespace BaseFramework.DAL;
 public interface IDAL<TEntity> : IDisposable where TEntity : class
 {
-    IList<TEntity> GetAll();
-    IList<TEntity> GetAll(string[] include);
-    //IList<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate);
+    Task<IList<TEntity>> GetAllAsync();
+    Task<IList<TEntity>> GetAllAsync(string[] include);
+    //Task<IList<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate);
 
-    bool Add(TEntity entity);
-    bool Delete(TEntity entity);
-    bool Update(TEntity entity);
-    bool IsValid(TEntity entity);
+    Task<bool> AddAsync(TEntity entity);
+    Task<bool> DeleteAsync(TEntity entity);
+    Task<bool> UpdateAsync(TEntity entity);
+    Task<bool> IsValidAsync(TEntity entity);
 }

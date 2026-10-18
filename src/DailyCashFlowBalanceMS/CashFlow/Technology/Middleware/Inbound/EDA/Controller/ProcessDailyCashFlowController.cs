@@ -1,12 +1,11 @@
-using System.Text; 
+using System.Text;
 using System.Text.Json;
 using DailyCashFlowBalanceMS.CashFlow.Domain.Entity;
 using CloudNative.CloudEvents;
 using Google.Cloud.Functions.Framework;
 using System.Runtime.CompilerServices;
 using DailyCashFlowBalanceMS.CashFlow.Application.Service;
-using DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Outbound.DAL.Command;
-using DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.DTO.Event.DailyCashFlow;
+using DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.DTO.Event.DailyCashFlow; // 📌 Namespace sintonizado com o contrato do seu BaseFramework
 
 namespace DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Inbound.EDA.Controller;
 
@@ -22,12 +21,6 @@ public class ProcessDailyCashFlowController : ICloudEventFunction<object>
     [MethodImpl(MethodImplOptions.NoOptimization | MethodImplOptions.NoInlining)]
     public async Task HandleAsync(CloudEvent cloudEvent, object data, CancellationToken cancellationToken)
     {
-        using (var context = new DailyCashFlowCommandContext(Environment.GetEnvironmentVariable("ConnectionStrings__db-write-connection")))
-        {
-            // Cria a tabela física 'CashFlowEntries' se ela estiver faltando na nuvem
-            await context.Database.EnsureCreatedAsync(); 
-        }
-
         if (data == null) return;
 
         DailyCashFlowEvent? eventData = null;
@@ -35,7 +28,7 @@ public class ProcessDailyCashFlowController : ICloudEventFunction<object>
 
         try
         {
-            // 1. Extrai o texto plano do envelope injetado pelo Google
+            // 1. Extrai o texto plano do envelope injetado nativamente pelo framework
             string rawJson = data is JsonElement element ? element.GetRawText() : JsonSerializer.Serialize(data);
 
             using (JsonDocument doc = JsonDocument.Parse(rawJson))
@@ -80,11 +73,13 @@ public class ProcessDailyCashFlowController : ICloudEventFunction<object>
         }
 
         // Traduz e normaliza o record de infraestrutura em uma Entidade de Domínio Rica (Hexagonal Core)
-        var domainEntity = new DailyCashFlowEntity();
-        domainEntity.Id = !string.IsNullOrEmpty(eventData.Id) ? eventData.Id : Guid.NewGuid().ToString(); 
-        domainEntity.CreditDebitValue = eventData.CreditDebitValue; 
-        domainEntity.ThowDate = eventData.ThowDate != default ? eventData.ThowDate : DateTime.UtcNow;
-        domainEntity.EventType = eventData.EventType;
+        var domainEntity = new DailyCashFlowEntity
+        {
+            Id = !string.IsNullOrEmpty(eventData.Id) ? eventData.Id : Guid.NewGuid().ToString(),
+            CreditDebitValue = eventData.CreditDebitValue,
+            ThowDate = eventData.ThowDate != default ? eventData.ThowDate : DateTime.UtcNow,
+            EventType = eventData.EventType
+        };
 
         // Envia a execução diretamente para o Facade da Aplicação Core (SAGA)
         await _dailyCashFlowService.ProcessingDailyCashEvent(domainEntity);

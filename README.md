@@ -122,7 +122,7 @@ real-time using SQL Server data, ensuring the system never goes down.
 
 ## Development Environment
 
-* Language: C# (.NET 8)
+* Language: C# (.NET 9)
 
 * Infrastructure: GCP (Google Cloud Platform)
 
@@ -188,3 +188,44 @@ real-time using SQL Server data, ensuring the system never goes down.
 * Make all tests run, unitary, integration and load tests
 
   ./tests-all.sh
+
+  ### 🔹 3.1 Orchestration Diagram & Pipeline Execution Breakdowns
+
+The complete infrastructure deployment is managed through the execution of the main loop. Below is the automated structural flow followed by a line-by-line breakdown of each script's responsibility within the Cloud architecture:
+
+```text
+┌──────────────────────────────────────────────────────────────────────────────────────────┐
+│                               deploy-all.sh Execution Flow                               │
+├───────────────────┬───────────────────┬──────────────────────────┬───────────────────────┤
+│      STAGE 1      │      STAGE 2      │         STAGE 3          │        STAGE 4        │
+│   🛡️ Foundation   │  ⚡ Core Services  │   🚀 Compute & Gateways  │     🧪 Validation     │
+├───────────────────┼───────────────────┼──────────────────────────┼───────────────────────┤
+│ • gcloud set      │ • Secrets (Vault) │ • Cloud Functions (FaaS) │ • tests-all.sh        │
+│ • setup-gcp.sh    │ • Network & IAM   │ • Apigee API Proxies     │   - Domain Unit       │
+│                   │ • DBs & Pub/Sub   │                          │   - DAL Integration   │
+│                   │                   │                          │   - NBomber Load Test │
+└───────────────────┴───────────────────┴──────────────────────────┴───────────────────────┘
+```
+
+#### 📋 Line-by-Line Script Execution Details
+
+* **`gcloud config set project finance-solution-2026`**
+  * Modulates the active Google Cloud SDK context to target the dedicated production project boundary workspace before invoking any automation.
+* **`./setup-gcp.sh`**
+  * Triggers the cloud bootstrapping phase by programmatically enabling native Google Cloud APIs (Cloud SQL Admin, Memorystore, Pub/Sub, Cloud Functions, and Apigee Deployment Management).
+* **`./deploy-secrets.sh`**
+  * Seeds symmetric database credentials and secure API encryption tokens directly into Google Secret Manager, resolved dynamically at runtime via the `VaultCredentialUtility` wrapper helper.
+* **`./deploy-network.sh`**
+  * Establishes the private network topology core by provisioning VPC meshes, Private Service Connect links, and **Cloud Firewall Ingress Rules** (`allow-bastion-to-infrastructure`) to lock down internal communication.
+* **`./deploy-databases.sh`**
+  * Provisions the highly available, multi-node storage layers by initializing Cloud SQL for MySQL Master (`10.10.0.11`), Read Replica (`10.10.0.13`), and Google Memorystore for Redis (`10.10.76.235`).
+* **`./deploy-pubsub.sh`**
+  * Configures the EDA asynchronous message brokers by provisioning the `DailyCashFlowEntry` pub/sub topic alongside its dedicated push subscription listener paths.
+* **`./deploy-iam.sh`**
+  * Enforces least-privilege cloud governance by generating isolated Service Accounts, binding them tightly to the runtime compute execution blocks to prevent security leaks.
+* **`./deploy-cloud-functions.sh`**
+  * Compiles and publishes the optimized `.NET 9` container framework environment (`net9.0-alpine`), explicitly anchoring the Kestrel inbound loop via the `FUNCTION_TARGET` environment configuration.
+* **`./deploy-apigee.sh`**
+  * Publishes the API Gateway proxy configuration schema into targeted environment hostname groups, enforcing `Verify-Credentials` basic auth and OAuth2 token validation rules on edge ports.
+* **`./tests-all.sh`**
+  * Kicks off the continuous non-blocking validation matrix, routing the solution across four strict pipeline barriers (Domain Unit, DAL Integration, and NBomber 50 RPS load validations).
