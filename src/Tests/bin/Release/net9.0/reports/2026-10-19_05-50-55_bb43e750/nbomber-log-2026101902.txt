@@ -1,0 +1,14 @@
+2026-10-19 02:50:55.884 -03:00 [INF] [ThreadId:16] NBomber 6.4.0 started a new session: 2026-10-19_05-50-55_bb43e750
+2026-10-19 02:50:55.948 -03:00 [INF] [ThreadId:16] NBomber started as single node
+2026-10-19 02:50:55.951 -03:00 [INF] [ThreadId:16] License validation....
+2026-10-19 02:50:55.952 -03:00 [WRN] [ThreadId:16] THIS VERSION IS FREE ONLY FOR PERSONAL USE. You can't use it for an organization.
+2026-10-19 02:50:55.969 -03:00 [INF] [ThreadId:16] Reports folder: /media/wellington/SIA_TERA1/SysInAut - SIASolution/solutions/Ambiente Desenvolvedor/C#/dotnet9/reports/2026-10-19_05-50-55_bb43e750
+2026-10-19 02:50:55.969 -03:00 [INF] [ThreadId:16] Plugins: no plugins were loaded
+2026-10-19 02:50:55.970 -03:00 [INF] [ThreadId:16] Reporting sinks: no reporting sinks were loaded
+2026-10-19 02:50:55.970 -03:00 [INF] [ThreadId:16] Starting init...
+2026-10-19 02:50:55.985 -03:00 [INF] [ThreadId:16] Target scenarios: gcp_faas_daily_cash_flow_load_test
+2026-10-19 02:50:55.988 -03:00 [INF] [ThreadId:16] Init finished
+2026-10-19 02:50:56.034 -03:00 [INF] [ThreadId:16] Starting warm up...
+2026-10-19 02:50:56.035 -03:00 [INF] [ThreadId:16] Warm up for scenarios: gcp_faas_daily_cash_flow_load_test
+2026-10-19 02:50:56.041 -03:00 [INF] [ThreadId:16] Warm up duration: 00:00:10
+2026-10-19 02:50:57.107 -03:00 [WRN] [ThreadId:40] Stopping test early: stop command activated by CLI

@@ -27,13 +27,21 @@ namespace Tests.DailyCashFlow.IntegrationCashFlow.Tests
                 .Build();
 
             // Fallbacks apontando para o seu ambiente local de testes ativos
-            // var baseUrl = configuration["ApiSettings:BaseUrl"] ?? "http://localhost:8080"; // 🚀 TESTING: Local test
-            var baseUrl = configuration["ApiSettings:BaseUrl"] ?? "http://localhost:8080";
+            var baseUrl = configuration["ApiSettings:BaseUrl"] ?? "http://localhost:8080"; // 🚀 TESTING: Local test
+            //var baseUrl = configuration["ApiSettings:BaseUrl"] ?? "https://localhost:8443";
             _username = configuration["ApiSettings:TestUser"] ?? "test_user";
             _password = configuration["ApiSettings:TestPassword"] ?? "password123";
 
-            var httpClient = new HttpClient { BaseAddress = new Uri(baseUrl) };
+            // 1. Cria um manipulador HTTP forçando o .NET a ignorar qualquer erro de SSL local do Apigee
+            var handler = new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+            };
+
+            // 2. Injeta o manipulador configurado no HttpClient de integração
+            var httpClient = new HttpClient(handler) { BaseAddress = new Uri(baseUrl) };
             _apiClient = new DailyCashFlowApiClient(httpClient);
+
 
             _uniqueSession = Guid.NewGuid().ToString();
             _createdEntriesInTest = new List<Guid>();
@@ -43,7 +51,7 @@ namespace Tests.DailyCashFlow.IntegrationCashFlow.Tests
         public async Task InitializeAsync()
         {
             // Executa a autenticação real populando o Token com a propriedade maiúscula correta
-            // await _apiClient.AuthenticateAsync(_username, _password);
+            await _apiClient.AuthenticateAsync(_username, _password);
         }
 
         [Fact]
@@ -80,7 +88,14 @@ namespace Tests.DailyCashFlow.IntegrationCashFlow.Tests
             var resBalance = await _apiClient.GetBalanceAsync(today, _uniqueSession);
 
             // 3. Assert
-            resBalance.EnsureSuccessStatusCode();
+            if (!resBalance.IsSuccessStatusCode)
+            {
+                // Captura a URL real montada pelo HttpClient e o corpo da resposta do Apigee
+                string attemptedUrl = resBalance.RequestMessage?.RequestUri?.ToString() ?? "Desconhecida";
+                string errorContent = await resBalance.Content.ReadAsStringAsync();
+                
+                throw new HttpRequestException($"[ERRO 404 DIAGNÓSTICO] URL enviada: {attemptedUrl} Corpo da Resposta: {errorContent}");
+            }
 
             // 1. Lê a resposta bruta do Controller: '{"balanceValue": 3192,3800000000000000000000000}'
             var rawJson = await resBalance.Content.ReadAsStringAsync();

@@ -34,11 +34,10 @@ public class DailyCashFlowBalanceController : IHttpFunction
         HttpRequest request = context.Request;
         HttpResponse response = context.Response;
 
+        var queryString = request.Query;
         switch (request.Method)
         {
             case "POST": // Throw Credit or Debit financial movement to the Microservice
-                var queryString = request.Query;
-                
                 // Safe extraction of query parameters from the HTTP request context
                 if (queryString.TryGetValue("CreditDebitValue", out var creditDebitValueStr) && 
                     decimal.TryParse(creditDebitValueStr, out decimal parsedValue))
@@ -68,10 +67,19 @@ public class DailyCashFlowBalanceController : IHttpFunction
                 break;
 
             case "GET": // Fetch consolidated net balance value from the resilient architecture
-                decimal balanceValue = await _dailyCashFlowService.GetNetBalanceAsync(DateTime.Now);
-                
-                response.StatusCode = (int)HttpStatusCode.OK;
-                await response.WriteAsync($"{{\"balanceValue\": {balanceValue}}}", context.RequestAborted);
+                if (queryString.TryGetValue("date", out var dateBalance) && 
+                    DateTime.TryParse(dateBalance, out DateTime parsedDate))
+                {
+                    decimal balanceValue = await _dailyCashFlowService.GetNetBalanceAsync(parsedDate);
+                    
+                    response.StatusCode = (int)HttpStatusCode.OK;
+                    await response.WriteAsync($"{{\"balanceValue\": {balanceValue}}}", context.RequestAborted);
+                }
+                else
+                {
+                    response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    await response.WriteAsync("{\"error\": \"Missing or invalid mandatory query parameter 'CreditDebitValue'.\"}", context.RequestAborted);
+                }
                 break;
 
             default:

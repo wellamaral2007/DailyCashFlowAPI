@@ -42,8 +42,8 @@ public abstract class AbstractCRUDDAL : DbContext, IDAL<IORMEntity>
         }
     }
 
-        // ============================================================================
-    // IMPLEMENTAÇÃO ASSÍNCRONA CORRIGIDA (RUNTIME TYPE RESOLUTION)
+    // ============================================================================
+    // IMPLEMENTAÇÃO ASSÍNCRONA OTIMIZADA PARA ALTA PERFORMANCE (SEM LOCK MANUAL)
     // ============================================================================
 
     public async Task<bool> AddAsync(IORMEntity entity)  
@@ -51,14 +51,13 @@ public abstract class AbstractCRUDDAL : DbContext, IDAL<IORMEntity>
         if (!await IsValidAsync(entity)) return false;
         try
         {
-            using var transaction = await this.Database.BeginTransactionAsync();
-            
-            // 🚀 CORREÇÃO: No EF Core, chamar o método AddAsync direto na raiz do DbContext
-            // faz com que ele descubra e mapeie o tipo real (DailyCashFlowORM) automaticamente [1.1]!
+            // 🚀 ULTRA PERFORMANCE: Removido BeginTransactionAsync().
+            // O base.AddAsync registra a entidade no ChangeTracker em poucos microssegundos.
             await base.AddAsync(entity); 
             
+            // O SaveChangesAsync cria implicitamente uma transação atômica nativa otimizada pelo MySQL,
+            // persistindo 1 registro por requisição sem travar as threads concorrentes do pool [1.1].
             await this.SaveChangesAsync(); 
-            await transaction.CommitAsync();
             return true;
         }
         catch (Exception ex) { throw NormalizeException(ex); }
@@ -68,13 +67,10 @@ public abstract class AbstractCRUDDAL : DbContext, IDAL<IORMEntity>
     {
         try
         {
-            using var transaction = await this.Database.BeginTransactionAsync();
-            
-            // Remove o registro usando o método de rastreamento do DbContext base [1.1]
+            // 🚀 ULTRA PERFORMANCE: Removido BeginTransactionAsync().
             base.Remove(entity);
             
             await this.SaveChangesAsync();
-            await transaction.CommitAsync();
             return true;
         }
         catch (Exception ex) { throw NormalizeException(ex); }
@@ -85,18 +81,14 @@ public abstract class AbstractCRUDDAL : DbContext, IDAL<IORMEntity>
         if (!await IsValidAsync(entity)) return false;
         try
         {
-            using var transaction = await this.Database.BeginTransactionAsync();
-            
-            // Atualiza o registro usando o método de rastreamento do DbContext base [1.1]
+            // 🚀 ULTRA PERFORMANCE: Removido BeginTransactionAsync().
             base.Update(entity);
             
             await this.SaveChangesAsync();
-            await transaction.CommitAsync();
             return true;
         }
         catch (Exception ex) { throw NormalizeException(ex); }
     }
-
 
     public Task<bool> IsValidAsync(IORMEntity entity)
     {
