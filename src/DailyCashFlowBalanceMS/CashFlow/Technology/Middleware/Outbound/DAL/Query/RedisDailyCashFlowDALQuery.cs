@@ -54,7 +54,7 @@ public class RedisDailyCashFlowDALQuery : IDailyCashFlowQueryPort
     {
         try
         {
-            // Executes the data fetch protected by the Circuit Breaker targeting the QuickAccess Port
+            // Executa a busca protegida pelo Circuit Breaker voltada ao Redis (QuickAccess)
             return await _circuitBreaker.ExecuteAsync(async () =>
             {
                 try
@@ -65,23 +65,34 @@ public class RedisDailyCashFlowDALQuery : IDailyCashFlowQueryPort
                     var cachedValue = await db.StringGetAsync(key);
                     if (cachedValue.IsNullOrEmpty) 
                     {
-                        return 0.0m; // Returns absolute zero acting as a traditional Cache Miss fallback trigger
+                        // ATENÇÃO: Se for um Cache Miss, você deve lançar uma exceção customizada ou
+                        // retornar um valor que indique que precisa buscar no SQL. 
+                        // Se retornar 0.0m direto aqui, ele assume que o saldo é zero e pula o SQL.
+                        throw new KeyNotFoundException("Cache Miss"); 
                     }
                     
                     return decimal.Parse(cachedValue.ToString());
                 }
-                catch (Exception ex)
+                catch (Exception ex) when (ex is not KeyNotFoundException)
                 {
-                    Console.WriteLine($"[QUICK ACCESS ERROR] {ex.Message}. Tripping Circuit Breaker and routing to Durable Query Port.");
-                    throw; // Rethrow to inform Polly about the failure and update the circuit state
+                    Console.WriteLine($"[QUICK ACCESS ERROR] {ex.Message}. Tripping Circuit Breaker.");
+                    throw; // Repassa para o Polly contabilizar a falha de infraestrutura
                 }
             });
         }
-        catch (BrokenCircuitException)
+        catch (Exception ex) // CORREÇÃO: Captura tanto BrokenCircuitException quanto a falha inicial do Redis
         {
-            // 2. Critical Fallback: Circuit is broken. Bypasses QuickAccess completely and targets the Durable Query Port directly
-            Console.WriteLine("[FALLBACK CRITICAL] Circuit is broken. Bypassing QuickAccess and querying Durable Query Port directly.");
-            return await _sqlDailyCashFlowDALQuery.readBalanceValue(DateTime.Now);
+            if (ex is BrokenCircuitException)
+            {
+                Console.WriteLine("[FALLBACK CRITICAL] Circuit is open. Bypassing QuickAccess and querying Durable Query Port directly.");
+            }
+            else
+            {
+                Console.WriteLine($"[FALLBACK IMMEDIATE] Redis failed down: {ex.Message}. Routing immediately to Durable Query Port.");
+            }
+
+            // Executa a consulta de alta durabilidade no SQL usando a data correta do fuso local
+            return await _sqlDailyCashFlowDALQuery.readBalanceValue(date);
         }
 
     }

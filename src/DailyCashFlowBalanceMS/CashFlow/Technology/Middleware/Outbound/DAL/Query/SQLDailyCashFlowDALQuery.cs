@@ -20,17 +20,11 @@ public class SQLDailyCashFlowDALQuery : AbstractCRUDDAL, IDailyCashFlowQueryPort
 
     public async Task<decimal> readBalanceValue(DateTime date)
     {
-        // 🗓️ TIME WINDOW RESOLUTION: Defines the exact start and end of the same day
-        DateTime startOfDay = date.Date; 
-        DateTime endOfDay = startOfDay.AddDays(1).AddTicks(-1); 
-
-        // 🚀 MAXIMUM PERFORMANCE: The Where clause and SumAsync run directly on the MySQL server (Cloud SQL) [1.1].
-        // AsNoTracking() bypasses the context memory tracking to deliver an ultra-fast lookup [1.1].
         decimal totalBalance = await this.CashFlowEntries
             .AsNoTracking()
-            .Where(x => x.TransactionDate >= startOfDay && x.TransactionDate <= endOfDay)
+            .Where(x => x.TransactionDate.Date == date.Date)
             .SumAsync(orm => orm.Amount);
 
-        return totalBalance;
+        return Math.Round(totalBalance, 2, MidpointRounding.AwayFromZero);
     }
 }

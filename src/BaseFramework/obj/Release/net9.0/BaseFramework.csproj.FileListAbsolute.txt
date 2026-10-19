@@ -1,0 +1,15 @@
+/home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/bin/Release/net9.0/BaseFramework.deps.json
+/home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/bin/Release/net9.0/BaseFramework.runtimeconfig.json
+/home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/bin/Release/net9.0/BaseFramework.dll
+/home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/bin/Release/net9.0/BaseFramework.pdb
+/home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/obj/Release/net9.0/BaseFramework.csproj.AssemblyReference.cache
+/home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/obj/Release/net9.0/BaseFramework.GeneratedMSBuildEditorConfig.editorconfig
+/home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/obj/Release/net9.0/BaseFramework.AssemblyInfoInputs.cache
+/home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/obj/Release/net9.0/BaseFramework.AssemblyInfo.cs
+/home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/obj/Release/net9.0/BaseFramework.csproj.CoreCompileInputs.cache
+/home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/obj/Release/net9.0/BaseFramework.sourcelink.json
+/home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/obj/Release/net9.0/BaseFramework.dll
+/home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/obj/Release/net9.0/refint/BaseFramework.dll
+/home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/obj/Release/net9.0/BaseFramework.pdb
+/home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/obj/Release/net9.0/BaseFramework.genruntimeconfig.cache
+/home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/obj/Release/net9.0/ref/BaseFramework.dll

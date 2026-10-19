@@ -45,8 +45,8 @@ public class DailyCashFlowBalanceController : IHttpFunction
                 {
                     // Generates unique identifiers and metadata for the new Domain Entity context
                     string transactionId = Guid.NewGuid().ToString();
-                    DateTime currentTimestamp = DateTime.UtcNow;
-                    
+                    DateTime currentTimestamp = DateTime.Now; // Usa o fuso horário local da sua máquina no Brasil
+                   
                     // Creates the Rich Domain Entity through the unified application service facade
                     var domainEntity = new DailyCashFlowEntity();
                     domainEntity.Id = transactionId;
@@ -68,7 +68,7 @@ public class DailyCashFlowBalanceController : IHttpFunction
                 break;
 
             case "GET": // Fetch consolidated net balance value from the resilient architecture
-                decimal balanceValue = await _dailyCashFlowService.GetNetBalanceAsync(DateTime.UtcNow);
+                decimal balanceValue = await _dailyCashFlowService.GetNetBalanceAsync(DateTime.Now);
                 
                 response.StatusCode = (int)HttpStatusCode.OK;
                 await response.WriteAsync($"{{\"balanceValue\": {balanceValue}}}", context.RequestAborted);

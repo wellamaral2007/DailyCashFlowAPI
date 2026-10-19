@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
-using Google.Cloud.Functions.Hosting; // Benefit from Google's native FaaS initialization host
+using Google.Cloud.Functions.Hosting; // 🌐 Benefit from Google's native FaaS initialization host
 using DailyCashFlowBalanceService = DailyCashFlowBalanceMS.CashFlow.Application.Service.DailyCashFlowBalanceService;
 using DailyCashFlowBalanceMS.CashFlow.Application.Contract.Command;
 using DailyCashFlowBalanceMS.CashFlow.Application.Contract.Query;
@@ -26,7 +26,7 @@ public class ProgramStartup : FunctionsStartup
         bool isDevelopment = environment.Equals("Development", StringComparison.OrdinalIgnoreCase);
 
         // ============================================================================
-        // REDIS CONFIGURATION (LAZY SINGLETON POOL)
+        // ⚡ REDIS CONFIGURATION (LAZY SINGLETON POOL)
         // ============================================================================
         services.AddSingleton<IConnectionMultiplexer>(sp =>
         {
@@ -37,11 +37,11 @@ public class ProgramStartup : FunctionsStartup
         });
 
         // ============================================================================
-        // HEXAGONAL ARCHITECTURE: DIRECT CONNECTION STRING INJECTION INTO REPOSITORIES
+        // 🌐 HEXAGONAL ARCHITECTURE: DIRECT CONNECTION STRING INJECTION INTO REPOSITORIES
         // ============================================================================
 
         // ============================================================================
-        // ADAPTERS AND PORTS REGISTRATION (HEXAGONAL DEPENDENCY INJECTION MESH)
+        // ⚡ ADAPTERS AND PORTS REGISTRATION (HEXAGONAL DEPENDENCY INJECTION MESH)
         // ============================================================================
 
         // 1. Durable Command Port (MySQL Write Engine)
@@ -60,18 +60,29 @@ public class ProgramStartup : FunctionsStartup
         // 3. Event Publisher Command Port (Outbound Messaging/PubSub Channel)
         services.AddScoped<IEventDailyCashFlowPublisherCommandPort, GenerateDailyCashFlowController>();
 
-        // 4. Query Port (MySQL/Redis Read Engine)
-        services.AddScoped<IDailyCashFlowQueryPort, SQLDailyCashFlowDALQuery>(sp =>
+        // 🚀 4. RESILIENT READ PIPELINE SWITCH (REDIS PRIMARY W/ SQL FALLBACK BACKING)
+        // Resolves the database read connection, instantiates the SQL query repository,
+        // and injects it alongside the Redis multiplexer pool into the resilient cache-aside adapter.
+        services.AddScoped<IDailyCashFlowQueryPort, RedisDailyCashFlowDALQuery>(sp =>
         {
+            // A. Captures the Singleton Connection Multiplexer pool for Redis
+            var redisPool = sp.GetRequiredService<IConnectionMultiplexer>();
+
+            // B. Resolves the read-only connection string for database replication nodes
             string readConnectionString = isDevelopment
                 ? (Environment.GetEnvironmentVariable("ConnectionStrings__db-read-connection") ?? Environment.GetEnvironmentVariable("DATABASE")!)
                 : VaultCredentialUtility.GetSecretAsync(projectId, "db-read-connection").GetAwaiter().GetResult();
 
-            return new SQLDailyCashFlowDALQuery(readConnectionString);
+            // C. Instantiates the dedicated SQL Relational Query Repository
+            var sqlDALQuery = new SQLDailyCashFlowDALQuery(readConnectionString);
+
+            // D. Returns the resilient Redis adapter injecting the SQL repository as the active fallback engine
+            return new RedisDailyCashFlowDALQuery(redisPool, sqlDALQuery);
         });
 
+
         // ============================================================================
-        // WORKFLOW WORKERS & CORE SERVICE BOUNDARIES
+        // ⚙️ WORKFLOW WORKERS & CORE SERVICE BOUNDARIES
         // ============================================================================
         
         // Hexagon Core Business Facade (Application Layer / SAGA Orchestrator)
