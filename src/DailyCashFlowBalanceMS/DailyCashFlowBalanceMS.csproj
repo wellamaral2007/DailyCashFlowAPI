@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <!-- 📌 GOVERNANÇA: Alinhado na versão estável do .NET 9.0 -->
-    <TargetFramework>net9.0</TargetFramework>
+    <!-- 📌 GOVERNANÇA: Alinhado na versão estável do .NET 10.0 -->
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- 📌 FIXED: Ingestão do motor 3.0.0 oficial do Google Functions Framework para o .NET 9 -->
+    <!-- 📌 FIXED: Ingestão do motor 3.0.0 oficial do Google Functions Framework para o .NET 10 -->
     <PackageReference Include="Google.Cloud.Functions.Framework" Version="3.0.0" />
     <PackageReference Include="Google.Cloud.Functions.Hosting" Version="3.0.0" />
 
@@ -29,8 +29,8 @@
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
     <PackageReference Include="StackExchange.Redis" Version="2.8.24" />
     
-    <!-- Suporte nativo a OpenAPI do .NET 9 (Substituindo o Swashbuckle descontinuado) -->
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0" />
+    <!-- Suporte nativo a OpenAPI do .NET 10 (Substituindo o Swashbuckle descontinuado) -->
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.0" />
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
