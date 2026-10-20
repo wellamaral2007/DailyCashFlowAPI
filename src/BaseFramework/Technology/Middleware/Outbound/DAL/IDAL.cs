@@ -1,6 +1,3 @@
-using System.Data.Entity;
-using System.Linq.Expressions;
-
 namespace BaseFramework.DAL;
 public interface IDAL<TEntity> : IDisposable where TEntity : class
 {

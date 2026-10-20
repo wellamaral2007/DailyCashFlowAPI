@@ -243,12 +243,6 @@ sequenceDiagram
     FaaS-->>PubSub: ACK (Message Evicted From Queue)
 ```
 
-### 🔹 Why and How Do These Principles Apply?
-* **TOGAF ADM:** Ensures strict alignment between Business Architecture (Phase B: durable control of daily balances without duplication), Information Systems Architecture (Phase C: rigid data isolation between caching layer and relational storage), and Technology Architecture (Phase D: native Google Cloud Functions Gen2 FaaS infrastructure protected by a layered Apigee API Management Gateway Proxy mesh) [11.11, 11.21].
-* **CQRS:** Segregates write and read responsibilities [11.11]. Write commands run in the background via asynchronous messaging against the Master database cluster node [11.11]. Read queries consume synchronous data through a fast reactive caching strategy falling back to read replicas, effectively mitigating transactional database lock contention [11.11].
-* **EDA:** Utilizes an asynchronous event-driven architecture modeled around microservice choreographies. Inbound components process **CloudEvents v1.0** Pub/Sub push envelopes, decoding compressed payloads hidden inside **Base64** strings (`throw` and `registered` events).
-* **Hexagonal (Ports & Adapters):** Completely isolates pure business logic (Core Domain) from any coupling with third-party frameworks, database drivers, cloud providers, or raw network connection configurations.
-
 ### 🏛️ 1.2 Hexagonal Port & Adapter Micro-Architecture
 The internal component design adheres strictly to pure decoupled architecture constraints:
 

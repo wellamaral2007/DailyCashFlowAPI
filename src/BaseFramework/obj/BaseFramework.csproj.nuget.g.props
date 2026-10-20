@@ -14,10 +14,6 @@
   </ItemGroup>
   <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <Import Project="$(NuGetPackageRoot)microsoft.entityframeworkcore/9.0.0/buildTransitive/net8.0/Microsoft.EntityFrameworkCore.props" Condition="Exists('$(NuGetPackageRoot)microsoft.entityframeworkcore/9.0.0/buildTransitive/net8.0/Microsoft.EntityFrameworkCore.props')" />
-    <Import Project="$(NuGetPackageRoot)google.cloud.functions.hosting/3.0.0/build/net8.0/Google.Cloud.Functions.Hosting.props" Condition="Exists('$(NuGetPackageRoot)google.cloud.functions.hosting/3.0.0/build/net8.0/Google.Cloud.Functions.Hosting.props')" />
-    <Import Project="$(NuGetPackageRoot)entityframework/6.5.1/buildTransitive/net6.0/EntityFramework.props" Condition="Exists('$(NuGetPackageRoot)entityframework/6.5.1/buildTransitive/net6.0/EntityFramework.props')" />
+    <Import Project="$(NuGetPackageRoot)google.cloud.functions.hosting/3.0.1/build/net8.0/Google.Cloud.Functions.Hosting.props" Condition="Exists('$(NuGetPackageRoot)google.cloud.functions.hosting/3.0.1/build/net8.0/Google.Cloud.Functions.Hosting.props')" />
   </ImportGroup>
-  <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <PkgEntityFramework Condition=" '$(PkgEntityFramework)' == '' ">/home/wellington/.nuget/packages/entityframework/6.5.1</PkgEntityFramework>
-  </PropertyGroup>
 </Project>

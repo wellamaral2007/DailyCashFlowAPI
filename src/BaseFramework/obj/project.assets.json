@@ -2,19 +2,6 @@
   "version": 4,
   "targets": {
     "net10.0": {
-      "BouncyCastle.Cryptography/2.3.1": {
-        "type": "package",
-        "compile": {
-          "lib/net6.0/BouncyCastle.Cryptography.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net6.0/BouncyCastle.Cryptography.dll": {
-            "related": ".xml"
-          }
-        }
-      },
       "CloudNative.CloudEvents/2.8.0": {
         "type": "package",
         "compile": {
@@ -63,35 +50,6 @@
           }
         }
       },
-      "EntityFramework/6.5.1": {
-        "type": "package",
-        "dependencies": {
-          "System.CodeDom": "6.0.0",
-          "System.ComponentModel.Annotations": "5.0.0",
-          "System.Configuration.ConfigurationManager": "6.0.1",
-          "System.Data.SqlClient": "4.8.6"
-        },
-        "compile": {
-          "lib/netstandard2.1/EntityFramework.SqlServer.dll": {
-            "related": ".xml"
-          },
-          "lib/netstandard2.1/EntityFramework.dll": {
-            "related": ".SqlServer.xml;.xml"
-          }
-        },
-        "runtime": {
-          "lib/netstandard2.1/EntityFramework.SqlServer.dll": {
-            "related": ".xml"
-          },
-          "lib/netstandard2.1/EntityFramework.dll": {
-            "related": ".SqlServer.xml;.xml"
-          }
-        },
-        "build": {
-          "buildTransitive/net6.0/EntityFramework.props": {},
-          "buildTransitive/net6.0/EntityFramework.targets": {}
-        }
-      },
       "Google.Api.CommonProtos/2.17.0": {
         "type": "package",
         "dependencies": {
@@ -111,7 +69,7 @@
           "build/_._": {}
         }
       },
-      "Google.Api.Gax/4.12.1": {
+      "Google.Api.Gax/4.13.1": {
         "type": "package",
         "dependencies": {
           "Microsoft.Bcl.AsyncInterfaces": "6.0.0",
@@ -128,12 +86,12 @@
           }
         }
       },
-      "Google.Api.Gax.Grpc/4.12.1": {
+      "Google.Api.Gax.Grpc/4.13.1": {
         "type": "package",
         "dependencies": {
           "Google.Api.CommonProtos": "2.17.0",
-          "Google.Api.Gax": "4.12.1",
-          "Google.Apis.Auth": "1.72.0",
+          "Google.Api.Gax": "4.13.1",
+          "Google.Apis.Auth": "1.73.0",
           "Grpc.Auth": "[2.71.0, 3.0.0)",
           "Grpc.Core.Api": "[2.71.0, 3.0.0)",
           "Grpc.Net.Client": "[2.71.0, 3.0.0)",
@@ -150,10 +108,10 @@
           }
         }
       },
-      "Google.Apis/1.72.0": {
+      "Google.Apis/1.73.0": {
         "type": "package",
         "dependencies": {
-          "Google.Apis.Core": "1.72.0"
+          "Google.Apis.Core": "1.73.0"
         },
         "compile": {
           "lib/net6.0/Google.Apis.dll": {
@@ -166,11 +124,11 @@
           }
         }
       },
-      "Google.Apis.Auth/1.72.0": {
+      "Google.Apis.Auth/1.73.0": {
         "type": "package",
         "dependencies": {
-          "Google.Apis": "1.72.0",
-          "Google.Apis.Core": "1.72.0",
+          "Google.Apis": "1.73.0",
+          "Google.Apis.Core": "1.73.0",
           "System.Management": "7.0.2"
         },
         "compile": {
@@ -184,7 +142,7 @@
           }
         }
       },
-      "Google.Apis.Core/1.72.0": {
+      "Google.Apis.Core/1.73.0": {
         "type": "package",
         "dependencies": {
           "Newtonsoft.Json": "13.0.4"
@@ -200,7 +158,7 @@
           }
         }
       },
-      "Google.Cloud.Functions.Framework/3.0.0": {
+      "Google.Cloud.Functions.Framework/3.0.1": {
         "type": "package",
         "dependencies": {
           "CloudNative.CloudEvents.AspNetCore": "2.8.0"
@@ -219,11 +177,11 @@
           "Microsoft.AspNetCore.App"
         ]
       },
-      "Google.Cloud.Functions.Hosting/3.0.0": {
+      "Google.Cloud.Functions.Hosting/3.0.1": {
         "type": "package",
         "dependencies": {
           "CloudNative.CloudEvents.SystemTextJson": "2.8.0",
-          "Google.Cloud.Functions.Framework": "3.0.0"
+          "Google.Cloud.Functions.Framework": "3.0.1"
         },
         "compile": {
           "lib/net8.0/Google.Cloud.Functions.Hosting.dll": {
@@ -275,10 +233,10 @@
           }
         }
       },
-      "Google.Cloud.SecretManager.V1/2.7.0": {
+      "Google.Cloud.SecretManager.V1/2.8.0": {
         "type": "package",
         "dependencies": {
-          "Google.Api.Gax.Grpc": "[4.12.1, 5.0.0)",
+          "Google.Api.Gax.Grpc": "[4.13.1, 5.0.0)",
           "Google.Cloud.Iam.V1": "[3.5.0, 4.0.0)",
           "Google.Cloud.Location": "[2.4.0, 3.0.0)"
         },
@@ -366,49 +324,6 @@
         "runtime": {
           "lib/net8.0/Grpc.Net.Common.dll": {
             "related": ".pdb;.xml"
-          }
-        }
-      },
-      "K4os.Compression.LZ4/1.3.8": {
-        "type": "package",
-        "compile": {
-          "lib/net6.0/K4os.Compression.LZ4.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net6.0/K4os.Compression.LZ4.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "K4os.Compression.LZ4.Streams/1.3.8": {
-        "type": "package",
-        "dependencies": {
-          "K4os.Compression.LZ4": "1.3.8",
-          "K4os.Hash.xxHash": "1.0.8"
-        },
-        "compile": {
-          "lib/net6.0/K4os.Compression.LZ4.Streams.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net6.0/K4os.Compression.LZ4.Streams.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "K4os.Hash.xxHash/1.0.8": {
-        "type": "package",
-        "compile": {
-          "lib/net6.0/K4os.Hash.xxHash.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net6.0/K4os.Hash.xxHash.dll": {
-            "related": ".xml"
           }
         }
       },
@@ -654,49 +569,6 @@
           "buildTransitive/net8.0/_._": {}
         }
       },
-      "MySql.Data/9.0.0": {
-        "type": "package",
-        "dependencies": {
-          "BouncyCastle.Cryptography": "2.3.1",
-          "Google.Protobuf": "3.26.1",
-          "K4os.Compression.LZ4.Streams": "1.3.8",
-          "System.Configuration.ConfigurationManager": "8.0.0",
-          "System.Security.Permissions": "8.0.0",
-          "ZstdSharp.Port": "0.8.0"
-        },
-        "compile": {
-          "lib/net8.0/MySql.Data.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/MySql.Data.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtimeTargets": {
-          "runtimes/win-x64/native/comerr64.dll": {
-            "assetType": "native",
-            "rid": "win-x64"
-          },
-          "runtimes/win-x64/native/gssapi64.dll": {
-            "assetType": "native",
-            "rid": "win-x64"
-          },
-          "runtimes/win-x64/native/k5sprt64.dll": {
-            "assetType": "native",
-            "rid": "win-x64"
-          },
-          "runtimes/win-x64/native/krb5_64.dll": {
-            "assetType": "native",
-            "rid": "win-x64"
-          },
-          "runtimes/win-x64/native/krbcc64.dll": {
-            "assetType": "native",
-            "rid": "win-x64"
-          }
-        }
-      },
       "MySqlConnector/2.4.0": {
         "type": "package",
         "dependencies": {
@@ -757,41 +629,6 @@
           }
         }
       },
-      "runtime.native.System.Data.SqlClient.sni/4.7.0": {
-        "type": "package",
-        "dependencies": {
-          "runtime.win-arm64.runtime.native.System.Data.SqlClient.sni": "4.4.0",
-          "runtime.win-x64.runtime.native.System.Data.SqlClient.sni": "4.4.0",
-          "runtime.win-x86.runtime.native.System.Data.SqlClient.sni": "4.4.0"
-        }
-      },
-      "runtime.win-arm64.runtime.native.System.Data.SqlClient.sni/4.4.0": {
-        "type": "package",
-        "runtimeTargets": {
-          "runtimes/win-arm64/native/sni.dll": {
-            "assetType": "native",
-            "rid": "win-arm64"
-          }
-        }
-      },
-      "runtime.win-x64.runtime.native.System.Data.SqlClient.sni/4.4.0": {
-        "type": "package",
-        "runtimeTargets": {
-          "runtimes/win-x64/native/sni.dll": {
-            "assetType": "native",
-            "rid": "win-x64"
-          }
-        }
-      },
-      "runtime.win-x86.runtime.native.System.Data.SqlClient.sni/4.4.0": {
-        "type": "package",
-        "runtimeTargets": {
-          "runtimes/win-x86/native/sni.dll": {
-            "assetType": "native",
-            "rid": "win-x86"
-          }
-        }
-      },
       "StackExchange.Redis/2.8.24": {
         "type": "package",
         "dependencies": {
@@ -825,91 +662,6 @@
           "buildTransitive/net6.0/_._": {}
         }
       },
-      "System.ComponentModel.Annotations/5.0.0": {
-        "type": "package",
-        "compile": {
-          "ref/netstandard2.1/System.ComponentModel.Annotations.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/netstandard2.1/System.ComponentModel.Annotations.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "System.Configuration.ConfigurationManager/8.0.0": {
-        "type": "package",
-        "dependencies": {
-          "System.Diagnostics.EventLog": "8.0.0",
-          "System.Security.Cryptography.ProtectedData": "8.0.0"
-        },
-        "compile": {
-          "lib/net8.0/System.Configuration.ConfigurationManager.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/System.Configuration.ConfigurationManager.dll": {
-            "related": ".xml"
-          }
-        },
-        "build": {
-          "buildTransitive/net6.0/_._": {}
-        }
-      },
-      "System.Data.SqlClient/4.8.6": {
-        "type": "package",
-        "dependencies": {
-          "runtime.native.System.Data.SqlClient.sni": "4.7.0"
-        },
-        "compile": {
-          "ref/netcoreapp2.1/System.Data.SqlClient.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/netcoreapp2.1/System.Data.SqlClient.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtimeTargets": {
-          "runtimes/unix/lib/netcoreapp2.1/System.Data.SqlClient.dll": {
-            "assetType": "runtime",
-            "rid": "unix"
-          },
-          "runtimes/win/lib/netcoreapp2.1/System.Data.SqlClient.dll": {
-            "assetType": "runtime",
-            "rid": "win"
-          }
-        }
-      },
-      "System.Diagnostics.EventLog/8.0.0": {
-        "type": "package",
-        "compile": {
-          "lib/net8.0/System.Diagnostics.EventLog.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/System.Diagnostics.EventLog.dll": {
-            "related": ".xml"
-          }
-        },
-        "build": {
-          "buildTransitive/net6.0/_._": {}
-        },
-        "runtimeTargets": {
-          "runtimes/win/lib/net8.0/System.Diagnostics.EventLog.Messages.dll": {
-            "assetType": "runtime",
-            "rid": "win"
-          },
-          "runtimes/win/lib/net8.0/System.Diagnostics.EventLog.dll": {
-            "assetType": "runtime",
-            "rid": "win"
-          }
-        }
-      },
       "System.Management/7.0.2": {
         "type": "package",
         "dependencies": {
@@ -934,93 +686,10 @@
             "rid": "win"
           }
         }
-      },
-      "System.Security.Cryptography.ProtectedData/8.0.0": {
-        "type": "package",
-        "compile": {
-          "lib/net8.0/System.Security.Cryptography.ProtectedData.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/System.Security.Cryptography.ProtectedData.dll": {
-            "related": ".xml"
-          }
-        },
-        "build": {
-          "buildTransitive/net6.0/_._": {}
-        }
-      },
-      "System.Security.Permissions/8.0.0": {
-        "type": "package",
-        "dependencies": {
-          "System.Windows.Extensions": "8.0.0"
-        },
-        "compile": {
-          "lib/net8.0/System.Security.Permissions.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/System.Security.Permissions.dll": {
-            "related": ".xml"
-          }
-        },
-        "build": {
-          "buildTransitive/net6.0/_._": {}
-        }
-      },
-      "System.Windows.Extensions/8.0.0": {
-        "type": "package",
-        "compile": {
-          "lib/net8.0/System.Windows.Extensions.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/System.Windows.Extensions.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtimeTargets": {
-          "runtimes/win/lib/net8.0/System.Windows.Extensions.dll": {
-            "assetType": "runtime",
-            "rid": "win"
-          }
-        }
-      },
-      "ZstdSharp.Port/0.8.0": {
-        "type": "package",
-        "compile": {
-          "lib/net8.0/ZstdSharp.dll": {}
-        },
-        "runtime": {
-          "lib/net8.0/ZstdSharp.dll": {}
-        }
       }
     }
   },
   "libraries": {
-    "BouncyCastle.Cryptography/2.3.1": {
-      "sha512": "buwoISwecYke3CmgG1AQSg+sNZjJeIb93vTAtJiHZX35hP/teYMxsfg0NDXGUKjGx6BKBTNKc77O2M3vKvlXZQ==",
-      "type": "package",
-      "path": "bouncycastle.cryptography/2.3.1",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "LICENSE.md",
-        "README.md",
-        "bouncycastle.cryptography.2.3.1.nupkg.sha512",
-        "bouncycastle.cryptography.nuspec",
-        "lib/net461/BouncyCastle.Cryptography.dll",
-        "lib/net461/BouncyCastle.Cryptography.xml",
-        "lib/net6.0/BouncyCastle.Cryptography.dll",
-        "lib/net6.0/BouncyCastle.Cryptography.xml",
-        "lib/netstandard2.0/BouncyCastle.Cryptography.dll",
-        "lib/netstandard2.0/BouncyCastle.Cryptography.xml",
-        "packageIcon.png"
-      ]
-    },
     "CloudNative.CloudEvents/2.8.0": {
       "sha512": "RvabvAQV7u3FZcZL5UlRmFz3/T5nMl86GpChpRvHKRHbO+/I4LBcZ0xRqYnNfAh30gM+h/JkSBHEnbhl0zmGtA==",
       "type": "package",
@@ -1085,68 +754,6 @@
         "lib/netstandard2.1/CloudNative.CloudEvents.SystemTextJson.pdb",
         "lib/netstandard2.1/CloudNative.CloudEvents.SystemTextJson.xml",
         "nuget-icon.png"
-      ]
-    },
-    "EntityFramework/6.5.1": {
-      "sha512": "sQRP2lWg1i3aAGWqdliAM8zrGx7LHMUk+9/MoxUjwfTZYGMXvZ2JYZTlyTm1PqDxvn3c9E3U76TWDON7Y5+CVA==",
-      "type": "package",
-      "path": "entityframework/6.5.1",
-      "hasTools": true,
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "README.md",
-        "build/EntityFramework.DefaultItems.props",
-        "build/EntityFramework.props",
-        "build/EntityFramework.targets",
-        "build/Microsoft.Data.Entity.Build.Tasks.dll",
-        "build/net6.0/EntityFramework.props",
-        "build/net6.0/EntityFramework.targets",
-        "buildTransitive/EntityFramework.props",
-        "buildTransitive/EntityFramework.targets",
-        "buildTransitive/net6.0/EntityFramework.props",
-        "buildTransitive/net6.0/EntityFramework.targets",
-        "content/net40/App.config.install.xdt",
-        "content/net40/App.config.transform",
-        "content/net40/Web.config.install.xdt",
-        "content/net40/Web.config.transform",
-        "entityframework.6.5.1.nupkg.sha512",
-        "entityframework.nuspec",
-        "lib/net40/EntityFramework.SqlServer.dll",
-        "lib/net40/EntityFramework.SqlServer.xml",
-        "lib/net40/EntityFramework.dll",
-        "lib/net40/EntityFramework.xml",
-        "lib/net45/EntityFramework.SqlServer.dll",
-        "lib/net45/EntityFramework.SqlServer.xml",
-        "lib/net45/EntityFramework.dll",
-        "lib/net45/EntityFramework.xml",
-        "lib/netstandard2.1/EntityFramework.SqlServer.dll",
-        "lib/netstandard2.1/EntityFramework.SqlServer.xml",
-        "lib/netstandard2.1/EntityFramework.dll",
-        "lib/netstandard2.1/EntityFramework.xml",
-        "tools/EntityFramework6.PS2.psd1",
-        "tools/EntityFramework6.PS2.psm1",
-        "tools/EntityFramework6.psd1",
-        "tools/EntityFramework6.psm1",
-        "tools/about_EntityFramework6.help.txt",
-        "tools/init.ps1",
-        "tools/install.ps1",
-        "tools/net40/any/ef6.exe",
-        "tools/net40/any/ef6.pdb",
-        "tools/net40/win-arm64/ef6.exe",
-        "tools/net40/win-arm64/ef6.pdb",
-        "tools/net40/win-x86/ef6.exe",
-        "tools/net40/win-x86/ef6.pdb",
-        "tools/net45/any/ef6.exe",
-        "tools/net45/any/ef6.pdb",
-        "tools/net45/win-arm64/ef6.exe",
-        "tools/net45/win-arm64/ef6.pdb",
-        "tools/net45/win-x86/ef6.exe",
-        "tools/net45/win-x86/ef6.pdb",
-        "tools/net6.0/any/ef6.dll",
-        "tools/net6.0/any/ef6.pdb",
-        "tools/net6.0/any/ef6.runtimeconfig.json"
       ]
     },
     "Google.Api.CommonProtos/2.17.0": {
@@ -1225,16 +832,16 @@
         "lib/netstandard2.0/Google.Api.CommonProtos.xml"
       ]
     },
-    "Google.Api.Gax/4.12.1": {
-      "sha512": "G62dRNOv5DolfRviT6CCrL2a5nZ/CWWdRzhADkGnpCkYSOc3QnH5xxRvZiOKuHU8weJ/pAqAqrj7+T9IWdlu2Q==",
+    "Google.Api.Gax/4.13.1": {
+      "sha512": "ujDpZk7O2VqAEIqcSlhH0FKzVpGZWly/qcNjHxpNUrL445Tei9PHnu4V1pwW2WDiMDvo3TpL1Bi4DeU525Afrg==",
       "type": "package",
-      "path": "google.api.gax/4.12.1",
+      "path": "google.api.gax/4.13.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "LICENSE",
         "NuGetIcon.png",
-        "google.api.gax.4.12.1.nupkg.sha512",
+        "google.api.gax.4.13.1.nupkg.sha512",
         "google.api.gax.nuspec",
         "lib/net462/Google.Api.Gax.dll",
         "lib/net462/Google.Api.Gax.pdb",
@@ -1244,16 +851,16 @@
         "lib/netstandard2.0/Google.Api.Gax.xml"
       ]
     },
-    "Google.Api.Gax.Grpc/4.12.1": {
-      "sha512": "W3LjuitOWxWyvbwqeHvpgp0LdshEiTnw/pneDAfAhQ02VgU2gVEzSXfGNPsvL8hDPBXjngR/fWNme8Kungwwkw==",
+    "Google.Api.Gax.Grpc/4.13.1": {
+      "sha512": "QgYF0bd8z6xWSVLGkGAMPB70seJSa9J02lFn8LT0Rb7PjSxZYpX+wU6LbVmghxDi6Wd64taulpX37pFq20J61g==",
       "type": "package",
-      "path": "google.api.gax.grpc/4.12.1",
+      "path": "google.api.gax.grpc/4.13.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "LICENSE",
         "NuGetIcon.png",
-        "google.api.gax.grpc.4.12.1.nupkg.sha512",
+        "google.api.gax.grpc.4.13.1.nupkg.sha512",
         "google.api.gax.grpc.nuspec",
         "lib/net462/Google.Api.Gax.Grpc.dll",
         "lib/net462/Google.Api.Gax.Grpc.pdb",
@@ -1263,16 +870,16 @@
         "lib/netstandard2.0/Google.Api.Gax.Grpc.xml"
       ]
     },
-    "Google.Apis/1.72.0": {
-      "sha512": "QbSJ08W7QuqsfzDPOZDHl1aFzCYwMcfBoHqQRh7koglwDN5WacShCKYMpU/zR1Pf3h3sH6JTGEeM/txAxaJuEg==",
+    "Google.Apis/1.73.0": {
+      "sha512": "TnCjEyV2aCLQ6Zl40OCbEJULDuEkEWc6C/g81KYw5l1PqGo+G7pFZrV+YH8XgUL0JRUanz+IrUp8SsKF4dzkqg==",
       "type": "package",
-      "path": "google.apis/1.72.0",
+      "path": "google.apis/1.73.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "LICENSE",
         "NuGetIcon.png",
-        "google.apis.1.72.0.nupkg.sha512",
+        "google.apis.1.73.0.nupkg.sha512",
         "google.apis.nuspec",
         "lib/net462/Google.Apis.dll",
         "lib/net462/Google.Apis.pdb",
@@ -1285,16 +892,16 @@
         "lib/netstandard2.0/Google.Apis.xml"
       ]
     },
-    "Google.Apis.Auth/1.72.0": {
-      "sha512": "RBoFwFKBHKUjuyJf2weEnqICQLaY0TdIrdFv2yC8bsiR2VFYxizOn3C/qN1FWCCb0Uh9GhW+zwAV1yUxPjiocw==",
+    "Google.Apis.Auth/1.73.0": {
+      "sha512": "wEu12uhnRv3zrPBSqv4E2vPH6lYLtc1RPAnU9MJRCMFlBVwZ7Lnq3NfbYXi6VG7EurkYInTaMpeBZkbM/HrAog==",
       "type": "package",
-      "path": "google.apis.auth/1.72.0",
+      "path": "google.apis.auth/1.73.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "LICENSE",
         "NuGetIcon.png",
-        "google.apis.auth.1.72.0.nupkg.sha512",
+        "google.apis.auth.1.73.0.nupkg.sha512",
         "google.apis.auth.nuspec",
         "lib/net462/Google.Apis.Auth.dll",
         "lib/net462/Google.Apis.Auth.pdb",
@@ -1307,16 +914,16 @@
         "lib/netstandard2.0/Google.Apis.Auth.xml"
       ]
     },
-    "Google.Apis.Core/1.72.0": {
-      "sha512": "ZmYX1PU0vTKFT42c7gp4zaYcb/0TFAXrt9qw8yEz0wjvaug85+/WddlPTfT525Qei8iIUsF6t4bHYrsb2O7crg==",
+    "Google.Apis.Core/1.73.0": {
+      "sha512": "vSc7CY4KCP7HE4QTElDx/ExnGLbg9kXb89MS6cdvI+0D4sxvTYb16vGtXmF2jSDMV3iDmykSXdIUPTz8TDS6gg==",
       "type": "package",
-      "path": "google.apis.core/1.72.0",
+      "path": "google.apis.core/1.73.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "LICENSE",
         "NuGetIcon.png",
-        "google.apis.core.1.72.0.nupkg.sha512",
+        "google.apis.core.1.73.0.nupkg.sha512",
         "google.apis.core.nuspec",
         "lib/net462/Google.Apis.Core.dll",
         "lib/net462/Google.Apis.Core.pdb",
@@ -1329,26 +936,26 @@
         "lib/netstandard2.0/Google.Apis.Core.xml"
       ]
     },
-    "Google.Cloud.Functions.Framework/3.0.0": {
-      "sha512": "Xfps/F6uDEU0qI9lhgDeSpCD6we4FN8yEFN5L3CU2dG6mSvlwCqiFbPRkcUFnRSQ0NUllTfxD9KHsMxAGd3fAQ==",
+    "Google.Cloud.Functions.Framework/3.0.1": {
+      "sha512": "GRxWPuiT//6lJx1y9d0ctlF67/WTjZSMEzXKNdGv3CxptTUV2a3WGw1bD4dVwT4L22WR92+Pjk7NofwuRC+M1w==",
       "type": "package",
-      "path": "google.cloud.functions.framework/3.0.0",
+      "path": "google.cloud.functions.framework/3.0.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "LICENSE",
         "NuGetIcon.png",
-        "google.cloud.functions.framework.3.0.0.nupkg.sha512",
+        "google.cloud.functions.framework.3.0.1.nupkg.sha512",
         "google.cloud.functions.framework.nuspec",
         "lib/net8.0/Google.Cloud.Functions.Framework.dll",
         "lib/net8.0/Google.Cloud.Functions.Framework.pdb",
         "lib/net8.0/Google.Cloud.Functions.Framework.xml"
       ]
     },
-    "Google.Cloud.Functions.Hosting/3.0.0": {
-      "sha512": "YoxWrPyZLDrfrzNyKo5G+H6QEXpRugaFvGTlzH4Tr5E88enXd1Jgi09DocNos84HaBk7NWrrDa7KpHIohUankQ==",
+    "Google.Cloud.Functions.Hosting/3.0.1": {
+      "sha512": "KpaJIFEQ16Fn/SOE4xy9wE61/t00IQ7JscFhstC1ZXkTBOtvDNqeKVugTRamiFTYI12uas64QZgboK1NMDyTFw==",
       "type": "package",
-      "path": "google.cloud.functions.hosting/3.0.0",
+      "path": "google.cloud.functions.hosting/3.0.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1356,7 +963,7 @@
         "NuGetIcon.png",
         "build/net8.0/Google.Cloud.Functions.Hosting.props",
         "build/net8.0/Google.Cloud.Functions.Hosting.targets",
-        "google.cloud.functions.hosting.3.0.0.nupkg.sha512",
+        "google.cloud.functions.hosting.3.0.1.nupkg.sha512",
         "google.cloud.functions.hosting.nuspec",
         "lib/net8.0/Google.Cloud.Functions.Hosting.dll",
         "lib/net8.0/Google.Cloud.Functions.Hosting.pdb",
@@ -1401,16 +1008,16 @@
         "lib/netstandard2.0/Google.Cloud.Location.xml"
       ]
     },
-    "Google.Cloud.SecretManager.V1/2.7.0": {
-      "sha512": "5Ol6+VCNOI1X7T3WthLB0Y5YyHRKFRycG93QOLU1m9xqrbgXGftwzwzsRiPUWGsWJgVCnYobQiqw2VYYPWyC9w==",
+    "Google.Cloud.SecretManager.V1/2.8.0": {
+      "sha512": "S5bDJUkR50TzEnZdaTwSY4S8q+VlTu3W00Te10x5fK0PdjY++3sOGj0cNxFSy9QjX34Iz4Fn1OxltvQ+qoHmPw==",
       "type": "package",
-      "path": "google.cloud.secretmanager.v1/2.7.0",
+      "path": "google.cloud.secretmanager.v1/2.8.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "LICENSE",
         "NuGetIcon.png",
-        "google.cloud.secretmanager.v1.2.7.0.nupkg.sha512",
+        "google.cloud.secretmanager.v1.2.8.0.nupkg.sha512",
         "google.cloud.secretmanager.v1.nuspec",
         "lib/net462/Google.Cloud.SecretManager.V1.dll",
         "lib/net462/Google.Cloud.SecretManager.V1.pdb",
@@ -1540,69 +1147,6 @@
         "lib/netstandard2.1/Grpc.Net.Common.pdb",
         "lib/netstandard2.1/Grpc.Net.Common.xml",
         "packageIcon.png"
-      ]
-    },
-    "K4os.Compression.LZ4/1.3.8": {
-      "sha512": "LhwlPa7c1zs1OV2XadMtAWdImjLIsqFJPoRcIWAadSRn0Ri1DepK65UbWLPmt4riLqx2d40xjXRk0ogpqNtK7g==",
-      "type": "package",
-      "path": "k4os.compression.lz4/1.3.8",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "k4os.compression.lz4.1.3.8.nupkg.sha512",
-        "k4os.compression.lz4.nuspec",
-        "lib/net462/K4os.Compression.LZ4.dll",
-        "lib/net462/K4os.Compression.LZ4.xml",
-        "lib/net5.0/K4os.Compression.LZ4.dll",
-        "lib/net5.0/K4os.Compression.LZ4.xml",
-        "lib/net6.0/K4os.Compression.LZ4.dll",
-        "lib/net6.0/K4os.Compression.LZ4.xml",
-        "lib/netstandard2.0/K4os.Compression.LZ4.dll",
-        "lib/netstandard2.0/K4os.Compression.LZ4.xml",
-        "lib/netstandard2.1/K4os.Compression.LZ4.dll",
-        "lib/netstandard2.1/K4os.Compression.LZ4.xml"
-      ]
-    },
-    "K4os.Compression.LZ4.Streams/1.3.8": {
-      "sha512": "P15qr8dZAeo9GvYbUIPEYFQ0MEJ0i5iqr37wsYeRC3la2uCldOoeCa6to0CZ1taiwxIV+Mk8NGuZi+4iWivK9w==",
-      "type": "package",
-      "path": "k4os.compression.lz4.streams/1.3.8",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "k4os.compression.lz4.streams.1.3.8.nupkg.sha512",
-        "k4os.compression.lz4.streams.nuspec",
-        "lib/net462/K4os.Compression.LZ4.Streams.dll",
-        "lib/net462/K4os.Compression.LZ4.Streams.xml",
-        "lib/net5.0/K4os.Compression.LZ4.Streams.dll",
-        "lib/net5.0/K4os.Compression.LZ4.Streams.xml",
-        "lib/net6.0/K4os.Compression.LZ4.Streams.dll",
-        "lib/net6.0/K4os.Compression.LZ4.Streams.xml",
-        "lib/netstandard2.0/K4os.Compression.LZ4.Streams.dll",
-        "lib/netstandard2.0/K4os.Compression.LZ4.Streams.xml",
-        "lib/netstandard2.1/K4os.Compression.LZ4.Streams.dll",
-        "lib/netstandard2.1/K4os.Compression.LZ4.Streams.xml"
-      ]
-    },
-    "K4os.Hash.xxHash/1.0.8": {
-      "sha512": "Wp2F7BamQ2Q/7Hk834nV9vRQapgcr8kgv9Jvfm8J3D0IhDqZMMl+a2yxUq5ltJitvXvQfB8W6K4F4fCbw/P6YQ==",
-      "type": "package",
-      "path": "k4os.hash.xxhash/1.0.8",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "k4os.hash.xxhash.1.0.8.nupkg.sha512",
-        "k4os.hash.xxhash.nuspec",
-        "lib/net462/K4os.Hash.xxHash.dll",
-        "lib/net462/K4os.Hash.xxHash.xml",
-        "lib/net5.0/K4os.Hash.xxHash.dll",
-        "lib/net5.0/K4os.Hash.xxHash.xml",
-        "lib/net6.0/K4os.Hash.xxHash.dll",
-        "lib/net6.0/K4os.Hash.xxHash.xml",
-        "lib/netstandard2.0/K4os.Hash.xxHash.dll",
-        "lib/netstandard2.0/K4os.Hash.xxHash.xml",
-        "lib/netstandard2.1/K4os.Hash.xxHash.dll",
-        "lib/netstandard2.1/K4os.Hash.xxHash.xml"
       ]
     },
     "Microsoft.Bcl.AsyncInterfaces/6.0.0": {
@@ -2004,36 +1548,6 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "MySql.Data/9.0.0": {
-      "sha512": "YT2/fdDy3FBx5ZK0qsupEs9Gt0iFo/mZR+ND5cJwrr+6xguAOXyYpYUbEj27UcLZER5InOUrJQYyUaPIDil2Xw==",
-      "type": "package",
-      "path": "mysql.data/9.0.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "README.md",
-        "lib/net462/MySql.Data.dll",
-        "lib/net462/MySql.Data.xml",
-        "lib/net48/MySql.Data.dll",
-        "lib/net48/MySql.Data.xml",
-        "lib/net6.0/MySql.Data.dll",
-        "lib/net6.0/MySql.Data.xml",
-        "lib/net8.0/MySql.Data.dll",
-        "lib/net8.0/MySql.Data.xml",
-        "lib/netstandard2.0/MySql.Data.dll",
-        "lib/netstandard2.0/MySql.Data.xml",
-        "lib/netstandard2.1/MySql.Data.dll",
-        "lib/netstandard2.1/MySql.Data.xml",
-        "logo-mysql-170x115.png",
-        "mysql.data.9.0.0.nupkg.sha512",
-        "mysql.data.nuspec",
-        "runtimes/win-x64/native/comerr64.dll",
-        "runtimes/win-x64/native/gssapi64.dll",
-        "runtimes/win-x64/native/k5sprt64.dll",
-        "runtimes/win-x64/native/krb5_64.dll",
-        "runtimes/win-x64/native/krbcc64.dll"
-      ]
-    },
     "MySqlConnector/2.4.0": {
       "sha512": "78M+gVOjbdZEDIyXQqcA7EYlCGS3tpbUELHvn6638A2w0pkPI625ixnzsa5staAd3N9/xFmPJtkKDYwsXpFi/w==",
       "type": "package",
@@ -2131,69 +1645,6 @@
         "pomelo.entityframeworkcore.mysql.nuspec"
       ]
     },
-    "runtime.native.System.Data.SqlClient.sni/4.7.0": {
-      "sha512": "9kyFSIdN3T0qjDQ2R0HRXYIhS3l5psBzQi6qqhdLz+SzFyEy4sVxNOke+yyYv8Cu8rPER12c3RDjLT8wF3WBYQ==",
-      "type": "package",
-      "path": "runtime.native.system.data.sqlclient.sni/4.7.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
-        "runtime.native.system.data.sqlclient.sni.4.7.0.nupkg.sha512",
-        "runtime.native.system.data.sqlclient.sni.nuspec",
-        "useSharedDesignerContext.txt",
-        "version.txt"
-      ]
-    },
-    "runtime.win-arm64.runtime.native.System.Data.SqlClient.sni/4.4.0": {
-      "sha512": "LbrynESTp3bm5O/+jGL8v0Qg5SJlTV08lpIpFesXjF6uGNMWqFnUQbYBJwZTeua6E/Y7FIM1C54Ey1btLWupdg==",
-      "type": "package",
-      "path": "runtime.win-arm64.runtime.native.system.data.sqlclient.sni/4.4.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "ThirdPartyNotices.txt",
-        "dotnet_library_license.txt",
-        "runtime.win-arm64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
-        "runtime.win-arm64.runtime.native.system.data.sqlclient.sni.nuspec",
-        "runtimes/win-arm64/native/sni.dll",
-        "useSharedDesignerContext.txt",
-        "version.txt"
-      ]
-    },
-    "runtime.win-x64.runtime.native.System.Data.SqlClient.sni/4.4.0": {
-      "sha512": "38ugOfkYJqJoX9g6EYRlZB5U2ZJH51UP8ptxZgdpS07FgOEToV+lS11ouNK2PM12Pr6X/PpT5jK82G3DwH/SxQ==",
-      "type": "package",
-      "path": "runtime.win-x64.runtime.native.system.data.sqlclient.sni/4.4.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "ThirdPartyNotices.txt",
-        "dotnet_library_license.txt",
-        "runtime.win-x64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
-        "runtime.win-x64.runtime.native.system.data.sqlclient.sni.nuspec",
-        "runtimes/win-x64/native/sni.dll",
-        "useSharedDesignerContext.txt",
-        "version.txt"
-      ]
-    },
-    "runtime.win-x86.runtime.native.System.Data.SqlClient.sni/4.4.0": {
-      "sha512": "YhEdSQUsTx+C8m8Bw7ar5/VesXvCFMItyZF7G1AUY+OM0VPZUOeAVpJ4Wl6fydBGUYZxojTDR3I6Bj/+BPkJNA==",
-      "type": "package",
-      "path": "runtime.win-x86.runtime.native.system.data.sqlclient.sni/4.4.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "ThirdPartyNotices.txt",
-        "dotnet_library_license.txt",
-        "runtime.win-x86.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
-        "runtime.win-x86.runtime.native.system.data.sqlclient.sni.nuspec",
-        "runtimes/win-x86/native/sni.dll",
-        "useSharedDesignerContext.txt",
-        "version.txt"
-      ]
-    },
     "StackExchange.Redis/2.8.24": {
       "sha512": "GWllmsFAtLyhm4C47cOCipGxyEi1NQWTFUHXnJ8hiHOsK/bH3T5eLkWPVW+LRL6jDiB3g3izW3YEHgLuPoJSyA==",
       "type": "package",
@@ -2244,251 +1695,6 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "System.ComponentModel.Annotations/5.0.0": {
-      "sha512": "dMkqfy2el8A8/I76n2Hi1oBFEbG1SfxD2l5nhwXV3XjlnOmwxJlQbYpJH4W51odnU9sARCSAgv7S3CyAFMkpYg==",
-      "type": "package",
-      "path": "system.componentmodel.annotations/5.0.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
-        "lib/MonoAndroid10/_._",
-        "lib/MonoTouch10/_._",
-        "lib/net45/_._",
-        "lib/net461/System.ComponentModel.Annotations.dll",
-        "lib/netcore50/System.ComponentModel.Annotations.dll",
-        "lib/netstandard1.4/System.ComponentModel.Annotations.dll",
-        "lib/netstandard2.0/System.ComponentModel.Annotations.dll",
-        "lib/netstandard2.1/System.ComponentModel.Annotations.dll",
-        "lib/netstandard2.1/System.ComponentModel.Annotations.xml",
-        "lib/portable-net45+win8/_._",
-        "lib/win8/_._",
-        "lib/xamarinios10/_._",
-        "lib/xamarinmac20/_._",
-        "lib/xamarintvos10/_._",
-        "lib/xamarinwatchos10/_._",
-        "ref/MonoAndroid10/_._",
-        "ref/MonoTouch10/_._",
-        "ref/net45/_._",
-        "ref/net461/System.ComponentModel.Annotations.dll",
-        "ref/net461/System.ComponentModel.Annotations.xml",
-        "ref/netcore50/System.ComponentModel.Annotations.dll",
-        "ref/netcore50/System.ComponentModel.Annotations.xml",
-        "ref/netcore50/de/System.ComponentModel.Annotations.xml",
-        "ref/netcore50/es/System.ComponentModel.Annotations.xml",
-        "ref/netcore50/fr/System.ComponentModel.Annotations.xml",
-        "ref/netcore50/it/System.ComponentModel.Annotations.xml",
-        "ref/netcore50/ja/System.ComponentModel.Annotations.xml",
-        "ref/netcore50/ko/System.ComponentModel.Annotations.xml",
-        "ref/netcore50/ru/System.ComponentModel.Annotations.xml",
-        "ref/netcore50/zh-hans/System.ComponentModel.Annotations.xml",
-        "ref/netcore50/zh-hant/System.ComponentModel.Annotations.xml",
-        "ref/netstandard1.1/System.ComponentModel.Annotations.dll",
-        "ref/netstandard1.1/System.ComponentModel.Annotations.xml",
-        "ref/netstandard1.1/de/System.ComponentModel.Annotations.xml",
-        "ref/netstandard1.1/es/System.ComponentModel.Annotations.xml",
-        "ref/netstandard1.1/fr/System.ComponentModel.Annotations.xml",
-        "ref/netstandard1.1/it/System.ComponentModel.Annotations.xml",
-        "ref/netstandard1.1/ja/System.ComponentModel.Annotations.xml",
-        "ref/netstandard1.1/ko/System.ComponentModel.Annotations.xml",
-        "ref/netstandard1.1/ru/System.ComponentModel.Annotations.xml",
-        "ref/netstandard1.1/zh-hans/System.ComponentModel.Annotations.xml",
-        "ref/netstandard1.1/zh-hant/System.ComponentModel.Annotations.xml",
-        "ref/netstandard1.3/System.ComponentModel.Annotations.dll",
-        "ref/netstandard1.3/System.ComponentModel.Annotations.xml",
-        "ref/netstandard1.3/de/System.ComponentModel.Annotations.xml",
-        "ref/netstandard1.3/es/System.ComponentModel.Annotations.xml",
-        "ref/netstandard1.3/fr/System.ComponentModel.Annotations.xml",
-        "ref/netstandard1.3/it/System.ComponentModel.Annotations.xml",
-        "ref/netstandard1.3/ja/System.ComponentModel.Annotations.xml",
-        "ref/netstandard1.3/ko/System.ComponentModel.Annotations.xml",
-        "ref/netstandard1.3/ru/System.ComponentModel.Annotations.xml",
-        "ref/netstandard1.3/zh-hans/System.ComponentModel.Annotations.xml",
-        "ref/netstandard1.3/zh-hant/System.ComponentModel.Annotations.xml",
-        "ref/netstandard1.4/System.ComponentModel.Annotations.dll",
-        "ref/netstandard1.4/System.ComponentModel.Annotations.xml",
-        "ref/netstandard1.4/de/System.ComponentModel.Annotations.xml",
-        "ref/netstandard1.4/es/System.ComponentModel.Annotations.xml",
-        "ref/netstandard1.4/fr/System.ComponentModel.Annotations.xml",
-        "ref/netstandard1.4/it/System.ComponentModel.Annotations.xml",
-        "ref/netstandard1.4/ja/System.ComponentModel.Annotations.xml",
-        "ref/netstandard1.4/ko/System.ComponentModel.Annotations.xml",
-        "ref/netstandard1.4/ru/System.ComponentModel.Annotations.xml",
-        "ref/netstandard1.4/zh-hans/System.ComponentModel.Annotations.xml",
-        "ref/netstandard1.4/zh-hant/System.ComponentModel.Annotations.xml",
-        "ref/netstandard2.0/System.ComponentModel.Annotations.dll",
-        "ref/netstandard2.0/System.ComponentModel.Annotations.xml",
-        "ref/netstandard2.1/System.ComponentModel.Annotations.dll",
-        "ref/netstandard2.1/System.ComponentModel.Annotations.xml",
-        "ref/portable-net45+win8/_._",
-        "ref/win8/_._",
-        "ref/xamarinios10/_._",
-        "ref/xamarinmac20/_._",
-        "ref/xamarintvos10/_._",
-        "ref/xamarinwatchos10/_._",
-        "system.componentmodel.annotations.5.0.0.nupkg.sha512",
-        "system.componentmodel.annotations.nuspec",
-        "useSharedDesignerContext.txt",
-        "version.txt"
-      ]
-    },
-    "System.Configuration.ConfigurationManager/8.0.0": {
-      "sha512": "JlYi9XVvIREURRUlGMr1F6vOFLk7YSY4p1vHo4kX3tQ0AGrjqlRWHDi66ImHhy6qwXBG3BJ6Y1QlYQ+Qz6Xgww==",
-      "type": "package",
-      "path": "system.configuration.configurationmanager/8.0.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "LICENSE.TXT",
-        "PACKAGE.md",
-        "THIRD-PARTY-NOTICES.TXT",
-        "buildTransitive/net461/System.Configuration.ConfigurationManager.targets",
-        "buildTransitive/net462/_._",
-        "buildTransitive/net6.0/_._",
-        "buildTransitive/netcoreapp2.0/System.Configuration.ConfigurationManager.targets",
-        "lib/net462/System.Configuration.ConfigurationManager.dll",
-        "lib/net462/System.Configuration.ConfigurationManager.xml",
-        "lib/net6.0/System.Configuration.ConfigurationManager.dll",
-        "lib/net6.0/System.Configuration.ConfigurationManager.xml",
-        "lib/net7.0/System.Configuration.ConfigurationManager.dll",
-        "lib/net7.0/System.Configuration.ConfigurationManager.xml",
-        "lib/net8.0/System.Configuration.ConfigurationManager.dll",
-        "lib/net8.0/System.Configuration.ConfigurationManager.xml",
-        "lib/netstandard2.0/System.Configuration.ConfigurationManager.dll",
-        "lib/netstandard2.0/System.Configuration.ConfigurationManager.xml",
-        "system.configuration.configurationmanager.8.0.0.nupkg.sha512",
-        "system.configuration.configurationmanager.nuspec",
-        "useSharedDesignerContext.txt"
-      ]
-    },
-    "System.Data.SqlClient/4.8.6": {
-      "sha512": "2Ij/LCaTQRyAi5lAv7UUTV9R2FobC8xN9mE0fXBZohum/xLl8IZVmE98Rq5ugQHjCgTBRKqpXRb4ORulRdA6Ig==",
-      "type": "package",
-      "path": "system.data.sqlclient/4.8.6",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
-        "lib/MonoAndroid10/_._",
-        "lib/MonoTouch10/_._",
-        "lib/net451/System.Data.SqlClient.dll",
-        "lib/net46/System.Data.SqlClient.dll",
-        "lib/net461/System.Data.SqlClient.dll",
-        "lib/net461/System.Data.SqlClient.xml",
-        "lib/netcoreapp2.1/System.Data.SqlClient.dll",
-        "lib/netcoreapp2.1/System.Data.SqlClient.xml",
-        "lib/netstandard1.2/System.Data.SqlClient.dll",
-        "lib/netstandard1.2/System.Data.SqlClient.xml",
-        "lib/netstandard1.3/System.Data.SqlClient.dll",
-        "lib/netstandard1.3/System.Data.SqlClient.xml",
-        "lib/netstandard2.0/System.Data.SqlClient.dll",
-        "lib/netstandard2.0/System.Data.SqlClient.xml",
-        "lib/xamarinios10/_._",
-        "lib/xamarinmac20/_._",
-        "lib/xamarintvos10/_._",
-        "lib/xamarinwatchos10/_._",
-        "ref/MonoAndroid10/_._",
-        "ref/MonoTouch10/_._",
-        "ref/net451/System.Data.SqlClient.dll",
-        "ref/net46/System.Data.SqlClient.dll",
-        "ref/net461/System.Data.SqlClient.dll",
-        "ref/net461/System.Data.SqlClient.xml",
-        "ref/netcoreapp2.1/System.Data.SqlClient.dll",
-        "ref/netcoreapp2.1/System.Data.SqlClient.xml",
-        "ref/netstandard1.2/System.Data.SqlClient.dll",
-        "ref/netstandard1.2/System.Data.SqlClient.xml",
-        "ref/netstandard1.2/de/System.Data.SqlClient.xml",
-        "ref/netstandard1.2/es/System.Data.SqlClient.xml",
-        "ref/netstandard1.2/fr/System.Data.SqlClient.xml",
-        "ref/netstandard1.2/it/System.Data.SqlClient.xml",
-        "ref/netstandard1.2/ja/System.Data.SqlClient.xml",
-        "ref/netstandard1.2/ko/System.Data.SqlClient.xml",
-        "ref/netstandard1.2/ru/System.Data.SqlClient.xml",
-        "ref/netstandard1.2/zh-hans/System.Data.SqlClient.xml",
-        "ref/netstandard1.2/zh-hant/System.Data.SqlClient.xml",
-        "ref/netstandard1.3/System.Data.SqlClient.dll",
-        "ref/netstandard1.3/System.Data.SqlClient.xml",
-        "ref/netstandard1.3/de/System.Data.SqlClient.xml",
-        "ref/netstandard1.3/es/System.Data.SqlClient.xml",
-        "ref/netstandard1.3/fr/System.Data.SqlClient.xml",
-        "ref/netstandard1.3/it/System.Data.SqlClient.xml",
-        "ref/netstandard1.3/ja/System.Data.SqlClient.xml",
-        "ref/netstandard1.3/ko/System.Data.SqlClient.xml",
-        "ref/netstandard1.3/ru/System.Data.SqlClient.xml",
-        "ref/netstandard1.3/zh-hans/System.Data.SqlClient.xml",
-        "ref/netstandard1.3/zh-hant/System.Data.SqlClient.xml",
-        "ref/netstandard2.0/System.Data.SqlClient.dll",
-        "ref/netstandard2.0/System.Data.SqlClient.xml",
-        "ref/xamarinios10/_._",
-        "ref/xamarinmac20/_._",
-        "ref/xamarintvos10/_._",
-        "ref/xamarinwatchos10/_._",
-        "runtimes/unix/lib/netcoreapp2.1/System.Data.SqlClient.dll",
-        "runtimes/unix/lib/netcoreapp2.1/System.Data.SqlClient.xml",
-        "runtimes/unix/lib/netstandard1.3/System.Data.SqlClient.dll",
-        "runtimes/unix/lib/netstandard2.0/System.Data.SqlClient.dll",
-        "runtimes/unix/lib/netstandard2.0/System.Data.SqlClient.xml",
-        "runtimes/win/lib/net451/System.Data.SqlClient.dll",
-        "runtimes/win/lib/net46/System.Data.SqlClient.dll",
-        "runtimes/win/lib/net461/System.Data.SqlClient.dll",
-        "runtimes/win/lib/net461/System.Data.SqlClient.xml",
-        "runtimes/win/lib/netcoreapp2.1/System.Data.SqlClient.dll",
-        "runtimes/win/lib/netcoreapp2.1/System.Data.SqlClient.xml",
-        "runtimes/win/lib/netstandard1.3/System.Data.SqlClient.dll",
-        "runtimes/win/lib/netstandard2.0/System.Data.SqlClient.dll",
-        "runtimes/win/lib/netstandard2.0/System.Data.SqlClient.xml",
-        "runtimes/win/lib/uap10.0.16299/System.Data.SqlClient.dll",
-        "runtimes/win/lib/uap10.0.16299/System.Data.SqlClient.xml",
-        "system.data.sqlclient.4.8.6.nupkg.sha512",
-        "system.data.sqlclient.nuspec",
-        "useSharedDesignerContext.txt",
-        "version.txt"
-      ]
-    },
-    "System.Diagnostics.EventLog/8.0.0": {
-      "sha512": "fdYxcRjQqTTacKId/2IECojlDSFvp7LP5N78+0z/xH7v/Tuw5ZAxu23Y6PTCRinqyu2ePx+Gn1098NC6jM6d+A==",
-      "type": "package",
-      "path": "system.diagnostics.eventlog/8.0.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "LICENSE.TXT",
-        "PACKAGE.md",
-        "THIRD-PARTY-NOTICES.TXT",
-        "buildTransitive/net461/System.Diagnostics.EventLog.targets",
-        "buildTransitive/net462/_._",
-        "buildTransitive/net6.0/_._",
-        "buildTransitive/netcoreapp2.0/System.Diagnostics.EventLog.targets",
-        "lib/net462/System.Diagnostics.EventLog.dll",
-        "lib/net462/System.Diagnostics.EventLog.xml",
-        "lib/net6.0/System.Diagnostics.EventLog.dll",
-        "lib/net6.0/System.Diagnostics.EventLog.xml",
-        "lib/net7.0/System.Diagnostics.EventLog.dll",
-        "lib/net7.0/System.Diagnostics.EventLog.xml",
-        "lib/net8.0/System.Diagnostics.EventLog.dll",
-        "lib/net8.0/System.Diagnostics.EventLog.xml",
-        "lib/netstandard2.0/System.Diagnostics.EventLog.dll",
-        "lib/netstandard2.0/System.Diagnostics.EventLog.xml",
-        "runtimes/win/lib/net6.0/System.Diagnostics.EventLog.Messages.dll",
-        "runtimes/win/lib/net6.0/System.Diagnostics.EventLog.dll",
-        "runtimes/win/lib/net6.0/System.Diagnostics.EventLog.xml",
-        "runtimes/win/lib/net7.0/System.Diagnostics.EventLog.Messages.dll",
-        "runtimes/win/lib/net7.0/System.Diagnostics.EventLog.dll",
-        "runtimes/win/lib/net7.0/System.Diagnostics.EventLog.xml",
-        "runtimes/win/lib/net8.0/System.Diagnostics.EventLog.Messages.dll",
-        "runtimes/win/lib/net8.0/System.Diagnostics.EventLog.dll",
-        "runtimes/win/lib/net8.0/System.Diagnostics.EventLog.xml",
-        "system.diagnostics.eventlog.8.0.0.nupkg.sha512",
-        "system.diagnostics.eventlog.nuspec",
-        "useSharedDesignerContext.txt"
-      ]
-    },
     "System.Management/7.0.2": {
       "sha512": "/qEUN91mP/MUQmJnM5y5BdT7ZoPuVrtxnFlbJ8a3kBJGhe2wCzBfnPFtK2wTtEEcf3DMGR9J00GZZfg6HRI6yA==",
       "type": "package",
@@ -2516,125 +1722,13 @@
         "system.management.nuspec",
         "useSharedDesignerContext.txt"
       ]
-    },
-    "System.Security.Cryptography.ProtectedData/8.0.0": {
-      "sha512": "+TUFINV2q2ifyXauQXRwy4CiBhqvDEDZeVJU7qfxya4aRYOKzVBpN+4acx25VcPB9ywUN6C0n8drWl110PhZEg==",
-      "type": "package",
-      "path": "system.security.cryptography.protecteddata/8.0.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "LICENSE.TXT",
-        "PACKAGE.md",
-        "THIRD-PARTY-NOTICES.TXT",
-        "buildTransitive/net461/System.Security.Cryptography.ProtectedData.targets",
-        "buildTransitive/net462/_._",
-        "buildTransitive/net6.0/_._",
-        "buildTransitive/netcoreapp2.0/System.Security.Cryptography.ProtectedData.targets",
-        "lib/MonoAndroid10/_._",
-        "lib/MonoTouch10/_._",
-        "lib/net462/System.Security.Cryptography.ProtectedData.dll",
-        "lib/net462/System.Security.Cryptography.ProtectedData.xml",
-        "lib/net6.0/System.Security.Cryptography.ProtectedData.dll",
-        "lib/net6.0/System.Security.Cryptography.ProtectedData.xml",
-        "lib/net7.0/System.Security.Cryptography.ProtectedData.dll",
-        "lib/net7.0/System.Security.Cryptography.ProtectedData.xml",
-        "lib/net8.0/System.Security.Cryptography.ProtectedData.dll",
-        "lib/net8.0/System.Security.Cryptography.ProtectedData.xml",
-        "lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll",
-        "lib/netstandard2.0/System.Security.Cryptography.ProtectedData.xml",
-        "lib/xamarinios10/_._",
-        "lib/xamarinmac20/_._",
-        "lib/xamarintvos10/_._",
-        "lib/xamarinwatchos10/_._",
-        "system.security.cryptography.protecteddata.8.0.0.nupkg.sha512",
-        "system.security.cryptography.protecteddata.nuspec",
-        "useSharedDesignerContext.txt"
-      ]
-    },
-    "System.Security.Permissions/8.0.0": {
-      "sha512": "v/BBylw7XevuAsHXoX9dDUUfmBIcUf7Lkz8K3ZXIKz3YRKpw8YftpSir4n4e/jDTKFoaK37AsC3xnk+GNFI1Ow==",
-      "type": "package",
-      "path": "system.security.permissions/8.0.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
-        "buildTransitive/net461/System.Security.Permissions.targets",
-        "buildTransitive/net462/_._",
-        "buildTransitive/net6.0/_._",
-        "buildTransitive/netcoreapp2.0/System.Security.Permissions.targets",
-        "lib/net462/System.Security.Permissions.dll",
-        "lib/net462/System.Security.Permissions.xml",
-        "lib/net6.0/System.Security.Permissions.dll",
-        "lib/net6.0/System.Security.Permissions.xml",
-        "lib/net7.0/System.Security.Permissions.dll",
-        "lib/net7.0/System.Security.Permissions.xml",
-        "lib/net8.0/System.Security.Permissions.dll",
-        "lib/net8.0/System.Security.Permissions.xml",
-        "lib/netstandard2.0/System.Security.Permissions.dll",
-        "lib/netstandard2.0/System.Security.Permissions.xml",
-        "system.security.permissions.8.0.0.nupkg.sha512",
-        "system.security.permissions.nuspec",
-        "useSharedDesignerContext.txt"
-      ]
-    },
-    "System.Windows.Extensions/8.0.0": {
-      "sha512": "Obg3a90MkOw9mYKxrardLpY2u0axDMrSmy4JCdq2cYbelM2cUwmUir5Bomvd1yxmPL9h5LVHU1tuKBZpUjfASg==",
-      "type": "package",
-      "path": "system.windows.extensions/8.0.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
-        "lib/net6.0/System.Windows.Extensions.dll",
-        "lib/net6.0/System.Windows.Extensions.xml",
-        "lib/net7.0/System.Windows.Extensions.dll",
-        "lib/net7.0/System.Windows.Extensions.xml",
-        "lib/net8.0/System.Windows.Extensions.dll",
-        "lib/net8.0/System.Windows.Extensions.xml",
-        "runtimes/win/lib/net6.0/System.Windows.Extensions.dll",
-        "runtimes/win/lib/net6.0/System.Windows.Extensions.xml",
-        "runtimes/win/lib/net7.0/System.Windows.Extensions.dll",
-        "runtimes/win/lib/net7.0/System.Windows.Extensions.xml",
-        "runtimes/win/lib/net8.0/System.Windows.Extensions.dll",
-        "runtimes/win/lib/net8.0/System.Windows.Extensions.xml",
-        "system.windows.extensions.8.0.0.nupkg.sha512",
-        "system.windows.extensions.nuspec",
-        "useSharedDesignerContext.txt"
-      ]
-    },
-    "ZstdSharp.Port/0.8.0": {
-      "sha512": "Z62eNBIu8E8YtbqlMy57tK3dV1+m2b9NhPeaYovB5exmLKvrGCqOhJTzrEUH5VyUWU6vwX3c1XHJGhW5HVs8dA==",
-      "type": "package",
-      "path": "zstdsharp.port/0.8.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "lib/net462/ZstdSharp.dll",
-        "lib/net5.0/ZstdSharp.dll",
-        "lib/net6.0/ZstdSharp.dll",
-        "lib/net7.0/ZstdSharp.dll",
-        "lib/net8.0/ZstdSharp.dll",
-        "lib/netcoreapp3.1/ZstdSharp.dll",
-        "lib/netstandard2.0/ZstdSharp.dll",
-        "lib/netstandard2.1/ZstdSharp.dll",
-        "zstdsharp.port.0.8.0.nupkg.sha512",
-        "zstdsharp.port.nuspec"
-      ]
     }
   },
   "projectFileDependencyGroups": {
     "net10.0": [
-      "EntityFramework >= 6.5.1",
-      "Google.Cloud.Functions.Hosting >= 3.0.0",
-      "Google.Cloud.SecretManager.V1 >= 2.7.0",
-      "MySql.Data >= 9.0.0",
+      "Google.Cloud.Functions.Hosting >= 3.0.1",
+      "Google.Cloud.SecretManager.V1 >= 2.8.0",
+      "Microsoft.EntityFrameworkCore >= 9.0.0",
       "Pomelo.EntityFrameworkCore.MySql >= 9.0.0",
       "StackExchange.Redis >= 2.8.24"
     ]
@@ -2684,19 +1778,15 @@
         "framework": "net10.0",
         "targetAlias": "net10.0",
         "dependencies": {
-          "EntityFramework": {
-            "target": "Package",
-            "version": "[6.5.1, )"
-          },
           "Google.Cloud.Functions.Hosting": {
             "target": "Package",
-            "version": "[3.0.0, )"
+            "version": "[3.0.1, )"
           },
           "Google.Cloud.SecretManager.V1": {
             "target": "Package",
-            "version": "[2.7.0, )"
+            "version": "[2.8.0, )"
           },
-          "MySql.Data": {
+          "Microsoft.EntityFrameworkCore": {
             "target": "Package",
             "version": "[9.0.0, )"
           },

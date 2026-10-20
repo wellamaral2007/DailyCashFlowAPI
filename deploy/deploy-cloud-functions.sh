@@ -39,6 +39,7 @@ echo -e "${AMARELO}[+] Publicando FaaS: daily-cashflow-balance (HTTP Ingress/Egr
 gcloud functions deploy daily-cashflow-balance \
     --gen2 \
     --runtime=dotnet10 \
+    --set-env-vars="ASPNETCORE_ENVIRONMENT=Production" \
     --region=us-central1 \
     --entry-point="DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Inbound.API.Controller.DailyCashFlowBalanceController" \
     --vpc-connector="$VPC_CONNECTOR" \
@@ -51,6 +52,12 @@ gcloud functions deploy daily-cashflow-balance \
     --set-build-env-vars GOOGLE_BUILDABLE="DailyCashFlowBalanceMS/DailyCashFlowBalanceMS.csproj" \
     --quiet
 
+gcloud run services update daily-cashflow-balance \
+    --add-cloudsql-instances="daily-cashflow-sol-17852:us-central1:finance-mysql-master" \
+    --region=us-central1 \
+    --project=daily-cashflow-sol-17852
+
+
 # ----------------------------------------------------------------------------
 # 2️⃣ FUNCTION: process-daily-cashflow (Gatilho Reativo de Tópico Pub/Sub - EDA)
 # ----------------------------------------------------------------------------
@@ -59,8 +66,10 @@ echo -e "${AMARELO}[+] Publicando FaaS: process-daily-cashflow (Pub/Sub Consumer
 gcloud functions deploy process-daily-cashflow \
     --gen2 \
     --runtime=dotnet10 \
+    --set-env-vars="ASPNETCORE_ENVIRONMENT=Production" \
     --region=us-central1 \
     --entry-point="DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Inbound.EDA.Controller.ProcessDailyCashFlowController" \
+    --set-env-vars="ASPNETCORE_ENVIRONMENT=Production" \
     --vpc-connector="$VPC_CONNECTOR" \
     --egress-settings=all \
     --trigger-topic="$TOPIC_NAME" \
@@ -69,5 +78,11 @@ gcloud functions deploy process-daily-cashflow \
     --set-env-vars GCP_PROJECT=$GCLOUD_PROJECT_ID \
     --set-build-env-vars GOOGLE_BUILDABLE="DailyCashFlowBalanceMS/DailyCashFlowBalanceMS.csproj" \
     --quiet
+
+gcloud run services update process-daily-cashflow \
+    --add-cloudsql-instances="daily-cashflow-sol-17852:us-central1:finance-mysql-master" \
+    --region=us-central1 \
+    --project=daily-cashflow-sol-17852
+
 
 echo -e "${VERDE}==> [SUCESSO] Ambas as Google Cloud Functions publicadas e interligadas com sucesso total!${RESET}"

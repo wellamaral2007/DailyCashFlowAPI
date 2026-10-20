@@ -1,5 +1,4 @@
 /home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/bin/Debug/net10.0/BaseFramework.deps.json
-/home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/bin/Debug/net10.0/BaseFramework.runtimeconfig.json
 /home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/bin/Debug/net10.0/BaseFramework.dll
 /home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/bin/Debug/net10.0/BaseFramework.pdb
 /home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/obj/Debug/net10.0/BaseFramework.csproj.AssemblyReference.cache
@@ -11,5 +10,4 @@
 /home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/obj/Debug/net10.0/BaseFramework.dll
 /home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/obj/Debug/net10.0/refint/BaseFramework.dll
 /home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/obj/Debug/net10.0/BaseFramework.pdb
-/home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/obj/Debug/net10.0/BaseFramework.genruntimeconfig.cache
 /home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/obj/Debug/net10.0/ref/BaseFramework.dll

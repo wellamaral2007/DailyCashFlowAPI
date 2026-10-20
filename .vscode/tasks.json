@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/DailyCashFlow.sln",
+                "${workspaceFolder}/DailyCashFlowSolution.slnx",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary;ForceNoColor"
             ],
