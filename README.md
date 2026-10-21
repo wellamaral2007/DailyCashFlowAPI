@@ -151,7 +151,7 @@ The solution is auto-scaling, auto-managed and auto-healing in production, with 
 │   │   │               ├── 📄 IORMEntity.cs      # Contract interface for all ORM schema classes
 │   │   │               ├── 📄 IDAL.cs            # Asynchronous contract interface IDAL<IORMEntity>
 │   │   │               └── 📄 AbstractCRUDDAL.cs # Dynamic self-contained base DbContext (Pomelo MySQL/Async) [1.1]
-│   │   └── 📄 BaseFramework.csproj   # Framework build definition targeting net10.0
+│   │   └── 📄 BaseFramework.csproj   # Framework build definition targeting net8.0
 │   │
 │   ├── 📂 DailyCashFlowBalanceMS     # 💰 Core Business Microservice (Hexagonal Engine)
 │   │   ├── 📂 CashFlow
@@ -529,7 +529,7 @@ dotnet run --project DailyCashFlowBalanceMS.csproj --urls "http://localhost:8080
 ---
 
 ## 🎯 Visual Studio Code Debug Configuration (`.vscode/launch.json`)
-To attach breakpoints and step through the local Cloud Function execution flow directly from the VS Code editor panel, use the following workspace configuration targeting the **`net10.0`** binary folder:
+To attach breakpoints and step through the local Cloud Function execution flow directly from the VS Code editor panel, use the following workspace configuration targeting the **`net8.0`** binary folder:
 
 ```json
 {
@@ -540,7 +540,7 @@ To attach breakpoints and step through the local Cloud Function execution flow d
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/DailyCashFlowBalanceMS/bin/Debug/net10.0/DailyCashFlowBalanceMS.dll",
+      "program": "${workspaceFolder}/src/DailyCashFlowBalanceMS/bin/Debug/net8.0/DailyCashFlowBalanceMS.dll",
       "args": [],
       "cwd": "${workspaceFolder}/src/DailyCashFlowBalanceMS",
       "stopAtEntry": false,

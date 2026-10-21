@@ -19,10 +19,9 @@ namespace Tests.DailyCashFlow.Performance
             };
 
             using var httpClient = new HttpClient(handler);
-            //string apiUrl = "https://localhost:8443";
+            //string apiUrl = "https://localhost:8443"; // 🚀 ssh tunnel para o APIGEE 
             // 🚀 CORREÇÃO CIRÚRGICA PARA TESTE DE CARGA ISOLADO:
-            // Faz o NBomber bombardear a porta 8080 local direto, ignorando as travas de limite do túnel externo [1.1]
-            string apiUrl = "http://localhost:8080";
+            string apiUrl = "https://us-central1-daily-cashflow-sol-17852.cloudfunctions.net/daily-cashflow-balance";
             httpClient.BaseAddress = new Uri(apiUrl);
 
             var apiClient = new DailyCashFlowApiClient(httpClient);

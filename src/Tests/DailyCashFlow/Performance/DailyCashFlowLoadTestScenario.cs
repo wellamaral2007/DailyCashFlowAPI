@@ -28,14 +28,22 @@ public static class CashFlowLoadScenario
                 string amountInBrazilianFormat = payload.Amount.ToString("F2", System.Globalization.CultureInfo.GetCultureInfo("pt-BR"));
                 
                 // Mapeia o caminho exato do proxy do Apigee que removemos o hífen
-                string dynamicUrlWithQuery = $"{apiUrl}/v1/cashflow/entry?CreditDebitValue={amountInBrazilianFormat}";
+                // string dynamicUrlWithQuery = $"{apiUrl}/v1/cashflow/entry?CreditDebitValue={amountInBrazilianFormat}";
+                // 🚀 direct to gcp cloud faas
+                string dynamicUrlWithQuery = $"{apiUrl}/?CreditDebitValue={amountInBrazilianFormat}";
 
-                // 🚀 INJEÇÃO BLINDADA: Injeta Host e Authorization diretamente em cada cópia do loop do NBomber [1.1]
+                // 🚀 INJEÇÃO BLINDADA: Injeta Host e Authorization diretamente em cada cópia do loop do NBomber 
+                // para apigee exige o host e o token de autenticação 
+                //var request = NBomber.Http.CSharp.Http.CreateRequest("POST", dynamicUrlWithQuery)
+                //                      .WithHeader("Content-Type", "application/json")
+                //                      .WithHeader("Host", "daily-cashflow-sol-17852.dns-replaceme.example.com")
+                //                      .WithHeader("Authorization", $"Bearer {bearerToken}") // 👈 Garante a autenticação a 50 RPS!
+                //                      .WithBody(content);
+
+                // To local or gcp cloud faas call
                 var request = NBomber.Http.CSharp.Http.CreateRequest("POST", dynamicUrlWithQuery)
-                                      .WithHeader("Content-Type", "application/json")
-                                      .WithHeader("Host", "daily-cashflow-sol-17852.dns-replaceme.example.com")
-                                      .WithHeader("Authorization", $"Bearer {bearerToken}") // 👈 Garante a autenticação a 50 RPS!
-                                      .WithBody(content);
+                      .WithHeader("Content-Type", "application/json")
+                      .WithBody(content);
 
                 var response = await Http.Send(httpClient, request);
                 return response;

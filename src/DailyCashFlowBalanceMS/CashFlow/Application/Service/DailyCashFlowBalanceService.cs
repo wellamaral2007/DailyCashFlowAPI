@@ -105,7 +105,7 @@ public class DailyCashFlowBalanceService
      */
     public async Task<decimal> GetNetBalanceAsync(DateTime date)
     {
-        decimal cachedValue = await _queryPort.readBalanceValue(DateTime.Now);
+        decimal cachedValue = await _queryPort.readBalanceValue(date);
         return cachedValue;
     }
 }

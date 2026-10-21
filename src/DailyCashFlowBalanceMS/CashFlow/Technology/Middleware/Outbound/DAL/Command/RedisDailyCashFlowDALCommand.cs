@@ -1,7 +1,9 @@
-// File: apps/daily-cash-flow-service/src/DailyCashFlowService.API/3_Technology/Middleware/Outbound/DAL/Command/RedisDailyCashFlowDALCommand.cs
 using StackExchange.Redis;
 using DailyCashFlowBalanceMS.CashFlow.Application.Contract.Command;
 using DailyCashFlowBalanceMS.CashFlow.Domain.Entity;
+using System;
+using System.Globalization;
+using System.Threading.Tasks;
 
 namespace DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Outbound.DAL.Command;
 
@@ -17,6 +19,7 @@ namespace DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Outbound.DAL.Com
 public class RedisDailyCashFlowDALCommand : IQuickAccessDailyCashFlowCommandPort
 {
     private readonly IConnectionMultiplexer _redis;
+    private readonly CultureInfo _brazilianCulture;
     private const string CacheKeyPrefix = "daily_flow_";
 
     /**
@@ -25,6 +28,8 @@ public class RedisDailyCashFlowDALCommand : IQuickAccessDailyCashFlowCommandPort
     public RedisDailyCashFlowDALCommand(IConnectionMultiplexer redis)
     {
         _redis = redis;
+        // 🚀 Enforces pt-BR culture to correctly handle commas during string-to-decimal transformations [1.1]
+        _brazilianCulture = new CultureInfo("pt-BR");
     }
 
     /**
@@ -49,20 +54,34 @@ public class RedisDailyCashFlowDALCommand : IQuickAccessDailyCashFlowCommandPort
             
             // Awaits the parallel read resolution to compute the new financial projection with decimal precision
             var rawValue = await currentValueTask;
-            decimal currentTotal = rawValue == RedisValue.Null ? 0.0m : decimal.Parse(rawValue.ToString());
+            
+            decimal currentTotal = 0.0m;
+            if (rawValue != RedisValue.Null)
+            {
+                // 🚀 CRITICAL FIX: Explicitly uses pt-BR to parse current values containing commas [1.1]
+                string rawStringValue = rawValue.ToString();
+                if (!decimal.TryParse(rawStringValue, NumberStyles.Any, _brazilianCulture, out currentTotal))
+                {
+                    // Secondary safety fallback checking invariant formatting metrics
+                    decimal.TryParse(rawStringValue, NumberStyles.Any, CultureInfo.InvariantCulture, out currentTotal);
+                }
+            }
 
             decimal incomingValue = dailyCashFlowEvent.CreditDebitValue;
             decimal newTotal = currentTotal + incomingValue;
 
+            // 🚀 CRITICAL FIX: Forces the serialization to save decimals with commas back into Redis memory space [1.1]
+            string serializedNewTotal = newTotal.ToString("F2", _brazilianCulture);
+
             // Enqueues the write operation atomically within the transaction pipeline
-            _ = transaction.StringSetAsync(key, newTotal.ToString());
+            _ = transaction.StringSetAsync(key, serializedNewTotal);
 
             // Attempts the physical commit (EXEC). If another thread changed the key between read and commit, returns false
             isUpdated = await transaction.ExecuteAsync();
 
             if (isUpdated)
             {
-                Console.WriteLine($"[REDIS TRANSACTION SUCCESS] Key: {key} | Input: {incomingValue} | Consolidated Total: {newTotal}");
+                Console.WriteLine($"[REDIS TRANSACTION SUCCESS] Key: {key} | Input: {incomingValue.ToString("F2", _brazilianCulture)} | Consolidated Total: {serializedNewTotal}");
             }
             else
             {
@@ -84,7 +103,7 @@ public class RedisDailyCashFlowDALCommand : IQuickAccessDailyCashFlowCommandPort
     public async Task InvalidateBalanceAsync()
     {
         var db = _redis.GetDatabase();
-        string key = $"{CacheKeyPrefix}{DateTime.UtcNow:yyyy-MM-dd}";
+        string key = $"{CacheKeyPrefix}{DateTime.Now:yyyy-MM-dd}";
         await db.KeyDeleteAsync(key);
     }
 }

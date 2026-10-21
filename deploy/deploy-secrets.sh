@@ -21,7 +21,7 @@ echo -e "${AMARELO}==> Atualizando Secret Manager com as Connection Strings ofic
 # ----------------------------------------------------------------------------
 SECRET_WRITE_DB="db-write-connection"
 # Format standardized for MySQL ADO/.NET providers targeting the unique private master instance DNS
-CONN_STR_WRITE="Server=mysql-master-17852.c.daily-cashflow-sol-17852.internal;Port=3306;Database=DailyCashDb;Uid=root;Pwd=StrongPassword123!;SslMode=None;"
+CONN_STR_WRITE="Server=10.10.0.11;Port=3306;Database=DailyCashDb;Uid=root;Pwd=StrongPassword123!;SslMode=None;"
 
 echo -e "${AMARELO}[+] Injetando segredo de Escrita: ${SECRET_WRITE_DB}...${RESET}"
 gcloud secrets create $SECRET_WRITE_DB --replication-policy="automatic" --quiet || true
@@ -32,7 +32,7 @@ echo -n "$CONN_STR_WRITE" | gcloud secrets versions add $SECRET_WRITE_DB --data-
 # ----------------------------------------------------------------------------
 SECRET_READ_DB="db-read-connection"
 # Pointing securely to the dedicated MySQL replica instance to offload heavy aggregate read queries
-CONN_STR_READ="Server=mysql-replica-17852.c.daily-cashflow-sol-17852.internal;Port=3306;Database=DailyCashDb;Uid=root;Pwd=StrongPassword123!;SslMode=None;"
+CONN_STR_READ="Server=10.10.0.13;Port=3306;Database=DailyCashDb;Uid=root;Pwd=StrongPassword123!;SslMode=None;"
 
 echo -e "${AMARELO}[+] Injetando segredo de Leitura: ${SECRET_READ_DB}...${RESET}"
 gcloud secrets create $SECRET_READ_DB --replication-policy="automatic" --quiet || true

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <!-- ? GOVERNANÇA: Alinhado na versão estável do .NET 10.0 -->
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <!-- Garante que o compilador monte o binário como biblioteca reutilizável -->
@@ -12,8 +12,8 @@
   <ItemGroup>
     <!-- ? PERSISTÊNCIA: Padronizada unicamente no ecossistema moderno do EF Core 9.0.0 -->
     <!-- REMOVIDO: 'EntityFramework' (v6) e 'MySql.Data' para eliminar o conflito de ORMs e duplicação de drivers -->
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2" />
     <PackageReference Include="StackExchange.Redis" Version="2.8.24" />
     
     <!-- ?? INTEGRAÇÃO E SEGURANÇA GOOGLE CLOUD -->
