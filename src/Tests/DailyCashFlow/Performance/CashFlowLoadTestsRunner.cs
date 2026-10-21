@@ -20,7 +20,8 @@ namespace Tests.DailyCashFlow.Performance
 
             using var httpClient = new HttpClient(handler);
             //string apiUrl = "https://localhost:8443"; // 🚀 ssh tunnel para o APIGEE 
-            // 🚀 CORREÇÃO CIRÚRGICA PARA TESTE DE CARGA ISOLADO:
+            
+            // 🚀 Call directo to cloud function
             string apiUrl = "https://us-central1-daily-cashflow-sol-17852.cloudfunctions.net/daily-cashflow-balance";
             httpClient.BaseAddress = new Uri(apiUrl);
 
