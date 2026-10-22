@@ -14,6 +14,6 @@
     <Flows/>
     <HTTPTargetConnection>
         <!-- Injected dynamically by the automation pipeline script via sed -->
-        <URL>https://daily-cashflow-balance-3utkqhx7gq-uc.a.run.app</URL>
+        <URL>https://us-central1-daily-cashflow-sol-17852.cloudfunctions.net/daily-cashflow-balance</URL>
     </HTTPTargetConnection>
 </TargetEndpoint>

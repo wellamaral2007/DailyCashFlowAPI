@@ -1,6 +1,8 @@
-# Definition
+# 🏛️ Daily Cash Flow Solution
 
-This is it a test of Carrefour Bank, for Solution Architect, which we have a challenge to control entrys of daily cash flow balance, and generate a report daily balance conform defined by document desafio-arquiteto-software-ago2024.pdf. 
+## Definition
+
+This is it a test, for Solution Architect, which we have a challenge to control entrys of daily cash flow balance, and generate a report daily balance conform defined by document desafio-arquiteto-software-ago2024.pdf. 
 I am Wellington Amaral, Solution Architect, that being participating in this challenge, to model a solution 
 with the best software architecture and solution architecture patterns and practices that can be used in a real-world scenario to achieve the goal of the challenge. In terms of software architecture and solution architecture the main requirement is about the scalability and availability, supporting until 50 entries per second caming, canning have unvailibility of the service of 5% of time, reliability, keeping information of daily balance of cash flow without lose entrys, high performance, and security.
 
@@ -355,7 +357,7 @@ graph TB
 
         subgraph Broker_Layer [✉️ Google Cloud Pub/Sub]
             PubSub_Topic[["📣 Topic: DailyCashFlowEntry"]]
-            PubSub_Sub[["📥 Subscription: sub-debug-local"]]
+            PubSub_Sub[["📥 Subscription: DailyCashFlowEntrySub"]]
         end
 
         subgraph Storage_Layer [💾 Highly Available Private Managed Storage]
@@ -472,7 +474,7 @@ graph TD
 
 ## GCP Cloud Architecture
 
-![DailyCashFlowArchitecture-Solution Diagram](documentation/DailyCashFlowArchitecture-Solution%20Diagram.png)
+![DailyCashFlowArchitecture-Solution Diagram](documentation/evidencies/DailyCashFlowArchitecture-Solution%20Diagram.png)
 
 ---
 
@@ -516,7 +518,7 @@ The complete infrastructure deployment is managed through the execution of the m
 * **`./deploy-network.sh`**
   * Establishes the private network topology core by provisioning VPC meshes, Private Service Connect links, and **Cloud Firewall Ingress Rules** (`allow-bastion-to-infrastructure`) to lock down internal communication.
 * **`./deploy-databases.sh`**
-  * Provisions the highly available, multi-node storage layers by initializing Cloud SQL for MySQL Master (`10.10.0.11`), Read Replica (`10.10.0.13`), and Google Memorystore for Redis (`10.10.76.235`).
+  * Provisions the highly available, multi-node storage layers by initializing Cloud SQL for MySQL Master (`10.10.0.11`), Read Replica (`10.10.0.13`), and Google Memorystore for Redis (`10.10.76.235`) for example.
 * **`./deploy-pubsub.sh`**
   * Configures the EDA asynchronous message brokers by provisioning the `DailyCashFlowEntry` pub/sub topic alongside its dedicated push subscription listener paths.
 * **`./deploy-iam.sh`**
@@ -547,8 +549,7 @@ chmod +x setu-all.sh
 ```
 
 ### Tests Evidencies
-
-link
+[Show me the evidences!](documentation/evidencies/tests-evidencies.md)
 
 ### Load Testing Step (Instant Trigger):
 ```bash
@@ -563,7 +564,7 @@ dotnet test ../src/Tests/Tests.csproj --configuration Release --filter "FullyQua
 
 ### Evidency of the 50 RPS Load Test running on local with access to servless secrets, databases, redis, and pubsub emulators taking messages from the GCP pubsub emulator, and sending them to the local web function engine on port **8081**.
 
-![DailyCashFlowLoadTestsRunner-Local-Emulator-Results](documentation/DailyCashFlowLoadTestsRunner-Local-Results.png)
+![DailyCashFlowLoadTestsRunner-Local-Emulator-Results](documentation/evidencies/DailyCashFlowLoadTestsRunner-Local-Results.png)
 
 ---
 
@@ -585,7 +586,7 @@ To access the highly available private storage layer (Cloud SQL and Memorystore 
 #### 1. Create the Bastion Instance via gcloud CLI
 If the gateway node does not exist, provision the Linux e2-micro proxy machine by executing:
 ```bash
-gcloud compute instances create bastion-redis-tunnel \
+gcloud compute instances create bastion-service-tunnel \
     --zone=us-central1-a \
     --machine-type=e2-micro \
     --network=daily-cashflow-network \
@@ -615,7 +616,7 @@ To bind the private cloud resources to your local loopback sockets without expos
 
 ```bash
 # 🚀 Run this command in your local terminal to bridge the network boundaries
-gcloud compute ssh bastion-redis-tunnel \
+gcloud compute ssh bastion-service-tunnel \
     --zone=us-central1-a \
     --project=$GCLOUD_PROJECT_ID \
     -- -N \
@@ -689,7 +690,7 @@ To attach breakpoints and step through the local Cloud Function execution flow d
 
 ### 🔌 Multiplexed Local Port Forwarding Reference
 
-The following table provides the operational blueprint of the multiplexed secure SSH tunnel (`-L` configuration) established through the Bastion Host (`bastion-redis-tunnel`). It maps isolated cloud workloads straight into your local loopback interface (`127.0.0.1`), enabling localized CQRS and SAGA workflow verification.
+The following table provides the operational blueprint of the multiplexed secure SSH tunnel (`-L` configuration) established through the Bastion Host (`bastion-service-tunnel`). It maps isolated cloud workloads straight into your local loopback interface (`127.0.0.1`), enabling localized CQRS and SAGA workflow verification.
 
 | Local Port (Your Machine) | Target Private Cloud IP & Port | Target GCP Service Node | Hexagonal Architectural Role (CQRS / SAGA Mesh) |
 | :--- | :--- | :--- | :--- |
@@ -742,14 +743,14 @@ The `ProcessDailyCashFlowController` acts as a Google Cloud Function Gen2 Inboun
 
 ### 🎛️ 2. Provisioning the Local Debugger Infrastructure
 
-Run the following gcloud command in your terminal (`SIACloud1`) to attach a persistent debugging queue to the live ledger event channel [11.21]:
+Run the following gcloud command in your terminal (`SIACloud1`) to attach a persistent debugging queue to the live ledger event channel:
 
 ```bash
 # 🚀 Creates the dedicated local debugging pull subscription attached to the live topic [11.21]
 gcloud pubsub subscriptions create sub-local-debugger \
     --topic=projects/daily-cashflow-sol-17852/topics/DailyCashFlowEntry \
     --ack-deadline=60 \
-    --project=daily-cashflow-sol-17852
+    --project=$GCLOUD_PROJECT_ID \
 ```
 
 ---
@@ -759,9 +760,9 @@ gcloud pubsub subscriptions create sub-local-debugger \
 #### Step 1: Establish the Infrastructure Mesh via SSH Tunnel
 Ensure your background data channels are active so the local code can communicate with the private database nodes and Redis cluster in the cloud environment [11.21]:
 ```bash
-gcloud compute ssh bastion-redis-tunnel \
+gcloud compute ssh bastion-service-tunnel \
     --zone=us-central1-a \
-    --project=daily-cashflow-sol-17852 \
+    --project=$GCLOUD_PROJECT_ID \
     -- -N \
     -L 3307:10.10.0.11:3306 \
     -L 3308:10.10.0.13:3306 \
@@ -781,7 +782,7 @@ To attach the .NET debugger directly to the Google Cloud Functions Framework loc
       "program": "${workspaceFolder}/src/DailyCashFlowBalanceMS/bin/Debug/net8.0/DailyCashFlowBalanceMS.dll",
       "args": [
         "--target", "DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Inbound.EDA.Controller.ProcessDailyCashFlowController",
-        "--port", "8080"
+        "--port", "8081"
       ],
       "cwd": "${workspaceFolder}/src/DailyCashFlowBalanceMS",
       "stopAtEntry": false,
@@ -819,8 +820,8 @@ Save the following automated broker script as `deploy/pooling-topic-local.sh` an
 ---
 
 ### 📊 Expected Telemetry Verification
-Once the script fetches a message (whether it contains a decimal formatted with a point `2673.69` or a string containing a Brazilian comma `"2673,69"`), your IDE debugger will immediately pause [1.1]. 
+Once the script fetches a message (whether it contains a decimal formatted with a point `2673,69` or a string containing a Brazilian comma `"2673,69"`), your IDE debugger will immediately pause
 
-You can inspect that `parsedFinancialValue` cleanly evaluates to the decimal value `2673.69m` without throwing exceptions, feeding your local transaction persistence mesh perfectly [1.1]!
+You can inspect that `parsedFinancialValue` cleanly evaluates to the decimal value `2673,69m` without throwing exceptions, feeding your local transaction persistence mesh perfectly 
 
 

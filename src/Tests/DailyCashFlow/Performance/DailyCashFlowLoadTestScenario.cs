@@ -34,16 +34,16 @@ public static class CashFlowLoadScenario
 
                 // 🚀 INJEÇÃO BLINDADA: Injeta Host e Authorization diretamente em cada cópia do loop do NBomber 
                 // para apigee exige o host e o token de autenticação 
-                //var request = NBomber.Http.CSharp.Http.CreateRequest("POST", dynamicUrlWithQuery)
-                //                      .WithHeader("Content-Type", "application/json")
-                //                      .WithHeader("Host", "daily-cashflow-sol-17852.dns-replaceme.example.com")
-                //                      .WithHeader("Authorization", $"Bearer {bearerToken}") // 👈 Garante a autenticação a 50 RPS!
-                //                      .WithBody(content);
+                var request = NBomber.Http.CSharp.Http.CreateRequest("POST", dynamicUrlWithQuery)
+                                      .WithHeader("Content-Type", "application/json")
+                                      .WithHeader("Host", "daily-cashflow-sol-17852.dns-replaceme.example.com")
+                                      .WithHeader("Authorization", $"Bearer {bearerToken}") // 👈 Garante a autenticação a 50 RPS!
+                                      .WithBody(content);
 
                 // To local or gcp cloud faas call
-                var request = NBomber.Http.CSharp.Http.CreateRequest("POST", dynamicUrlWithQuery)
-                      .WithHeader("Content-Type", "application/json")
-                      .WithBody(content);
+                //var request = NBomber.Http.CSharp.Http.CreateRequest("POST", dynamicUrlWithQuery)
+                //      .WithHeader("Content-Type", "application/json")
+                //      .WithBody(content);
 
                 var response = await Http.Send(httpClient, request);
                 return response;

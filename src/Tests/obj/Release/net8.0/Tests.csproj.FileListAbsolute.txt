@@ -493,9 +493,9 @@
 /home/wellington/testeCarrefour/DailyCashFlowSolution/src/Tests/obj/Release/net8.0/Tests.pdb
 /home/wellington/testeCarrefour/DailyCashFlowSolution/src/Tests/obj/Release/net8.0/Tests.genruntimeconfig.cache
 /home/wellington/testeCarrefour/DailyCashFlowSolution/src/Tests/obj/Release/net8.0/ref/Tests.dll
-/home/wellington/testeCarrefour/DailyCashFlowSolution/src/Tests/obj/Release/net8.0/rpswa.dswa.cache.json
-/home/wellington/testeCarrefour/DailyCashFlowSolution/src/Tests/obj/Release/net8.0/rjimswa.dswa.cache.json
-/home/wellington/testeCarrefour/DailyCashFlowSolution/src/Tests/obj/Release/net8.0/rjsmrazor.dswa.cache.json
-/home/wellington/testeCarrefour/DailyCashFlowSolution/src/Tests/obj/Release/net8.0/rjsmcshtml.dswa.cache.json
-/home/wellington/testeCarrefour/DailyCashFlowSolution/src/Tests/obj/Release/net8.0/staticwebassets.build.json.cache
-/home/wellington/testeCarrefour/DailyCashFlowSolution/src/Tests/obj/Release/net8.0/swae.build.ex.cache
+/home/wellington/testeCarrefour/DailyCashFlowSolution/src/Tests/obj/Release/net8.0/staticwebassets/msbuild.Tests.Microsoft.AspNetCore.StaticWebAssets.props
+/home/wellington/testeCarrefour/DailyCashFlowSolution/src/Tests/obj/Release/net8.0/staticwebassets/msbuild.Tests.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+/home/wellington/testeCarrefour/DailyCashFlowSolution/src/Tests/obj/Release/net8.0/staticwebassets/msbuild.build.Tests.props
+/home/wellington/testeCarrefour/DailyCashFlowSolution/src/Tests/obj/Release/net8.0/staticwebassets/msbuild.buildMultiTargeting.Tests.props
+/home/wellington/testeCarrefour/DailyCashFlowSolution/src/Tests/obj/Release/net8.0/staticwebassets/msbuild.buildTransitive.Tests.props
+/home/wellington/testeCarrefour/DailyCashFlowSolution/src/Tests/obj/Release/net8.0/staticwebassets.pack.json
