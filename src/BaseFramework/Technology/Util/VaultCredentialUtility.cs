@@ -1,18 +1,22 @@
 using System;
+using System.Threading.Tasks;
 using Google.Cloud.SecretManager.V1;
 
 namespace BaseFramework.Technology.Util
 {
+    /// <summary>
+    /// Utility class providing data integration methods to extract tokens and keys from Google Secret Manager.
+    /// </summary>
     public class VaultCredentialUtility
     {
-
+        /// <summary>
+        /// Fetches the target secret version data payload from the cloud environment asynchronously.
+        /// </summary>
         public async static Task<string> GetSecretAsync(string projectId, string secretName, string versionId = "latest")
         {
-            // Cria o cliente do Secret Manager
             SecretManagerServiceClient client = await SecretManagerServiceClient.CreateAsync();
-
-            // Constrói o nome do recurso do segredo no GCP
             SecretVersionName secretVersionName;
+            
             try
             {
                 string envOverride = Environment.GetEnvironmentVariable($"ConnectionStrings__{secretName}") ?? "";
@@ -21,7 +25,6 @@ namespace BaseFramework.Technology.Util
                     return envOverride;
                 }
 
-                // Fluxo normal de produção quando estiver rodando no Google Cloud Functions
                 client = await SecretManagerServiceClient.CreateAsync();
                 secretVersionName = new SecretVersionName(projectId, secretName, "latest");
                 AccessSecretVersionResponse result = await client.AccessSecretVersionAsync(secretVersionName);
@@ -29,7 +32,7 @@ namespace BaseFramework.Technology.Util
             }
             catch (Exception ex)
             {
-                throw new Exception($"Err to find secret {secretName} in GCP: {ex.Message}");
+                throw new Exception($"Failed to resolve secret '{secretName}' from Google Secret Manager infrastructure: {ex.Message}");
             }
         }
     }

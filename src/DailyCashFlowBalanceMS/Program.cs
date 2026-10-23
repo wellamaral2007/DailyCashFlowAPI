@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
-using Google.Cloud.Functions.Hosting; // 🌐 Benefit from Google's native FaaS initialization host
+using Google.Cloud.Functions.Hosting;
 using DailyCashFlowBalanceService = DailyCashFlowBalanceMS.CashFlow.Application.Service.DailyCashFlowBalanceService;
 using DailyCashFlowBalanceMS.CashFlow.Application.Contract.Command;
 using DailyCashFlowBalanceMS.CashFlow.Application.Contract.Query;
@@ -17,24 +17,29 @@ using DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Outbound.EDA.Control
 
 namespace DailyCashFlowBalanceMS;
 
+/**
+ * ============================================================================
+ * TOGAF DIMENSION: Phase D - Technology Architecture (Central IoC Bootstrapper)
+ * HEXAGONAL ROLE:  Inversion of Control (IoC) Composition Root Mesh
+ * CONCEPTS:        Dependency Injection / Serverless Host Bootstrapping
+ * ============================================================================
+ * This class coordinates the central dependency injection container orchestration,
+ * binding pure hexagonal port contracts to concrete technology infrastructure adapters.
+ */
 public class ProgramStartup : FunctionsStartup
 {
+    /**
+     * Registers application infrastructure adapters and ports within the DI container mesh.
+     */
     public override void ConfigureServices(WebHostBuilderContext context, IServiceCollection services)
     {
         string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
         bool isDevelopment = environment.Equals("Development", StringComparison.OrdinalIgnoreCase);
 
-        // ============================================================================
-        // 🌐 HEXAGONAL ARCHITECTURE: DIRECT CONNECTION STRING INJECTION INTO REPOSITORIES
-        // ============================================================================
-
-        // ============================================================================
-        // ⚡ ADAPTERS AND PORTS REGISTRATION (HEXAGONAL DEPENDENCY INJECTION MESH)
-        // ============================================================================
-        
-        // ============================================================================
-        // ⚡ REDIS CONFIGURATION (LAZY SINGLETON POOL - ELIMINATES HEALTHCHECK DEADLOCKS)
-        // ============================================================================
+        /**
+         * REDIS CONFIGURATION (LAZY SINGLETON POOL - ELIMINATES HEALTHCHECK DEADLOCKS)
+         * Establishes a thread-safe connection pool optimized for low-latency serverless instances.
+         */
         services.AddSingleton<IConnectionMultiplexer>(sp =>
         {
             string redisConnectionString = isDevelopment
@@ -45,27 +50,25 @@ public class ProgramStartup : FunctionsStartup
             {
                 throw new ArgumentNullException(nameof(redisConnectionString), "[CRITICAL] Redis connection string environment variable is missing.");
             }
-            // 🔍 UNMASKED TELEMETRY LOG: Spits the raw Redis string payload to target Cloud Logging buffer
+
             Console.WriteLine($"[RAW REDIS TELEMETRY] REDIS_CONNECTION string raw value: {redisConnectionString}");
-            // 🚀 LAZY WIRES: Configures options to allow fast booting without blocking network synchronization threads [11.12]
+            
             var configurationOptions = ConfigurationOptions.Parse(redisConnectionString);
-            configurationOptions.AbortOnConnectFail = false; // Prevents crashing during initialization if the host is lazy [11.12]
+            configurationOptions.AbortOnConnectFail = false; 
             configurationOptions.ConnectTimeout = 5000;
 
             return ConnectionMultiplexer.Connect(configurationOptions);
         });
 
-        // ============================================================================
-        // ⚡ ADAPTERS AND PORTS REGISTRATION (HEXAGONAL DEPENDENCY INJECTION MESH)
-        // ============================================================================
-
-        // 1. Durable Command Port (MySQL Write Engine)
-        // 🚀 STRONGLY-TYPED DI MAPPING: Binds interface explicitly to the concrete class via environment variables [11.10]
+        /**
+         * 1. Durable Command Port (MySQL Write Engine)
+         * Maps database mutation capabilities through decoupled configuration strings.
+         */
         services.AddScoped<IDurableDailyCashFlowCommandPort>(sp =>
         {
             string? writeConnectionString = isDevelopment
                 ? Environment.GetEnvironmentVariable("ConnectionStrings__db-write-connection")
-                : Environment.GetEnvironmentVariable("DB_WRITE_CONNECTION"); // 🚀 Deadlock-free, instantaneous memory load
+                : Environment.GetEnvironmentVariable("DB_WRITE_CONNECTION"); 
 
             if (string.IsNullOrEmpty(writeConnectionString))
             {
@@ -74,21 +77,24 @@ public class ProgramStartup : FunctionsStartup
             return new SQLDailyCashFlowDALCommand(writeConnectionString);
         });
 
-        // 2. QuickAccess Command Port (Redis Cache Write Engine)
+        /**
+         * 2. QuickAccess Command Port (Redis Cache Write Engine)
+         */
         services.AddScoped<IQuickAccessDailyCashFlowCommandPort, RedisDailyCashFlowDALCommand>();
 
-        // 3. Event Publisher Command Port (Outbound Messaging/PubSub Channel)
+        /**
+         * 3. Event Publisher Command Port (Outbound Messaging/PubSub Channel)
+         */
         services.AddScoped<IEventDailyCashFlowPublisherCommandPort, GenerateDailyCashFlowController>();
 
-        // 🚀 4. RESILIENT READ PIPELINE SWITCH (REDIS PRIMARY W/ SQL FALLBACK BACKING)
-        // IDailyCashFlowQueryPort is explicitly bound to the resilient Redis adapter pulling from environment mappings.
-        // The lambda signature remains synchronously managed to prevent delegate Task exceptions.
+        /**
+         * 4. RESILIENT READ PIPELINE SWITCH (REDIS PRIMARY W/ SQL FALLBACK BACKING)
+         * Explicitly binds the lookup interface using a synchronous factory to eliminate async container issues.
+         */
         services.AddScoped<IDailyCashFlowQueryPort>(sp =>
         {
-            // A. Captures the Singleton Connection Multiplexer pool for Redis
             var redisPool = sp.GetRequiredService<IConnectionMultiplexer>();
 
-            // B. Resolves the read-only connection string for database replication nodes
             string? readConnectionString = isDevelopment
                 ? Environment.GetEnvironmentVariable("ConnectionStrings__db-read-connection")
                 : Environment.GetEnvironmentVariable("DB_READ_CONNECTION");
@@ -98,28 +104,27 @@ public class ProgramStartup : FunctionsStartup
                 throw new ArgumentNullException(nameof(readConnectionString), "[CRITICAL] Database read connection string environment variable is missing or null.");
             }
 
-            // C. Instantiates the dedicated SQL Relational Query Repository
             var sqlDALQuery = new SQLDailyCashFlowDALQuery(readConnectionString);
 
-            // D. Returns the resilient Redis adapter injecting the SQL repository as the active fallback engine
             return new RedisDailyCashFlowDALQuery(redisPool, sqlDALQuery);
         });
 
-
-        // ============================================================================
-        // ⚙️ WORKFLOW WORKERS & CORE SERVICE BOUNDARIES
-        // ============================================================================
-        
-        // Hexagon Core Business Facade (Application Layer / SAGA Orchestrator)
+        /**
+         * Hexagon Core Business Facade (Application Layer / SAGA Orchestrator)
+         */
         services.AddScoped<DailyCashFlowBalanceService>();
 
-        // Registers the native formatter required by the Google FaaS CloudEvents interceptor pipeline
+        /**
+         * Registers the native formatter required by the Google FaaS CloudEvents interceptor pipeline.
+         */
         services.AddSingleton<CloudNative.CloudEvents.CloudEventFormatter>(new CloudNative.CloudEvents.SystemTextJson.JsonEventFormatter());
     }
 
+    /**
+     * Injects corporate middleware filters into the web host request execution flow.
+     */
     public override void Configure(WebHostBuilderContext context, IApplicationBuilder app)
     {
-        // Activates the reactive custom pipeline from BaseFramework shared middleware
         app.UseMiddleware<BaseFramework.Technology.Util.GlobalErrorHandlingMiddleware>();
     }
 }

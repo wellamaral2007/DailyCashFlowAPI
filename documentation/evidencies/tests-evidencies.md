@@ -8,41 +8,49 @@ This section acts as the official engineering validation ledger, detailing the c
 
 ### 🌐 1. VPC Network 
 
-![DailyCashFlowLoadTestsRunner-Local-Emulator-Results](DailyCashTestsRunner-Local-Results.png)
+![DailyCashFlowTestsVPCResource](DailyCashFlowTestsVPCResource.png)
 
 ### 🔀 2. Google Apigee
 
 ![DailyCashFlowTestsAPIGeeResource](DailyCashFlowTestsAPIGeeResource.png)
 
-### ⚡ 3. Google Cloud Functions Gen2 (Compute FaaS)
+### 🔀 3. Expose API Gateway by Load Balancer
+
+![DailyCashFlowTestsLBPublicAPIGeeResource](DailyCashFlowTestsLBPublicAPIGeeResource.png)
+
+### ⚡ 4. Google Cloud Functions Gen2 (Compute FaaS)
 
 ![DailyCashFlowTestsFaaSResource](DailyCashFlowTestsFaaSResource.png)
 
-### 🔑 4. Secret Manager 
+### 🔑 5. Secret Manager 
 
 ![DailyCashFlowTestsSecretsResource](DailyCashFlowTestsSecretsResource.png)
 
-### 🗄️ 5. Cloud SQL Instance 
+### 🗄️ 6. Cloud SQL Instance 
 
 ![DailyCashFlowTestsDBResource](DailyCashFlowTestsDBResource.png)
 
-#### 🗄️ 5.1. Data Registred 
+#### 🗄️ 6.1. Data Registred 
 
 ![DailyCashFlowTestsDBDataResource](DailyCashFlowTestsDBDataResource.png)
 
-### 🧠 6. Memorystore for Redis 
+### 🧠 7. Memorystore for Redis 
 
 ![DailyCashFlowTestsRedisResource](DailyCashFlowTestsRedisResource.png)
 
-### 📣 7. Cloud Pub/Sub Topic 
+#### 🗄️ 7.1. Data Values Keys 
 
-![DailyCashFlowTestPubSubResource](DailyCashFlowTestPubSubResource.png)
+![DailyCashFlowTestsRedisDataKeysResource](DailyCashFlowTestsRedisDataKeysResource.png)
 
-### 📥 8. Cloud Pub/Sub Subscriptions 
+### 📣 8. Cloud Pub/Sub Topic 
+
+![DailyCashFlowTestPubSubResource](DailyCashFlowTestsPubSubResource.png)
+
+### 📥 9. Cloud Pub/Sub Subscriptions 
 
 ![DailyCashFlowTestsPubSubSubscriptionResource](DailyCashFlowTestsPubSubSubscriptionResource.png)
 
-### 🛡️ 9. VPC Firewall Rules 
+### 🛡️ 10. VPC Firewall Rules 
 
 ![DailyCashFlowTestsVPCFirewallResource](DailyCashFlowTestsFirewallResource.png)
 

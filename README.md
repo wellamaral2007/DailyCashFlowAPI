@@ -641,6 +641,8 @@ The Google Cloud Functions Framework intercepts configuration layers via target 
 
 ```bash
 export ASPNETCORE_ENVIRONMENT="Development"
+export GCP_PROJECT: "NOME_DO_SEU_PROJECTO_GCP"
+export GCP_TOPIC_ID: "NOME_DO_SEU_TOPICO_PUB_SUB"
 export ConnectionStrings__redis-connection="127.0.0.1:6379,ssl=false,abortConnect=false"
 export ConnectionStrings__db-write-connection="Server=localhost;Database=DailyCashFlow;Uid=root;Pwd=your_password;"
 export ConnectionStrings__db-read-connection="Server=localhost;Database=DailyCashFlow;Uid=root;Pwd=your_password;"
@@ -678,6 +680,8 @@ To attach breakpoints and step through the local Cloud Function execution flow d
       "console": "internalConsole",
       "env": {
         "ASPNETCORE_ENVIRONMENT": "Development",
+        "GCP_PROJECT": "NOME_DO_SEU_PROJECTO_GCP",
+        "GCP_TOPIC_ID": "NOME_DO_SEU_TOPICO_PUB_SUB",
         "PORT": "8080",
         "ConnectionStrings__redis-connection": "127.0.0.1:6379,ssl=false,abortConnect=false",
         "ConnectionStrings__db-write-connection": "Server=localhost;Database=DailyCashFlow;Uid=root;Pwd=your_password;",
@@ -787,7 +791,9 @@ To attach the .NET debugger directly to the Google Cloud Functions Framework loc
       "cwd": "${workspaceFolder}/src/DailyCashFlowBalanceMS",
       "stopAtEntry": false,
       "env": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "GCP_PROJECT": "NOME_DO_SEU_PROJECTO_GCP",
+        "GCP_TOPIC_ID": "NOME_DO_SEU_TOPICO_PUB_SUB"
       },
       "preLaunchTask": "build"
     }

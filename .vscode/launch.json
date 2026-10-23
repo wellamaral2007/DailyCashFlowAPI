@@ -15,6 +15,13 @@
             ],
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development",
+                "GCP_PROJECT": "daily-cashflow-sol-17852",
+                "GCP_TOPIC_ID": "DailyCashFlowEntry",
+                "FAAS_HOST": "localhost",
+                "APIGEE_AUTH_HOST": "localhost",
+                "APIGEE_CLIENT_ID": "SdYiWDjmzNdhINMDCoOnG2RKwMGSJr6FrwM7P0QfYpeHG8Lg",
+                "APIGEE_CLIENT_SECRET": "2P1NKp45EcvgktlVtlKbkrps1bAXZfhfLLhU302UYjb5c2WvYRGuPYRRmsZEOg2a",
+                "FAAS_URL": "http://localhost:8080",
                 "PORT": "8080",
                 "FUNCTION_TARGET": "DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Inbound.API.Controller.DailyCashFlowBalanceController",
                 // 🌐 INTEGRADO COM OS TRÊS TÚNEIS DA NUVEM (VIA BASTION)
@@ -43,6 +50,14 @@
             ],
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development",
+                "GCP_PROJECT": "daily-cashflow-sol-17852",
+                "GCP_TOPIC_ID": "DailyCashFlowEntry",
+                "FAAS_HOST": "localhost",
+                "APIGEE_AUTH_HOST": "localhost",
+                "APIGEE_CLIENT_ID": "SdYiWDjmzNdhINMDCoOnG2RKwMGSJr6FrwM7P0QfYpeHG8Lg",
+                "APIGEE_CLIENT_SECRET": "2P1NKp45EcvgktlVtlKbkrps1bAXZfhfLLhU302UYjb5c2WvYRGuPYRRmsZEOg2a",
+                "FAAS_URL": "http://localhost:8080",
+                "BYPASS_APIGEE": "true",
                 "PORT": "8081",
                 "FUNCTION_TARGET": "DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Inbound.EDA.Controller.ProcessDailyCashFlowController",
                 

@@ -28,7 +28,7 @@ public class RedisDailyCashFlowDALCommand : IQuickAccessDailyCashFlowCommandPort
     public RedisDailyCashFlowDALCommand(IConnectionMultiplexer redis)
     {
         _redis = redis;
-        // 🚀 Enforces pt-BR culture to correctly handle commas during string-to-decimal transformations [1.1]
+        // Enforces pt-BR culture to correctly handle commas during string-to-decimal transformations [1.1]
         _brazilianCulture = new CultureInfo("pt-BR");
     }
 
@@ -58,7 +58,7 @@ public class RedisDailyCashFlowDALCommand : IQuickAccessDailyCashFlowCommandPort
             decimal currentTotal = 0.0m;
             if (rawValue != RedisValue.Null)
             {
-                // 🚀 CRITICAL FIX: Explicitly uses pt-BR to parse current values containing commas [1.1]
+                // Explicitly uses pt-BR to parse current values containing commas [1.1]
                 string rawStringValue = rawValue.ToString();
                 if (!decimal.TryParse(rawStringValue, NumberStyles.Any, _brazilianCulture, out currentTotal))
                 {
@@ -70,7 +70,7 @@ public class RedisDailyCashFlowDALCommand : IQuickAccessDailyCashFlowCommandPort
             decimal incomingValue = dailyCashFlowEvent.CreditDebitValue;
             decimal newTotal = currentTotal + incomingValue;
 
-            // 🚀 CRITICAL FIX: Forces the serialization to save decimals with commas back into Redis memory space [1.1]
+            // Forces the serialization to save decimals with commas back into Redis memory space [1.1]
             string serializedNewTotal = newTotal.ToString("F2", _brazilianCulture);
 
             // Enqueues the write operation atomically within the transaction pipeline

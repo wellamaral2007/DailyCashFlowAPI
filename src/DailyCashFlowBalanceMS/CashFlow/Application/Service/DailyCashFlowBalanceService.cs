@@ -1,6 +1,8 @@
 using DailyCashFlowBalanceMS.CashFlow.Application.Contract.Command;
 using DailyCashFlowBalanceMS.CashFlow.Application.Contract.Query;
-using DailyCashFlowBalanceMS.CashFlow.Domain.Entity; // Ingestion of the Rich Domain Model Entity
+using DailyCashFlowBalanceMS.CashFlow.Domain.Entity;
+using System;
+using System.Threading.Tasks;
 
 namespace DailyCashFlowBalanceMS.CashFlow.Application.Service;
 
@@ -15,10 +17,7 @@ namespace DailyCashFlowBalanceMS.CashFlow.Application.Service;
  */
 public class DailyCashFlowBalanceService
 {    
-    // Query Ports (Segregated Read Operations - Query in Singular)
     private readonly IDailyCashFlowQueryPort _queryPort;
-    
-    // Command Ports (State Modification Operations - Command in Singular) for Facade Symmetry
     private readonly IDurableDailyCashFlowCommandPort _durableCommandPort;
     private readonly IQuickAccessDailyCashFlowCommandPort _quickAccessCommandPort;
     private readonly IEventDailyCashFlowPublisherCommandPort _eventPublisher;
@@ -39,57 +38,54 @@ public class DailyCashFlowBalanceService
     }
 
     /**
-     * 📥 WRITE CAPABILITY: Generates the financial movement throwing event
+     * WRITE CAPABILITY: Generates the financial movement throwing event
      */
     public async Task GenerateDailyCashEvent(DailyCashFlowEntity entry)
     {
-        entry.EventType = "throw"; // Sets the event type for consistent business logic mapping
+        entry.EventType = "throw";
         await _eventPublisher.PublishDailyCashEventAsync(entry);
     }
 
-    /**************************************************************************
-     Reactive SAGA Orchestration:
-     Triggered when the inbound event topic (EDA Inbound) indicates 
-     that a Credit or Debit entry must be saved into a durable medium.
-     **************************************************************************/
+    /**
+     * Reactive SAGA Orchestration:
+     * Triggered when the inbound event topic (EDA Inbound) indicates 
+     * that a Credit or Debit entry must be saved into a durable medium.
+     */
     private async Task RegisterCreditDebit(DailyCashFlowEntity dailyCashFlowEvent)
     {
         await _durableCommandPort.insertCreditDebit(dailyCashFlowEvent);
     }
 
-    /**************************************************************************
-     Reactive SAGA Orchestration:
-     Processes high-performance parallel updates to the quick access mesh 
-     to recalculate the current net balance (Stateful projection).
-     **************************************************************************/
+    /**
+     * Reactive SAGA Orchestration:
+     * Processes high-performance parallel updates to the quick access mesh 
+     * to recalculate the current net balance (Stateful projection).
+     */
     private async Task UpdateBalance(DailyCashFlowEntity dailyCashFlowEvent)
     {
         await _quickAccessCommandPort.updateBalanceValue(dailyCashFlowEvent, DateTime.Now);
     }
 
-    /**************************************************************************
-     EDA Consumer Entry Point (Inbound Middleware):
-     Orchestrates both dimensions of state mutation (Durable + QuickAccess)
-     and fires the confirmation event to finalize the message lifecycle.
-     **************************************************************************/
+    /**
+     * EDA Consumer Entry Point (Inbound Middleware):
+     * Orchestrates both dimensions of state mutation (Durable + QuickAccess)
+     * and fires the confirmation event to finalize the message lifecycle.
+     */
     public async Task ProcessingDailyCashEvent(DailyCashFlowEntity dailyCashFlowEvent)
     {
         var eventType = dailyCashFlowEvent.EventType ?? "";
         if (eventType.CompareTo("throw") == 0) 
         {
-            // Executes both write operations opaquely through the decoupled ports
             await RegisterCreditDebit(dailyCashFlowEvent); 
             await UpdateBalance(dailyCashFlowEvent); 
-            
-            // Fires the final success notification to close the workflow loop
             await SendProcessedEvent(dailyCashFlowEvent);
         }
     }
 
-    /**************************************************************************
-     Emits the success notification event ("registered") asynchronously 
-     so downstream auditing or reporting services can process it.
-     **************************************************************************/
+    /**
+     * Emits the success notification event ("registered") asynchronously 
+     * so downstream auditing or reporting services can process it.
+     */
     private async Task SendProcessedEvent(DailyCashFlowEntity dailyCashFlowEvent)
     {
         DailyCashFlowEntity processedEvent = new DailyCashFlowEntity();
@@ -101,7 +97,7 @@ public class DailyCashFlowBalanceService
     }
 
     /**
-     * 📤 READ CAPABILITY (QUERY): Obtains the current consolidated net balance with Fallback Resilience
+     * READ CAPABILITY (QUERY): Obtains the current consolidated net balance with Fallback Resilience
      */
     public async Task<decimal> GetNetBalanceAsync(DateTime date)
     {

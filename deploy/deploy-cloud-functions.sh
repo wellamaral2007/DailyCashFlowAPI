@@ -54,7 +54,7 @@ gcloud functions deploy daily-cashflow-balance \
     --runtime=dotnet8 \
     --region=us-central1 \
     --entry-point="DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Inbound.API.Controller.DailyCashFlowBalanceController" \
-    --set-env-vars="ASPNETCORE_ENVIRONMENT=Production,GCP_PROJECT=$GCLOUD_PROJECT_ID" \
+    --set-env-vars="ASPNETCORE_ENVIRONMENT=Production,GCP_PROJECT=daily-cashflow-sol-17852,GCP_TOPIC_ID=DailyCashFlowEntry" \
     --set-secrets="DB_WRITE_CONNECTION=db-write-connection:latest,DB_READ_CONNECTION=db-read-connection:latest,REDIS_CONNECTION=redis-connection:latest" \
     --vpc-connector="$VPC_CONNECTOR" \
     --egress-settings=all \
@@ -89,7 +89,7 @@ gcloud functions deploy process-daily-cashflow \
     --runtime=dotnet8 \
     --region=us-central1 \
     --entry-point="DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Inbound.EDA.Controller.ProcessDailyCashFlowController" \
-    --set-env-vars="ASPNETCORE_ENVIRONMENT=Production,GCP_PROJECT=$GCLOUD_PROJECT_ID" \
+    --set-env-vars="ASPNETCORE_ENVIRONMENT=Production,GCP_PROJECT=daily-cashflow-sol-17852,GCP_TOPIC_ID=DailyCashFlowEntry" \
     --set-secrets="DB_WRITE_CONNECTION=db-write-connection:latest,DB_READ_CONNECTION=db-read-connection:latest,REDIS_CONNECTION=redis-connection:latest" \
     --vpc-connector="$VPC_CONNECTOR" \
     --egress-settings=all \

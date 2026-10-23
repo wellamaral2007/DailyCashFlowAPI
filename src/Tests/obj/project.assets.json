@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 4,
   "targets": {
     "net8.0": {
       "Bogus/35.6.1": {
@@ -8998,6 +8998,7 @@
       },
       "frameworks": {
         "net8.0": {
+          "framework": "net8.0",
           "targetAlias": "net8.0",
           "projectReferences": {}
         }
@@ -9012,10 +9013,11 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "9.0.100"
+      "SdkAnalysisLevel": "10.0.400"
     },
     "frameworks": {
       "net8.0": {
+        "framework": "net8.0",
         "targetAlias": "net8.0",
         "dependencies": {
           "Bogus": {
@@ -9079,11 +9081,11 @@
         "downloadDependencies": [
           {
             "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[8.0.12, 8.0.12]"
+            "version": "[8.0.32, 8.0.32]"
           },
           {
             "name": "Microsoft.NETCore.App.Ref",
-            "version": "[8.0.12, 8.0.12]"
+            "version": "[8.0.32, 8.0.32]"
           }
         ],
         "frameworkReferences": {
@@ -9094,7 +9096,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/media/wellington/SIA_TERA1/SysInAut - SIASolution/solutions/Ambiente Desenvolvedor/C#/dotnet9/sdk/9.0.102/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/home/wellington/SIASolution/solutions/Ambiente_Desenvolvedor/C#/dotnet10/sdk/10.0.402/PortableRuntimeIdentifierGraph.json"
       }
     }
   },

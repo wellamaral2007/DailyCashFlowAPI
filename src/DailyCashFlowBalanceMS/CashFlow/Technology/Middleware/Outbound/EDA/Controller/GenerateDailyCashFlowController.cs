@@ -1,10 +1,12 @@
-using DailyCashFlowBalanceMS.CashFlow.Application.Contract.Command; // Ingestion of the core abstract port contract
-using DailyCashFlowBalanceMS.CashFlow.Domain.Entity; // Ingestion of the rich Domain Model Entity
+using DailyCashFlowBalanceMS.CashFlow.Application.Contract.Command;
+using DailyCashFlowBalanceMS.CashFlow.Domain.Entity;
 using DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.DTO.Event.DailyCashFlow;
-using CloudNative.CloudEvents; // CNCF CloudEvents standard implementation v1.0
+using CloudNative.CloudEvents;
 using CloudNative.CloudEvents.SystemTextJson;
 using Google.Cloud.PubSub.V1;
 using Google.Protobuf;
+using System;
+using System.Threading.Tasks;
 
 namespace DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Outbound.EDA.Controller;
 
@@ -19,8 +21,17 @@ namespace DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Outbound.EDA.Con
  */
 public class GenerateDailyCashFlowController : IEventDailyCashFlowPublisherCommandPort
 {
-    private readonly string _projectId = "daily-cashflow-sol-17852";
-    private readonly string _topicId = "DailyCashFlowEntry";
+    private readonly string _projectId;
+    private readonly string _topicId;
+
+    /**
+     * Initializes a new instance resolving infrastructure parameters dynamically from environment variables.
+     */
+    public GenerateDailyCashFlowController()
+    {
+        _projectId = Environment.GetEnvironmentVariable("GCP_PROJECT") ?? "daily-cashflow-sol-17852";
+        _topicId = Environment.GetEnvironmentVariable("GCP_TOPIC_ID") ?? "DailyCashFlowEntry";
+    }
 
     /**
      * Implements the abstract port method to translate and broadcast the domain entity.
@@ -29,7 +40,9 @@ public class GenerateDailyCashFlowController : IEventDailyCashFlowPublisherComma
     {
         if (entry == null) throw new ArgumentNullException(nameof(entry));
 
-        // 1. Instancia o contrato corporativo do BaseFramework preenchendo as propriedades fortemente tipadas
+        /**
+         * Instantiates the core data contract mapping strongly-typed domain properties.
+         */
         var eventPayload = new DailyCashFlowEvent
         {
             Id = entry.Id,
@@ -38,21 +51,27 @@ public class GenerateDailyCashFlowController : IEventDailyCashFlowPublisherComma
             EventType = entry.EventType
         };
 
-        // 2. Envelopa o payload tipado diretamente na propriedade Data do CloudEvent
+        /**
+         * Envelopes the typed payload instance inside the standard CNCF CloudEvent data boundary property.
+         */
         var cloudEvent = new CloudEvent
         {
             Id = Guid.NewGuid().ToString(),
             Source = new Uri("https://bank.com"),
             Type = $"DailyCashFlow.Event.{entry.EventType}",
             DataContentType = "application/json",
-            Data = eventPayload // 📌 FIXED: Injeção do objeto fortemente tipado aqui
+            Data = eventPayload
         };
 
-        // 3. Serializa a estrutura completa do CloudEvent em bytes planos
+        /**
+         * Serializes the integrated CloudEvent object topology directly into raw text byte streams.
+         */
         var jsonFormatter = new JsonEventFormatter();
         var cloudEventData = jsonFormatter.EncodeStructuredModeMessage(cloudEvent, out _);
 
-        // 4. Empacota o array de bytes resultante na mensagem do Pub/Sub
+        /**
+         * Encapsulates the output byte array inside a structural Google Protobuf message envelope.
+         */
         var pubsubMessage = new PubsubMessage
         {
             Data = ByteString.CopyFrom(cloudEventData.ToArray())
@@ -63,5 +82,4 @@ public class GenerateDailyCashFlowController : IEventDailyCashFlowPublisherComma
         
         await publisher.PublishAsync(pubsubMessage);
     }
-
 }

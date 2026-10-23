@@ -6,56 +6,87 @@ using NBomber.CSharp;
 using Xunit;
 using DailyCashFlow.Integration.Clients; 
 
-namespace Tests.DailyCashFlow.Performance
+namespace Tests.DailyCashFlow.Performance;
+
+/**
+ * ============================================================================
+ * TOGAF DIMENSION: Phase D - Technology Architecture (Performance Verification)
+ * HEXAGONAL ROLE:  Outbound Test Adapter - NBomber Concurrency Load Runner
+ * CONCEPTS:        Stress Injection Loops / Service Level Agreement (SLA) Assertions
+ * ============================================================================
+ * This component orchestrates concurrent transaction injection testing scenarios,
+ * verifying that edge proxies and FaaS runtimes adhere to corporate performance gates.
+ */
+public class CashFlowLoadTestsRunner
 {
-    public class CashFlowLoadTestsRunner
+    /**
+     * Executes high-concurrency performance verification against the infrastructure API boundary.
+     */
+    [Fact] 
+    public async Task Run_CashFlow_Load_Test()
     {
-        [Fact] 
-        public async Task Run_CashFlow_Load_Test()
+        var handler = new HttpClientHandler
         {
-            var handler = new HttpClientHandler
-            {
-                ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
-            };
+            ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+        };
 
-            using var httpClient = new HttpClient(handler);
-            string apiUrl = "https://localhost:8443"; // 🚀 ssh tunnel para o APIGEE 
+        using var httpClient = new HttpClient(handler);
+        
+          /**
+         * Resolves the gateway execution strategy dynamically from environment parameters.
+         * If BYPASS_APIGEE is set to true, it utilizes the direct local FaaS endpoint with a bypass token.
+         * BY LIMITING THE APIGEE GATEWAY EVAL ENVIRONMENT, THIS IS THE MOST SIMILAR WAY TO EXECUTE THE LOAD TESTS.
+         */
+        string bypassApigeeStr = Environment.GetEnvironmentVariable("BYPASS_APIGEE") ?? "true";
+        bool bypassApigee = bool.Parse(bypassApigeeStr);
 
-            // 🚀 Call directo to cloud function
-            //string apiUrl = "https://us-central1-daily-cashflow-sol-17852.cloudfunctions.net/daily-cashflow-balance";
-            httpClient.BaseAddress = new Uri(apiUrl);
+        string apiUrl;
+        string tokenReal;
 
+        if (bypassApigee)
+        {
+            apiUrl = Environment.GetEnvironmentVariable("FAAS_URL") ?? "http://localhost:8080";
+            tokenReal = "local-bypass-token";
+        }
+        else
+        {
+            apiUrl = Environment.GetEnvironmentVariable("APIGEE_GATEWAY_URL") ?? "https://localhost:8443";
+            
             var apiClient = new DailyCashFlowApiClient(httpClient);
-            
-            // 🚀 CAPTURA O TOKEN: O método agora retorna a string do token gerado pelo Apigee [1.3]
-            // string tokenReal = await apiClient.AuthenticateAsync(username, password);
+            string key = Environment.GetEnvironmentVariable("APIGEE_CLIENT_ID") ?? "local-bypass-token";
+            string secret = Environment.GetEnvironmentVariable("APIGEE_CLIENT_SECRET") ?? "local-bypass-token";
 
-            // Opcional: Pode manter a autenticação se a sua API local exigir, 
-            // ou passar um token fake como "local-token", já que o localhost não validará o OAuth
-            string tokenReal = "local-bypass-token"; 
+            /**
+             * Executes the live authentication handshake and extracts the real bearer token from the security authority.
+             */
+            tokenReal = await apiClient.AuthenticateAsync(key, secret);
+        }
 
-            // 🚀 INJETA NO CENÁRIO: Passa o token obtido diretamente para o escopo do NBomber [1.1]
-            var scenario = CashFlowLoadScenario.Build(httpClient, apiUrl, tokenReal);
+        httpClient.BaseAddress = new Uri(apiUrl);
 
-            var stats = NBomberRunner
-                .RegisterScenarios(scenario)
-                .Run();
+        /**
+         * Binds the fetched security authorization token directly into the load test scenario execution block.
+         */
+        var scenario = CashFlowLoadScenario.Build(httpClient, apiUrl, tokenReal);
 
-            var scenarioStats = stats.ScenarioStats.FirstOrDefault(x => 
-                x.ScenarioName == "gcp_faas_daily_cash_flow_load_test" || x.ScenarioName == "gcp_faas_load_test");
-            
-            Assert.NotNull(scenarioStats);
+        var stats = NBomberRunner
+            .RegisterScenarios(scenario)
+            .Run();
 
-            int totalRequests = scenarioStats.AllRequestCount;
-            int totalFailures = scenarioStats.AllFailCount;
-            int totalOk = scenarioStats.AllOkCount;
-            
-            double failurePercentage = totalRequests > 0 ? ((double)totalFailures / totalRequests) * 100 : 0;
+        var scenarioStats = stats.ScenarioStats.FirstOrDefault(x => 
+            x.ScenarioName == "gcp_faas_daily_cash_flow_load_test" || x.ScenarioName == "gcp_faas_load_test");
+        
+        Assert.NotNull(scenarioStats);
 
-            Console.WriteLine($"\n[NBOMBER SLA] Total Geral: {totalRequests} | Sucesso: {totalOk} | Falhas: {totalFailures}");
-            Console.WriteLine($"[NBOMBER SLA] Taxa de perda calculada: {failurePercentage:F2}%\n");
+        int totalRequests = scenarioStats.AllRequestCount;
+        int totalFailures = scenarioStats.AllFailCount;
+        int totalOk = scenarioStats.AllOkCount;
+        
+        double failurePercentage = totalRequests > 0 ? ((double)totalFailures / totalRequests) * 100 : 0;
 
-            Assert.True(failurePercentage <= 5.0, $"A taxa de falhas de {failurePercentage:F2}% ultrapassou o limite do SLA de 5%.");
-        } 
+        Console.WriteLine($"\n[NBOMBER SLA] Total Requests: {totalRequests} | OK: {totalOk} | Failures: {totalFailures}");
+        Console.WriteLine($"[NBOMBER SLA] Calculated error rate threshold: {failurePercentage:F2}%\n");
+
+        Assert.True(failurePercentage <= 5.0, $"The calculated failure rate of {failurePercentage:F2}% exceeded the corporate SLA limit constraint of 5%.");
     } 
 }
