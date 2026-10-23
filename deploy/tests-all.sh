@@ -36,7 +36,7 @@ fi
 
 # 2. Executa os Testes Unitários de Domínio (Mocks e Regras de Negócio)
 echo -e "\n${CYAN}[2/4] Running Unit Tests (DailyCashFlowApiClientUnitTests)...${NC}"
-if dotnet test --configuration Release --no-build --no-restore --filter "FullyQualifiedName~DailyCashFlowApiClientUnitTests"; then
+if dotnet test --configuration Release --no-build --no-restore --filter "FullyQualifiedName~DailyCashFlowApiClientUnitTests" --settings test.runsettings; then
     echo -e "${GREEN}✔ Unit Tests passed successfully!${NC}"
 else
     echo -e "${RED}✘ Unit Tests failed!${NC}"
@@ -46,7 +46,7 @@ fi
 
 # 3. Executa os Testes de Integração de DAL e Fluxo Consolidado (Banco/Redis/Timezone)
 echo -e "\n${CYAN}[3/4] Running Integration Tests (DailyCashFlowIntegrationTests)...${NC}"
-if dotnet test --configuration Release --no-build --no-restore --filter "FullyQualifiedName~DailyCashFlowIntegrationTests"; then
+if dotnet test --configuration Release --no-build --no-restore --filter "FullyQualifiedName~DailyCashFlowIntegrationTests" --settings test.runsettings; then
     echo -e "${GREEN}✔ Integration Tests passed successfully!${NC}"
 else
     echo -e "${RED}✘ Integration Tests failed!${NC}"
@@ -56,7 +56,7 @@ fi
 
 # 4. Executa os Testes de Carga (NBomber) - Valida o alvo de 50 RPS e valores pt-BR com vírgula
 echo -e "\n${CYAN}[4/4] Running NBomber Load Tests (CashFlowLoadTestsRunner - Target: 50 RPS)...${NC}"
-if dotnet test --configuration Release --no-build --no-restore --filter "FullyQualifiedName~CashFlowLoadTestsRunner"; then
+if dotnet test --configuration Release --no-build --no-restore --filter "FullyQualifiedName~CashFlowLoadTestsRunner" --settings test.runsettings; then
     echo -e "${GREEN}✔ Load Tests passed! Loss rate is within the 5% SLA threshold.${NC}"
 else
     echo -e "${RED}✘ Load Tests failed! Loss rate exceeded 5% or GCP FaaS performance degraded.${NC}"

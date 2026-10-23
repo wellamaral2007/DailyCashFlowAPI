@@ -43,11 +43,8 @@ public class DailyCashFlowApiClient
      */
     public async Task<string> AuthenticateAsync(string username, string password)
     {
-        var authUrl = $"https://{_apigeeAuthHost}:8443/v1/finance-auth/token";
+        var authUrl = $"https://{_apigeeAuthHost}/v1/finance-auth/token";
         var request = new HttpRequestMessage(HttpMethod.Post, authUrl);
-
-        request.Headers.Add("user", username);
-        request.Headers.Add("password", password);
 
         var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{_apigeeClientId}:{_apigeeClientSecret}"));
         request.Headers.Authorization = new AuthenticationHeaderValue("Basic", credentials);

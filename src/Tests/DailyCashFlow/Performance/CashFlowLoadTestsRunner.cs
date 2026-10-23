@@ -25,12 +25,16 @@ public class CashFlowLoadTestsRunner
     [Fact] 
     public async Task Run_CashFlow_Load_Test()
     {
+         // System.Net.ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
         var handler = new HttpClientHandler
         {
             ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
         };
-
+        
         using var httpClient = new HttpClient(handler);
+
+        // 🚀 ADICIONE ESTA LINHA AQUI: Garante o roteamento correto no Load Balancer da Apigee
+        httpClient.DefaultRequestHeaders.Host = "daily-cashflow-sol-17852.dns-replaceme.example.com";
         
           /**
          * Resolves the gateway execution strategy dynamically from environment parameters.
@@ -47,6 +51,7 @@ public class CashFlowLoadTestsRunner
         {
             apiUrl = Environment.GetEnvironmentVariable("FAAS_URL") ?? "http://localhost:8080";
             tokenReal = "local-bypass-token";
+            //httpClient.BaseAddress = new Uri(apiUrl);
         }
         else
         {
@@ -62,7 +67,7 @@ public class CashFlowLoadTestsRunner
             tokenReal = await apiClient.AuthenticateAsync(key, secret);
         }
 
-        httpClient.BaseAddress = new Uri(apiUrl);
+         
 
         /**
          * Binds the fetched security authorization token directly into the load test scenario execution block.

@@ -51,6 +51,9 @@ public static class CashFlowLoadScenario
                     ? $"{apiUrl}/?CreditDebitValue={amountInBrazilianFormat}"
                     : $"{apiUrl}/{targetPathSuffix}?CreditDebitValue={amountInBrazilianFormat}";
 
+                // 🚀 ADICIONE ESTA LINHA AQUI PARA PRINTAR A URL NO TERMINAL:
+                // Console.WriteLine($"[NBOMBER DEBUG] URL GERADA: {dynamicUrlWithQuery}");
+
                 /**
                  * Fluent request generation utilizing the NBomber HTTP extension factory channel.
                  * Injects target host routing metadata and the active authorization bearer token.
@@ -60,11 +63,6 @@ public static class CashFlowLoadScenario
                                       .WithHeader("Host", "daily-cashflow-sol-17852.dns-replaceme.example.com")
                                       .WithHeader("Authorization", $"Bearer {bearerToken}") 
                                       .WithBody(content);
-
-                if (!bypassApigee)
-                {
-                    request = request.WithHeader("Host", "daily-cashflow-sol-17852.dns-replaceme.example.com");
-                }
 
                 var response = await Http.Send(httpClient, request);
                 return response;
