@@ -233,7 +233,7 @@ fi
 # STEP 14: Dynamic Ingestion of Cloud Functions Endpoints into XML Targets
 # ----------------------------------------------------------------------------
 echo -e "${AMARELO}[+] Fetching active Cloud Functions Gen2 production URI...${RESET}"
-URL_BAL=$(gcloud functions describe daily-cashflow-balance --apigee_region=us-central1 --gen2 --format="value(serviceConfig.uri)" 2>/dev/null || echo "")
+URL_BAL=$(gcloud functions describe daily-cashflow-balance --region=us-central1 --gen2 --format="value(serviceConfig.internalChannelUri)" 2>/dev/null || echo "")
 
 if [ -z "$URL_BAL" ]; then
     echo -e "${AMARELO}[!] Warning: Active production URI not found. Applying safety fallback connection string...${RESET}"

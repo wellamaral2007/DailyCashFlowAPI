@@ -33,7 +33,7 @@ else
     cd "$ORIGINAL_DIR" # Retorna para a sua pasta original antes de sair
     exit 1
 fi
-
+cd src/Tests
 # 2. Executa os Testes Unitários de Domínio (Mocks e Regras de Negócio)
 echo -e "\n${CYAN}[2/4] Running Unit Tests (DailyCashFlowApiClientUnitTests)...${NC}"
 if dotnet test --configuration Release --no-build --no-restore --filter "FullyQualifiedName~DailyCashFlowApiClientUnitTests" --settings test.runsettings; then
@@ -63,6 +63,8 @@ else
     cd "$ORIGINAL_DIR"
     exit 1
 fi
+
+cd "$ORIGINAL_DIR"
 
 echo -e "\n${GREEN}==================================================${NC}"
 echo -e "${GREEN}    ✔ ALL PIPELINE TESTS PASSED SUCCESSFULLY!     ${NC}"
