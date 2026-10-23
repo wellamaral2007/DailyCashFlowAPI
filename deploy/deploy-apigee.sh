@@ -26,7 +26,7 @@ export NETWORK_NAME=$(gcloud compute networks list --format="value(name)" --sort
 # Fallback block triggered if no active network mesh instance is detected
 if [ -z "$NETWORK_NAME" ]; then
     echo "No VPC network detected in the active project. Using 'apigee-vpc' as fallback."
-    export NETWORK_NAME="apigee-vpc"
+    export NETWORK_NAME="default"
 fi
 
 export SUBNET_NAME="${NETWORK_NAME}-subnet"

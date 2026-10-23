@@ -43,8 +43,44 @@ fi
 # FIXED: Safe Unique Project ID Generation (Characters Defended)
 # ============================================================================
 # Generates a 100% clean, alphanumeric-only lowercase suffix using date and bash RANDOM
-UNIQUE_SUFFIX=$(date +%s | tail -c 4)$((RANDOM % 99))
-export GCLOUD_PROJECT_ID="daily-cashflow-sol-${UNIQUE_SUFFIX}"
+#UNIQUE_SUFFIX=$(date +%s | tail -c 4)$((RANDOM % 99))
+export GCLOUD_PROJECT_ID="daily-cashflow-sol-17852"
+export APIGEE_ORG="daily-cashflow-sol-17852"
+export APIGEE_ENV="eval"
+export APIGEE_REGION="us-west1"
+export VPC_CONNECTOR_CONNECTOR="cashflow-vpc_connector-connector"
+
+# Target deployment region routing settings
+export ANALYTICS_REGION="us-west1"
+
+# Dynamic extraction of the target network mesh sorted by creation timeline
+export NETWORK_NAME=$(gcloud compute networks list --format="value(name)" --sort-by="~creationTimestamp" | head -n 1)
+
+# Fallback block triggered if no active network mesh instance is detected
+if [ -z "$NETWORK_NAME" ]; then
+    echo "No VPC network detected in the active project. Using 'apigee-vpc' as fallback."
+    export NETWORK_NAME="default"
+fi
+
+export SUBNET_NAME="${NETWORK_NAME}-subnet"
+export SUBNET_RANGE="10.10.23.0/22"       
+export INSTANCE_IP="10.10.23.2"           
+
+# Downstream external load balancing configurations
+export LB_NAME="apigee-external-lb"
+export ENV_NAME="eval-instance"                    
+export DOMAIN_NAME="api.bank.local"
+
+# API Product governance metadata parameters
+export PRODUCT_NAME="DailyCashFlowProduct"
+export DEVELOPER_EMAIL="well.amaral2007@gmail.com"
+export DEVELOPER_FIRST="Wellington"
+export DEVELOPER_LAST="Amaral"
+export APP_NAME="DailyCashFlowApp"
+
+# Core proxy bundles linked to the active runtime product instance
+export PROXY_1="FinanceSecurity"
+export PROXY_2="DailyCashFlowAPI"
 
 echo -e "${AMARELO}[+] Tentando criar um projeto único global no GCP: ${GCLOUD_PROJECT_ID}...${RESET}"
 # Creates the project in non-interactive mode. The '|| true' handles if it accidentally duplicates

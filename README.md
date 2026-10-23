@@ -553,7 +553,7 @@ chmod +x setu-all.sh
 
 ### Load Testing Step (Instant Trigger):
 ```bash
-dotnet test ../src/Tests/Tests.csproj --configuration Release --filter "FullyQualifiedName~CashFlowLoadTestsRunner"
+dotnet test ../src/Tests/Tests.csproj --configuration Release --filter "FullyQualifiedName~CashFlowLoadTestsRunner" --settings test.runsettings
 ```
 
 ### Approved Benchmark Metrics under 50 RPS (Local Environment) like main requirement of the solution:
@@ -576,14 +576,31 @@ Before launching the microservices or executing load tests locally from your wor
 *   **.NET SDK:** Version `8.0.x LTS` correctly appended to your system paths.
 *   **Local Emulator Stack:** MySQL Server and Redis Server running locally on standard ports (optional fallbacks).
 *   **Shell Utilities:** `jq`, `json_pp`, and the authenticated Google Cloud SDK (`gcloud CLI`).
-
+*   **Operation System:** Linux (Ubuntu, Debian) or Windows 11 (WSL, Git Bash, etc.).
 ---
 
-### 🌐 Secure Corporate Topology: Cloud Bastion Provisioning
 
-To access the highly available private storage layer (Cloud SQL and Memorystore Redis) directly from your local development machine, you must utilize a secure Bastion Host acting as an identity bridge inside the VPC mesh.
+## 🚀 Clone and Setup the Project
 
-#### 1. Create the Bastion Instance via gcloud CLI
+### 1. Clone the Repository
+To clone the `master` branch of this repository to your local machine, open your terminal and run the following command:
+
+```bash
+git clone -b master https://github.com/wellamaral2007/DailyCashFlowAPI.git
+```
+
+### 2. Execution Environment & Script Compatibility - Deploy
+The automation and deployment scripts located inside the `deploy` folder were originally developed in **Bash (.sh)** to run natively on **Linux** environments. If you plan to execute them on **Windows**, they must be adapted as follows:
+
+* **Environment Variables:** Linux uses `$VARIABLE`. On Windows (PowerShell), you must change this syntax to `$env:VARIABLE` (or `%VARIABLE%` if using Command Prompt).
+* **Line Endings (LF vs CRLF):** Linux scripts use `LF` line endings. When cloning or editing on Windows, ensure your text editor (such as VS Code) keeps the end-of-line format as `LF`. Otherwise, you might encounter interpreter errors like `\r: command not found`.
+* **File Paths:** Switch path separators from forward slashes `/` to backslashes `\` if the native Windows interpreter fails to locate files.
+* **File Extensions:** It is highly recommended to rewrite the internal logic of the `.sh` files into `.ps1` (PowerShell) scripts to ensure smooth execution of the GCP CLI (`gcloud`) commands on Windows.
+
+*💡 **Productivity Tip:** If you prefer not to adapt or rewrite the scripts for Windows, you can run the original `.sh` files without any modifications by using **WSL (Windows Subsystem for Linux)** or the **Git Bash** terminal.*
+
+
+#### 3. Create the Bastion Instance via gcloud CLI
 If the gateway node does not exist, provision the Linux e2-micro proxy machine by executing:
 ```bash
 gcloud compute instances create bastion-service-tunnel \
@@ -595,7 +612,7 @@ gcloud compute instances create bastion-service-tunnel \
     --project=$GCLOUD_PROJECT_ID \
 ```
 
-#### 2. Configure Firewall Authorization
+#### 4. Configure Firewall Authorization
 Ensure the corporate VPC permits inbound SSH traffic targeting the tunnel boundary [11.21]:
 ```bash
 gcloud compute firewall-rules create allow-ssh-bastion \
@@ -829,5 +846,3 @@ Save the following automated broker script as `deploy/pooling-topic-local.sh` an
 Once the script fetches a message (whether it contains a decimal formatted with a point `2673,69` or a string containing a Brazilian comma `"2673,69"`), your IDE debugger will immediately pause
 
 You can inspect that `parsedFinancialValue` cleanly evaluates to the decimal value `2673,69m` without throwing exceptions, feeding your local transaction persistence mesh perfectly 
-
-
