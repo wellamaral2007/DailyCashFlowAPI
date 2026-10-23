@@ -589,7 +589,7 @@ To clone the `master` branch of this repository to your local machine, open your
 git clone -b master https://github.com/wellamaral2007/DailyCashFlowAPI.git
 ```
 
-### 2. Execution Environment & Script Compatibility - Deploy
+### 2. Execution Environment & Script Compatibility - Deploy to create GCP infrastructure and configure resources
 The automation and deployment scripts located inside the `deploy` folder were originally developed in **Bash (.sh)** to run natively on **Linux** environments. If you plan to execute them on **Windows**, they must be adapted as follows:
 
 * **Environment Variables:** Linux uses `$VARIABLE`. On Windows (PowerShell), you must change this syntax to `$env:VARIABLE` (or `%VARIABLE%` if using Command Prompt).
@@ -651,7 +651,7 @@ gcloud compute ssh bastion-service-tunnel \
 > *   **Memorystore Redis Cache:** `127.0.0.1:6380,ssl=false,abortConnect=false`
 > *   **Apigee Gateway Instance:** `https://localhost:8443/...`
 
-
+## 🪲 Local Debugging Guide: DailyCashFlowBalance HTTP Function Execution to read and put daily cash flow balance
 
 ### 1. Environment Variable Setup
 The Google Cloud Functions Framework intercepts configuration layers via target environment keys. Export the following infrastructure connection strings inside your terminal window:
