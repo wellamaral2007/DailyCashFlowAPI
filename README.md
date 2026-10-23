@@ -474,7 +474,7 @@ graph TD
 
 ## GCP Cloud Architecture
 
-![DailyCashFlowArchitecture-Solution Diagram](documentation/evidencies/DailyCashFlowArchitecture-Solution%20Diagram.png)
+![DailyCashFlowArchitecture-Solution Diagram](documentation/DailyCashFlowArchitecture-Solution%20Diagram.png)
 
 ---
 
