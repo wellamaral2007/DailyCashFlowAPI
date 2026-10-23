@@ -99,17 +99,16 @@ curl -k -X GET "https://136.81.203.14/v1/cashflow/balance?date=2026-10-23&sessio
 ```
 **Received Response JSON (Initial State):**
 ```json
-{"balanceValue": "3192,38"} 
+{"balanceValue": "19600,66"} 
 ```
 
 ### ✍️ Step 3: Publish Financial Movement (POST - Brazilian Currency Format)
 Injects an automated cash inflow transacting the string layout with a comma decimal indicator:
 ```bash
-curl -k -X POST "https://136.81.203.14/v1/cashflow/entry?CreditDebitValue=3192,38"  
+curl -k -X POST "https://136.81.203.14/v1/cashflow/entry?CreditDebitValue=-4565,38"  
     -H "Host: daily-cashflow-sol-17852.dns-replaceme.example.com"     
     -H "Authorization: Bearer n8UgCl8trRqpYsDLPC7JNhAe3AoJ"      
     -H "Content-Type: application/json"     
-     -d '{"Amount": 3192,38}'
 ```
 **Received Response JSON:**
 ```json
@@ -125,7 +124,10 @@ curl -k -X GET "https://136.81.203.14/v1/cashflow/balance?date=2026-10-23&sessio
 ```
 **Received Response JSON (Cache Hit Output):**
 ```json
-{"balanceValue": "6384,76"}
+{"balanceValue": "15035,28"}
 ```
-
 ---
+
+### Image Evidence
+
+![DailyCashFlowBasicIntegrationTests](DailyCashFlowBasicIntegrationTests.png)
