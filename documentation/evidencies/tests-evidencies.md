@@ -109,7 +109,7 @@ curl -k -X POST "https://136.81.203.14/v1/cashflow/entry?CreditDebitValue=3192,3
     -H "Host: daily-cashflow-sol-17852.dns-replaceme.example.com"     
     -H "Authorization: Bearer n8UgCl8trRqpYsDLPC7JNhAe3AoJ"      
     -H "Content-Type: application/json"     
-     -d '{"Amount": -192,34}'
+     -d '{"Amount": 3192,38}'
 ```
 **Received Response JSON:**
 ```json
