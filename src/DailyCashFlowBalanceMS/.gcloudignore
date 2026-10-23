@@ -1,0 +1,8 @@
+# .gcloudignore
+.gcloudignore
+.git
+.gitignore
+bin/
+obj/
+publish/
+*.user

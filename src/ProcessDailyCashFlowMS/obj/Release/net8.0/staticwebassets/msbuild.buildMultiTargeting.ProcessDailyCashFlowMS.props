@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="../build/ProcessDailyCashFlowMS.props" />
-</Project>

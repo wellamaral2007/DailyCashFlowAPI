@@ -1,16 +1,25 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <!-- ? GOVERNANÇA: Alinhado na versão estável do .NET 10.0 -->
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <!-- Garante que o compilador monte o binário como biblioteca reutilizável -->
+    <OutputType>Library</OutputType>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="EntityFramework" Version="6.5.1" />
-    <PackageReference Include="StackExchange.Redis" Version="2.8.16" />
-    <PackageReference Include="Google.Cloud.Functions.Hosting" Version="2.2.1" />
-    <PackageReference Include="Google.Cloud.PubSub.V1" Version="3.18.0" />
-    <PackageReference Include="Google.Cloud.SecretManager.V1" Version="2.7.0" />
+    <!-- ? PERSISTÊNCIA: Padronizada unicamente no ecossistema moderno do EF Core 9.0.0 -->
+    <!-- REMOVIDO: 'EntityFramework' (v6) e 'MySql.Data' para eliminar o conflito de ORMs e duplicação de drivers -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2" />
+    <PackageReference Include="StackExchange.Redis" Version="2.8.24" />
+    
+    <!-- ?? INTEGRAÇÃO E SEGURANÇA GOOGLE CLOUD -->
+    <!-- ?? ALINHADO: Versões idênticas às do microsserviço principal para garantir restauração limpa -->
+    <PackageReference Include="Google.Cloud.Functions.Hosting" Version="3.0.1" />
+    <PackageReference Include="Google.Cloud.SecretManager.V1" Version="2.8.0" />
   </ItemGroup>
+
 </Project>

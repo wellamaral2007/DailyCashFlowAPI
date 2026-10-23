@@ -1,33 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ProxyEndpoint name="default">
-    <Description/>
-    <FaultRules/>
-    <PreFlow name="PreFlow">
-        <Request/>
-        <Response/>
-    </PreFlow>
-    <PostFlow name="PostFlow">
-        <Request/>
-        <Response/>
-    </PostFlow>
-    <Flows>
-        <Flow name="GetToken">
-            <Description>Gera o token OAuth2</Description>
-            <Request>
-                <Step>
-                    <Name>Verify-Credentials</Name>
-                </Step>
-                <Step>
-                    <Name>Generate-AccessToken</Name>
-                </Step>
-            </Request>
-            <Response/>
-            <Condition>(proxy.pathsuffix MatchesPath "/token") and (request.verb = "POST")</Condition>
-        </Flow>
-    </Flows>
-    <HTTPProxyConnection>
-        <BasePath>/v1/finance-auth</BasePath>
-        <Properties/>
-    </HTTPProxyConnection>
-    <RouteRule name="no-target"/>
+  <Description/>
+  <FaultRules/>
+  <PreFlow name="PreFlow">
+    <Request/>
+    <Response/>
+  </PreFlow>
+  <PostFlow name="PostFlow">
+    <Request/>
+    <Response/>
+  </PostFlow>
+  <Flows>
+    <Flow name="GetToken">
+      <Description>Gera o token OAuth2</Description>
+      <Request>
+        <!-- <Step> pega o key e o secret do cliente do OAuth2 ligado ao Produto API vinculado ao App
+          <Name>Verify-Credentials</Name>
+          <Condition>(request.header.user != "apiUser") or (request.header.password != "apiPassword")</Condition>
+        </Step>
+        -->
+        <Step>
+          <Name>Generate-AccessToken</Name>
+        </Step>
+      </Request>
+      <Response/>
+      <Condition>(proxy.pathsuffix MatchesPath "/token") and (request.verb = "POST")</Condition>
+    </Flow>
+  </Flows>
+  <HTTPProxyConnection>
+    <BasePath>/v1/finance-auth</BasePath>
+    <Properties/>
+  </HTTPProxyConnection>
+  <RouteRule name="no-target"/>
 </ProxyEndpoint>

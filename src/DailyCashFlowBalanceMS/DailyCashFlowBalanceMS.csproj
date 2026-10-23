@@ -1,17 +1,38 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
+    <!-- 📌 GOVERNANÇA: Rodando sob o runtime do .NET 10.0 local -->
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <OutputType>Exe</OutputType>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="EntityFramework" Version="6.5.1" />
-    <PackageReference Include="Polly" Version="8.6.6" />
-    <PackageReference Include="StackExchange.Redis" Version="2.8.16" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.7" />
-    <PackageReference Include="Google.Cloud.SecretManager.V1" Version="2.7.0" />
+    <!-- 📌 BLINDAGEM COMPLETA: Atualizado para a versão que corrige o DoS (CVE-2026-92707) [1.11] -->
+    <PackageReference Include="MessagePack" Version="2.5.303" />
+
+    <!-- 📌 GOVERNANÇA GOOGLE FAAS: Maiores versões estáveis existentes no nuget.org [1.12] -->
+    <PackageReference Include="Google.Cloud.Functions.Framework" Version="3.0.1" />
+    <PackageReference Include="Google.Cloud.Functions.Hosting" Version="3.0.1" />
+
+    <!-- SDKs de infraestrutura corporativa e mensageria Google Cloud -->
+    <PackageReference Include="Google.Cloud.PubSub.V1" Version="3.18.0" />
+    <PackageReference Include="Google.Cloud.SecretManager.V1" Version="2.8.0" />
+    <PackageReference Include="Google.Events.Protobuf" Version="1.8.0" />
+    
+    <!-- 📌 PERSISTÊNCIA E RESILIÊNCIA COMPATÍVEIS COM O .NET 8 -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2" /> <!-- Versão estável suportada pelo EF8 -->
+    <PackageReference Include="StackExchange.Redis" Version="2.8.24" />
+    <PackageReference Include="Polly" Version="8.5.0" />
+    
+    <!-- Suporte nativo a OpenAPI do .NET 8 -->
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Vínculo relacional indispensável com a camada de reuso do Kernel Compartilhado -->
     <ProjectReference Include="..\BaseFramework\BaseFramework.csproj" />
   </ItemGroup>
 

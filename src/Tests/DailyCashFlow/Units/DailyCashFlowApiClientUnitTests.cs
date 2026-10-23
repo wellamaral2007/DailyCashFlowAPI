@@ -1,5 +1,11 @@
+using System;
 using System.Net;
+using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Moq;
 using Moq.Protected;
 using DailyCashFlow.Integration.Clients;
@@ -8,90 +14,120 @@ using Xunit;
 
 namespace Tests.DailyCashFlow.Units.DailyCashFlow.Tests.UnitTests;
 
+/**
+ * ============================================================================
+ * TOGAF DIMENSION: Phase D - Technology Architecture (Quality Assurance)
+ * HEXAGONAL ROLE:  Outbound Test Adapter - Unit Testing Suite
+ * CONCEPTS:        Mock Isolation / HTTP Interception Pipeline / Contract Validation
+ * ============================================================================
+ * This test suite utilizes the Moq framework to intercept standard network communication
+ * handlers, isolating client execution logic from dependencies on live cloud environments.
+ */
 public class DailyCashFlowApiClientUnitTests
 {
     private readonly Mock<HttpMessageHandler> _httpMessageHandlerMock;
     private readonly HttpClient _httpClient;
     private readonly DailyCashFlowApiClient _apiClient;
 
+    /**
+     * Initializes mock infrastructure and configures loopback network bounds for testing.
+     */
     public DailyCashFlowApiClientUnitTests()
     {
         _httpMessageHandlerMock = new Mock<HttpMessageHandler>();
         
         _httpClient = new HttpClient(_httpMessageHandlerMock.Object)
         {
-            BaseAddress = new Uri("https://gcp-finance-apigee.apigee.net/v1/cashflow")
+            BaseAddress = new Uri("http://localhost:8080")
         };
         
         _apiClient = new DailyCashFlowApiClient(_httpClient);
     }
 
-    [Fact]
+    /**
+     * Asserts that submitting authentic OAuth2 credentials applies a Bearer header token to the context.
+     */
+    [Fact(DisplayName = "AuthenticateAsync with valid OAuth2 client credentials should set authorization header")]
     public async Task AuthenticateAsync_ValidCredentials_ShouldSetAuthorizationHeader()
     {
-        // Arrange
         var username = "test_user";
         var password = "password123";
-        var fakeResponse = new LoginResponse("fake-jwt-token");
+        var fakeToken = "gcp-apigee-at-v1-987456123...";
 
-        SetupMockHttpResponse(HttpStatusCode.OK, fakeResponse);
+        var jsonPayload = $"{{\"Token\":\"{fakeToken}\"}}";
+        
+        var httpResponse = new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            Content = new StringContent(jsonPayload, System.Text.Encoding.UTF8, "application/json")
+        };
 
-        // Act
+        _httpMessageHandlerMock.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.Is<HttpRequestMessage>(req => 
+                    req.Method == HttpMethod.Post && 
+                    req.RequestUri!.AbsolutePath == "/v1/finance-auth/token"
+                ),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(httpResponse);
+
         await _apiClient.AuthenticateAsync(username, password);
 
-        // Assert
         Assert.NotNull(_httpClient.DefaultRequestHeaders.Authorization);
         Assert.Equal("Bearer", _httpClient.DefaultRequestHeaders.Authorization.Scheme);
-        Assert.Equal("fake-jwt-token", _httpClient.DefaultRequestHeaders.Authorization.Parameter);
+        Assert.Equal(fakeToken, _httpClient.DefaultRequestHeaders.Authorization.Parameter);
     }
 
-    [Fact]
+    /**
+     * Asserts that creating financial movement request records returns an Accepted status code.
+     */
+    [Fact(DisplayName = "CreateEntry with valid financial request should return accepted status code")]
     public async Task CreateEntry_ValidRequest_ShouldReturnCreatedStatus()
     {
-        // Arrange
-        var request = new EntryRequest(150.00m);
-        var fakeResponse = new EntryResponse(Guid.NewGuid(), 150.00m);
+        var request = new EntryRequest(-2673.69m);
+        var fakeResponse = new EntryResponse(Guid.NewGuid(), -2673.69m);
 
-        SetupMockHttpResponse(HttpStatusCode.Created, fakeResponse);
+        SetupMockHttpResponse(HttpStatusCode.Accepted, fakeResponse);
 
-        // Act
         var response = await _apiClient.CreateEntryAsync(request);
 
-        // Assert
-        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+        Assert.Equal(HttpStatusCode.Accepted, response.StatusCode);
         
-        // Verifica se a API foi chamada no endpoint correto e com o método POST
         _httpMessageHandlerMock.Protected().Verify(
-            "SendAsync",
-            Times.Once(),
+            "SendAsync", 
+            Times.Once(), 
             ItExpr.Is<HttpRequestMessage>(req => 
                 req.Method == HttpMethod.Post && 
-                req.RequestUri.AbsolutePath == "/api/cash-flow/entries"),
+                req.RequestUri!.PathAndQuery.Contains("CreditDebitValue=")
+            ), 
             ItExpr.IsAny<CancellationToken>()
         );
     }
 
-    [Fact]
+    /**
+     * Asserts that querying balances within specific parameters resolves accurate calculations.
+     */
+    [Fact(DisplayName = "GetBalance with valid time window parameters should return accurate calculated scalar")]
     public async Task GetBalance_ValidParameters_ShouldReturnCorrectBalanceData()
     {
-        // Arrange
-        var isoDate = "2026-05-22";
+        var isoDate = "2026-10-18";
         var sessionCode = "session-123";
-        var fakeResponse = new BalanceResponse(DateTime.Parse(isoDate), 500.00m);
+        var fakeResponse = new BalanceResponse(DateTime.Parse(isoDate), -2673.69m);
 
         SetupMockHttpResponse(HttpStatusCode.OK, fakeResponse);
 
-        // Act
         var response = await _apiClient.GetBalanceAsync(isoDate, sessionCode);
         var content = await response.Content.ReadFromJsonAsync<BalanceResponse>();
 
-        // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.NotNull(content);
-        Assert.Equal(500.00m, content.Balance);
+        Assert.Equal(-2673.69m, content.Balance);
     }
 
-    // Helper método para simular as respostas HTTP que a API daria
+    /**
+     * Helper routine injecting mocked payload responses into the simulated HTTP handler pipeline.
+     */
     private void SetupMockHttpResponse<T>(HttpStatusCode statusCode, T content)
     {
         var httpResponse = new HttpResponseMessage(statusCode)

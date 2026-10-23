@@ -24,6 +24,7 @@
         },
         "frameworks": {
           "net8.0": {
+            "framework": "net8.0",
             "targetAlias": "net8.0",
             "projectReferences": {}
           }
@@ -38,31 +39,32 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.100"
+        "SdkAnalysisLevel": "10.0.400"
       },
       "frameworks": {
         "net8.0": {
+          "framework": "net8.0",
           "targetAlias": "net8.0",
           "dependencies": {
-            "EntityFramework": {
-              "target": "Package",
-              "version": "[6.5.1, )"
-            },
             "Google.Cloud.Functions.Hosting": {
               "target": "Package",
-              "version": "[2.2.1, )"
-            },
-            "Google.Cloud.PubSub.V1": {
-              "target": "Package",
-              "version": "[3.18.0, )"
+              "version": "[3.0.1, )"
             },
             "Google.Cloud.SecretManager.V1": {
               "target": "Package",
-              "version": "[2.7.0, )"
+              "version": "[2.8.0, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.10, )"
+            },
+            "Pomelo.EntityFrameworkCore.MySql": {
+              "target": "Package",
+              "version": "[8.0.2, )"
             },
             "StackExchange.Redis": {
               "target": "Package",
-              "version": "[2.8.16, )"
+              "version": "[2.8.24, )"
             }
           },
           "imports": [
@@ -79,26 +81,19 @@
           "downloadDependencies": [
             {
               "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[8.0.12, 8.0.12]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Host.linux-x64",
-              "version": "[8.0.12, 8.0.12]"
+              "version": "[8.0.32, 8.0.32]"
             },
             {
               "name": "Microsoft.NETCore.App.Ref",
-              "version": "[8.0.12, 8.0.12]"
+              "version": "[8.0.32, 8.0.32]"
             }
           ],
           "frameworkReferences": {
-            "Microsoft.AspNetCore.App": {
-              "privateAssets": "none"
-            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/media/wellington/SIA_TERA1/SysInAut - SIASolution/solutions/Ambiente Desenvolvedor/C#/dotnet9/sdk/9.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/home/wellington/SIASolution/solutions/Ambiente_Desenvolvedor/C#/dotnet10/sdk/10.0.402/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
@@ -122,6 +117,7 @@
         },
         "frameworks": {
           "net8.0": {
+            "framework": "net8.0",
             "targetAlias": "net8.0",
             "projectReferences": {
               "/home/wellington/testeCarrefour/DailyCashFlowSolution/src/BaseFramework/BaseFramework.csproj": {
@@ -140,31 +136,56 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.100"
+        "SdkAnalysisLevel": "10.0.400"
       },
       "frameworks": {
         "net8.0": {
+          "framework": "net8.0",
           "targetAlias": "net8.0",
           "dependencies": {
-            "EntityFramework": {
+            "Google.Cloud.Functions.Framework": {
               "target": "Package",
-              "version": "[6.5.1, )"
+              "version": "[3.0.1, )"
+            },
+            "Google.Cloud.Functions.Hosting": {
+              "target": "Package",
+              "version": "[3.0.1, )"
+            },
+            "Google.Cloud.PubSub.V1": {
+              "target": "Package",
+              "version": "[3.18.0, )"
             },
             "Google.Cloud.SecretManager.V1": {
               "target": "Package",
-              "version": "[2.7.0, )"
+              "version": "[2.8.0, )"
+            },
+            "Google.Events.Protobuf": {
+              "target": "Package",
+              "version": "[1.8.0, )"
+            },
+            "MessagePack": {
+              "target": "Package",
+              "version": "[2.5.303, )"
+            },
+            "Microsoft.AspNetCore.OpenApi": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.10, )"
             },
             "Polly": {
               "target": "Package",
-              "version": "[8.6.6, )"
+              "version": "[8.5.0, )"
+            },
+            "Pomelo.EntityFrameworkCore.MySql": {
+              "target": "Package",
+              "version": "[8.0.2, )"
             },
             "StackExchange.Redis": {
               "target": "Package",
-              "version": "[2.8.16, )"
-            },
-            "Swashbuckle.AspNetCore": {
-              "target": "Package",
-              "version": "[10.1.7, )"
+              "version": "[2.8.24, )"
             }
           },
           "imports": [
@@ -181,15 +202,15 @@
           "downloadDependencies": [
             {
               "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[8.0.12, 8.0.12]"
+              "version": "[8.0.32, 8.0.32]"
             },
             {
               "name": "Microsoft.NETCore.App.Host.linux-x64",
-              "version": "[8.0.12, 8.0.12]"
+              "version": "[8.0.32, 8.0.32]"
             },
             {
               "name": "Microsoft.NETCore.App.Ref",
-              "version": "[8.0.12, 8.0.12]"
+              "version": "[8.0.32, 8.0.32]"
             }
           ],
           "frameworkReferences": {
@@ -200,7 +221,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/media/wellington/SIA_TERA1/SysInAut - SIASolution/solutions/Ambiente Desenvolvedor/C#/dotnet9/sdk/9.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/home/wellington/SIASolution/solutions/Ambiente_Desenvolvedor/C#/dotnet10/sdk/10.0.402/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

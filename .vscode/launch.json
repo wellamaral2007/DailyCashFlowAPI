@@ -1,0 +1,76 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug: FaaS HTTP (Produtor/Publicador)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/DailyCashFlowBalanceMS/bin/Debug/net8.0/DailyCashFlowBalanceMS.dll",
+            "cwd": "${workspaceFolder}/src/DailyCashFlowBalanceMS",
+            "justMyCode": false,
+            "requireExactSource": false,
+            "args": [
+                "--target", "DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Inbound.API.Controller.DailyCashFlowBalanceController"
+            ],
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "GCP_PROJECT": "daily-cashflow-sol-17852",
+                "GCP_TOPIC_ID": "DailyCashFlowEntry",
+                "FAAS_HOST": "us-central1-daily-cashflow-sol-17852.cloudfunctions.net",
+                "APIGEE_AUTH_HOST": "https://136.81.203.14",
+                "APIGEE_CLIENT_ID": "UsLIs0v1EGx0vjAWZ82yRl5JZtbDEsTzzhtHWsn3I3IeO3Mo",
+                "APIGEE_CLIENT_SECRET": "838js1Gae7nrGVpzjshjyB6gsbaJNruYlSN9jDAzH9UuijHWS7rdkwMGIBQs9agu",
+                "FAAS_URL": "https://us-central1-daily-cashflow-sol-17852.cloudfunctions.net/daily-cashflow-balance",
+                "BYPASS_APIGEE": "false",
+                "PORT": "8080",
+                "FUNCTION_TARGET": "DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Inbound.API.Controller.DailyCashFlowBalanceController",
+                // 🌐 INTEGRADO COM OS TRÊS TÚNEIS DA NUVEM (VIA BASTION)
+    
+                "db-write-connection": "Server=127.0.0.1;Port=3307;Database=DailyCashDb;Uid=root;Pwd=StrongPassword123!;SslMode=None;",
+                "db-read-connection": "Server=127.0.0.1;Port=3308;Database=DailyCashDb;Uid=root;Pwd=StrongPassword123!;SslMode=None;",
+                "redis-connection": "127.0.0.1:6380,ssl=false,abortConnect=false",
+                
+                // Chaves de compatibilidade do framework .NET
+                "ConnectionStrings__db-write-connection": "Server=127.0.0.1;Port=3307;Database=DailyCashDb;Uid=root;Pwd=StrongPassword123!;SslMode=None;",
+                "ConnectionStrings__db-read-connection": "Server=127.0.0.1;Port=3308;Database=DailyCashDb;Uid=root;Pwd=StrongPassword123!;SslMode=None;",
+                "ConnectionStrings__redis-connection": "127.0.0.1:6380,ssl=false,abortConnect=false"
+            }
+        },
+        {
+            "name": "Debug: FaaS EDA (Consumidor Pub/Sub)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/DailyCashFlowBalanceMS/bin/Debug/net8.0/DailyCashFlowBalanceMS.dll",
+            "cwd": "${workspaceFolder}/src/DailyCashFlowBalanceMS",
+            "justMyCode": false,
+            "requireExactSource": false,
+            "args": [
+                "--target", "DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Inbound.EDA.Controller.ProcessDailyCashFlowController"
+            ],
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "GCP_PROJECT": "daily-cashflow-sol-17852",
+                "GCP_TOPIC_ID": "DailyCashFlowEntry",
+                "FAAS_HOST": "us-central1-daily-cashflow-sol-17852.cloudfunctions.net",
+                "APIGEE_AUTH_HOST": "https://136.81.203.14",
+                "APIGEE_CLIENT_ID": "UsLIs0v1EGx0vjAWZ82yRl5JZtbDEsTzzhtHWsn3I3IeO3Mo",
+                "APIGEE_CLIENT_SECRET": "838js1Gae7nrGVpzjshjyB6gsbaJNruYlSN9jDAzH9UuijHWS7rdkwMGIBQs9agu",
+                "FAAS_URL": "https://us-central1-daily-cashflow-sol-17852.cloudfunctions.net/daily-cashflow-balance",
+                "BYPASS_APIGEE": "false",
+                "PORT": "8081",
+                "FUNCTION_TARGET": "DailyCashFlowBalanceMS.CashFlow.Technology.Middleware.Inbound.EDA.Controller.ProcessDailyCashFlowController",
+                
+                "db-write-connection": "Server=127.0.0.1;Port=3307;Database=DailyCashDb;Uid=root;Pwd=StrongPassword123!;SslMode=None;",
+                "db-read-connection": "Server=127.0.0.1;Port=3308;Database=DailyCashDb;Uid=root;Pwd=StrongPassword123!;SslMode=None;",
+                "redis-connection": "127.0.0.1:6380,ssl=false,abortConnect=false",
+                
+                // Chaves de compatibilidade do framework .NET
+                "ConnectionStrings__db-write-connection": "Server=127.0.0.1;Port=3307;Database=DailyCashDb;Uid=root;Pwd=StrongPassword123!;SslMode=None;",
+                "ConnectionStrings__db-read-connection": "Server=127.0.0.1;Port=3308;Database=DailyCashDb;Uid=root;Pwd=StrongPassword123!;SslMode=None;",
+                "ConnectionStrings__redis-connection": "127.0.0.1:6380,ssl=false,abortConnect=false"
+            }
+        }
+    ]
+}

@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- File: api/apigee/DailyCashFlowAPI/apiproxy/targets/entry-target.xml -->
 <TargetEndpoint name="entry-target">
+    <Description>Outbound Gateway path targeting the .NET 8 Serverless Event Ingress Engine</Description>
+    <FaultRules/>
+    <PreFlow name="PreFlow">
+        <Request/>
+        <Response/>
+    </PreFlow>
+    <PostFlow name="PreFlow">
+        <Request/>
+        <Response/>
+    </PostFlow>
+    <Flows/>
     <HTTPTargetConnection>
-        <!-- URL gerada automaticamente no deploy da Cloud Function generate-daily-cashflow -->
-        <URL>https://run.app</URL>
+        <!-- Injected dynamically by the automation pipeline script via sed -->
+        <URL>https://us-central1-daily-cashflow-sol-17852.cloudfunctions.net/daily-cashflow-balance</URL>
     </HTTPTargetConnection>
 </TargetEndpoint>

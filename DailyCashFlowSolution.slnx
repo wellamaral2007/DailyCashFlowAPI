@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/BaseFramework/BaseFramework.csproj" />
+    <Project Path="src/DailyCashFlowBalanceMS/DailyCashFlowBalanceMS.csproj" />
+    <Project Path="src/Tests/Tests.csproj" />
+  </Folder>
+</Solution>
