@@ -1,0 +1,36 @@
+## Core build artifacts
+**/bin/
+**/obj/
+
+## Operating System Files
+.DS_Store
+Thumbs.db
+
+## Rider and VS Code IDE Settings
+.idea/
+.vscode/
+*.sln.dotSettings
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+## Visual Studio cache and settings
+.vs/
+MinVer/
+
+## Test Results and Coverage artifacts
+**/TestResults/
+**/coveragereport/
+*.CodeCoverage
+
+## Package Management
+*.nuget.props
+*.nuget.targets
+**/packages/
+
+## Local Environment configuration
+*.env
+*.local.json
+**/appsettings.Development.json
+**/appsettings.Local.json

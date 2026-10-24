@@ -54,7 +54,7 @@ public class DailyCashFlowApiClientUnitTests
         var password = "password123";
         var fakeToken = "gcp-apigee-at-v1-987456123...";
 
-        var jsonPayload = $"{{\"Token\":\"{fakeToken}\"}}";
+        var jsonPayload = $"{{\"access_token\":\"{fakeToken}\"}}";
         
         var httpResponse = new HttpResponseMessage(HttpStatusCode.OK)
         {

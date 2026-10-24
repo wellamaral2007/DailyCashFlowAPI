@@ -57,10 +57,10 @@ gcloud functions deploy daily-cashflow-balance \
     --set-env-vars="ASPNETCORE_ENVIRONMENT=Production,GCP_PROJECT=daily-cashflow-sol-17852,GCP_TOPIC_ID=DailyCashFlowEntry" \
     --set-secrets="DB_WRITE_CONNECTION=db-write-connection:latest,DB_READ_CONNECTION=db-read-connection:latest,REDIS_CONNECTION=redis-connection:latest" \
     --vpc-connector="$VPC_CONNECTOR" \
+    --ingress-settings=all \
     --egress-settings=all \
     --timeout=120s \
     --trigger-http \
-    --allow-unauthenticated \
     --source="$SRC_ROOT" \
     --service-account="$SA_EMAIL" \
     --set-build-env-vars GOOGLE_BUILDABLE="DailyCashFlowBalanceMS/DailyCashFlowBalanceMS.csproj" \
