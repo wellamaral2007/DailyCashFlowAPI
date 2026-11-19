@@ -2,9 +2,8 @@
 
 ## Definition
 
-This is it a test, for Solution Architect, which we have a challenge to control entrys of daily cash flow balance, and generate a report daily balance conform defined by document desafio-arquiteto-software-ago2024.pdf. 
-I am Wellington Amaral, Solution Architect, that being participating in this challenge, to model a solution 
-with the best software architecture and solution architecture patterns and practices that can be used in a real-world scenario to achieve the goal of the challenge. In terms of software architecture and solution architecture the main requirement is about the scalability and availability, supporting until 50 entries per second caming, canning have unvailibility of the service of 5% of time, reliability, keeping information of daily balance of cash flow without lose entrys, high performance, and security.
+This API with microservice for which we have a challenge to control entrys of daily cash flow balance, and generate a report daily balance conform defined by document with high performance using Software, Solution and TOGAF Architect modeling, Developing with AI, DevOps, Cloud for this purpose with best practices. 
+I am Wellington Amaral, Solution Architect, that being build and modeling this solution with the best software architecture and solution architecture patterns and practices that can be used in a real-world scenario to achieve the goal of the challenge. In terms of software architecture and solution architecture the main requirement is about the scalability and availability, supporting until 50 entries per second caming, canning have unvailibility of the service of 5% of time, reliability, keeping information of daily balance of cash flow without lose entrys, high performance, and security.
 
 
 ## Finance Security API 
